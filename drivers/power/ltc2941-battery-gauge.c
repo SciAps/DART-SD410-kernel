@@ -38,9 +38,9 @@
 
 #define LTC2941_MAX_PRESCALER_EXP	7
 #define LTC2943_MAX_PRESCALER_EXP	6
-#define LTC2941_MIN_VOLTAGE_LOW_THRES_uV 11000000
-#define LTC2941_VOLTAGE_LOW_THRES_uV	 12000000
-#define LTC2941_MAX_VOLTAGE_LOW_THRES_uV 14000000
+#define LTC2941_MIN_VOLTAGE_LOW_THRES_uV	11000000
+#define LTC2941_VOLTAGE_CRIT_LOW_THRES_uV	12000000
+#define LTC2941_VOLTAGE_CHARGE_LOW_THRES_uV	13500000
 #define LTC2941_MIN_CHARGE_LOW_THRES 0
 
 enum ltc294x_reg {
@@ -102,7 +102,8 @@ struct ltc294x_info {
 	uint8_t			dc_present;
 	uint8_t			chg_enabled;
 	uint16_t		charge_low_thres;
-	uint32_t		voltage_low_thres_uV;
+	uint32_t		voltage_charge_low_thres_uV;
+	uint32_t		voltage_crit_low_thres_uV;
 };
 
 static inline int convert_bin_to_uAh(
@@ -629,7 +630,9 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it)
 
 	}
 	else {
-		if (update_it && (gauge_voltage <= info->voltage_low_thres_uV || (charge_now && charge_now <= info->charge_low_thres))) {
+		if (update_it && (gauge_voltage <= info->voltage_crit_low_thres_uV 
+							|| (charge_now && charge_now <= info->charge_low_thres && gauge_voltage < info->voltage_charge_low_thres_uV)
+						)) {
 			DEV_DBG(&info->client->dev, "ltc294x_update: ----> Powering off...\n");
 			kernel_power_off();
 		}
@@ -876,7 +879,8 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 	u32 prescaler_exp;
 	s32 r_sense;
 	u32 charge_low_thres;
-	u32 voltage_low_thres_uV;
+	u32 voltage_crit_low_thres_uV;
+	u32 voltage_charge_low_thres_uV;
 	struct device_node *np;
 	struct power_supply *usb_psy;
 
@@ -901,8 +905,9 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 	info->batt_psy.name = "battery-gauge";//np->name;
 
 	info->dc_psy.name = "dc";
-	info->charge_low_thres		= LTC2941_MIN_CHARGE_LOW_THRES;
-	info->voltage_low_thres_uV	= LTC2941_VOLTAGE_LOW_THRES_uV;
+	info->charge_low_thres				= LTC2941_MIN_CHARGE_LOW_THRES;
+	info->voltage_crit_low_thres_uV		= LTC2941_VOLTAGE_CRIT_LOW_THRES_uV;
+	info->voltage_charge_low_thres_uV	= LTC2941_VOLTAGE_CHARGE_LOW_THRES_uV;
 
 	/* r_sense can be negative, when sense+ is connected to the battery
 	 * instead of the sense-. This results in reversed measurements. */
@@ -939,21 +944,26 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 		}
 	}
 
-	ret = of_property_read_u32(np, "sciaps,voltage-low-thres-uV",
-		&voltage_low_thres_uV);
+	ret = of_property_read_u32(np, "sciaps,voltage-crit-low-thres-uV",
+		&voltage_crit_low_thres_uV);
 
 	if (ret < 0) {
 		dev_warn(&client->dev,
-			"ltc294x_i2c_probe: sciaps,voltage-low-thres-uV not in devicetree. Using the default value: %d \n", LTC2941_VOLTAGE_LOW_THRES_uV);
+			"ltc294x_i2c_probe: sciaps,voltage-crit-low-thres-uV not in devicetree. Using the default value: %d \n", LTC2941_VOLTAGE_CRIT_LOW_THRES_uV);
 	}
 	else {
-		if (voltage_low_thres_uV < LTC2941_MIN_VOLTAGE_LOW_THRES_uV || voltage_low_thres_uV > LTC2941_MAX_VOLTAGE_LOW_THRES_uV) {
-			dev_warn(&client->dev,
-				"ltc294x_i2c_probe: sciaps,sciaps,voltage-low-thres-uV invalid value. Using the default value: %d \n", LTC2941_VOLTAGE_LOW_THRES_uV);
-		}
-		else {
-			info->voltage_low_thres_uV = voltage_low_thres_uV;
-		}
+		info->voltage_crit_low_thres_uV = voltage_crit_low_thres_uV;
+	}
+
+	ret = of_property_read_u32(np, "sciaps,voltage-charge-low-thres-uV",
+		&voltage_charge_low_thres_uV);
+
+	if (ret < 0) {
+		dev_warn(&client->dev,
+			"ltc294x_i2c_probe: sciaps,voltage-low-thres-uV not in devicetree. Using the default value: %d \n", LTC2941_VOLTAGE_CHARGE_LOW_THRES_uV);
+	}
+	else {
+		info->voltage_charge_low_thres_uV = voltage_charge_low_thres_uV;
 	}
 
 	if (1 == of_gpio_named_count(np, "sciaps,gpio-charge-in-progress")) {
