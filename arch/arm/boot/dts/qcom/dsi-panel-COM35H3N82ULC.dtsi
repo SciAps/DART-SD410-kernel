@@ -1,6 +1,6 @@
 &mdss_mdp {
     dsi_sciaps_com35h3n: qcom,mdss_dsi_sciaps_com35h3n {
-            qcom,mdss-dsi-panel-name = "ortustech com27h2p video mode panel v1.0";
+            qcom,mdss-dsi-panel-name = "ortustech com35h3n video mode panel v1.0";
             qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
             qcom,mdss-dsi-panel-type = "dsi_video_mode";
             qcom,mdss-dsi-panel-destination = "display_1";
