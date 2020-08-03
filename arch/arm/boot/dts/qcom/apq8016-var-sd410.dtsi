@@ -14,8 +14,6 @@
 #include "apq8016-dart.dtsi"
 #include "apq8016-camera-sensor-var-sd410.dtsi"
 #include "dsi-panel-var-sd410.dtsi"
-#include "dsi-panel-COM43H4N10ULC.dtsi"
-#include "dsi-panel-COM27H2P37ULC.dtsi"
 #include "dsi-panel-COM35H3N82ULC.dtsi"
 //#include "apq8016-sciaps-ngx-pinctrl.dtsi"
 //#include "apq8016-sciaps-ngx.dtsi"
