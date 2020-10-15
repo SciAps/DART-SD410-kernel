@@ -274,6 +274,7 @@ static int sciaps_micro_remove(struct i2c_client *client)
 	return 0;
 }
 
+static void do_sciaps_msm_poweroff(void);
 static void sciaps_micro_shutdown(struct i2c_client *client)
 {
 	int err;
@@ -289,9 +290,21 @@ static void sciaps_micro_shutdown(struct i2c_client *client)
 		}
 		else {
 			pr_notice("%s: Sciaps ctrl has been notified!\n", __func__);
+			pm_power_off = do_sciaps_msm_poweroff;
 		}
 	}
 
+}
+
+static void do_sciaps_msm_poweroff(void)
+{
+	pr_notice("%s: Powering off the SoC\n", __func__);
+
+	qpnp_pon_system_pwr_off(PON_POWER_OFF_SHUTDOWN);
+
+	mdelay(10000);
+	pr_err("%s: Powering off has failed\n", __func__);
+	return;
 }
 
 static struct i2c_device_id sciaps_micro_idtable[] = {
