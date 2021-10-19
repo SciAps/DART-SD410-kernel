@@ -33,6 +33,8 @@
 #include "splash_sciaps_z_240_320.h"
 #elif defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_Z_480_640)
 #include "splash_sciaps_z_480_640.h"
+#elif defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_X_480_640)
+#include "splash_sciaps_x_480_640.h"
 #else
 #include "splash.h"
 #endif
