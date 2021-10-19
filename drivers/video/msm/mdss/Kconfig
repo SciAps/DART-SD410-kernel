@@ -54,10 +54,16 @@ config FB_MSM_MDSS_SPLASH_SCIAPS_Z_240_320
 	bool "MDSS Splash Logo Sciaps Z(240x320)"
 	default n
 	---help---
-	MDSS Splash Logo Sciaps Logo X(240x320)
+	MDSS Splash Logo Sciaps Logo Z(240x320)
 
 config FB_MSM_MDSS_SPLASH_SCIAPS_Z_480_640
 	bool "MDSS Splash Logo Sciaps Z(480x640)"
+	default n
+	---help---
+	MDSS Splash Logo Sciaps Logo Z(480x640)
+
+config FB_MSM_MDSS_SPLASH_SCIAPS_X_480_640
+	bool "MDSS Splash Logo Sciaps X(480x640)"
 	default n
 	---help---
 	MDSS Splash Logo Sciaps Logo X(480x640)
