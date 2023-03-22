@@ -1,0 +1,19 @@
+#
+# SciAps Device Drivers
+#
+
+menuconfig SCIAPS_DRIVERS
+	bool "SciAps drivers"
+	depends on HAS_IOMEM
+	help
+		SciAps drivers
+
+if SCIAPS_DRIVERS
+config CONFIG_SCIAPS_KETEK_DPP3_SPI
+	tristate "SciAps Ketek DPP3 Driver"
+	depends on SCIAPS_DRIVERS && SPI_MASTER
+	default n
+	help
+	  Ketek DPP3 Support 
+
+endif #SCIAPS_DRIVERS
