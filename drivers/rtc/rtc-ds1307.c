@@ -28,6 +28,7 @@
  */
 enum ds_type {
 	ds_1307,
+	ds_1341,
 	ds_1337,
 	ds_1338,
 	ds_1339,
@@ -74,6 +75,7 @@ enum ds_type {
 #define DS1337_REG_CONTROL	0x0e
 #	define DS1337_BIT_nEOSC		0x80
 #	define DS1339_BIT_BBSQI		0x20
+#   define DS1341_BIT_EGFIL     0x20
 #	define DS3231_BIT_BBSQW		0x40 /* same as BBSQI */
 #	define DS1337_BIT_RS2		0x10
 #	define DS1337_BIT_RS1		0x08
@@ -89,9 +91,13 @@ enum ds_type {
 #	define DS1340_BIT_OSF		0x80
 #define DS1337_REG_STATUS	0x0f
 #	define DS1337_BIT_OSF		0x80
+#   define DS1341_BIT_DOSF      0x40
+#   define DS1341_BIT_ECLK      0x04
 #	define DS1337_BIT_A2I		0x02
 #	define DS1337_BIT_A1I		0x01
 #define DS1339_REG_ALARM1_SECS	0x07
+#define DS1341_REG_ALARM2_MIN	0x0B
+#	define DS1341_BIT_AxM		0x80
 
 #define DS13XX_TRICKLE_CHARGER_MAGIC	0xa0
 
@@ -133,6 +139,9 @@ static const struct chip_desc chips[last_ds_type] = {
 		.nvram_offset	= 8,
 		.nvram_size	= 56,
 	},
+	[ds_1341] = {
+		.alarm		= 1,
+	},
 	[ds_1337] = {
 		.alarm		= 1,
 	},
@@ -162,6 +171,7 @@ static const struct chip_desc chips[last_ds_type] = {
 
 static const struct i2c_device_id ds1307_id[] = {
 	{ "ds1307", ds_1307 },
+	{ "ds1341", ds_1341 },
 	{ "ds1337", ds_1337 },
 	{ "ds1338", ds_1338 },
 	{ "ds1339", ds_1339 },
@@ -309,8 +319,8 @@ static s32 ds1307_native_smbus_read_block_data(const struct i2c_client *client,
  * IRQ until we clear its status on the chip, so that this handler can
  * work with any type of triggering (not just falling edge).
  *
- * The ds1337 and ds1339 both have two alarms, but we only use the first
- * one (with a "seconds" field).  For ds1337 we expect nINTA is our alarm
+ * The ds1337, ds1339, and ds1341 have two alarms, but we only use the first
+ * one (with a "seconds" field).  For ds1337 and ds1341 we expect nINTA is our alarm
  * signal; ds1339 chips have only one alarm signal.
  */
 static void ds1307_work(struct work_struct *work)
@@ -426,6 +436,7 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
 	case ds_1337:
 	case ds_1339:
 	case ds_3231:
+	case ds_1341:
 		buf[DS1307_REG_MONTH] |= DS1337_BIT_CENTURY;
 		break;
 	case ds_1340:
@@ -516,9 +527,9 @@ static int ds1337_set_alarm(struct device *dev, struct rtc_wkalrm *t)
 	u8			control, status;
 	int			ret;
 
-	//return 0 to enable sleep mode. 
+	//return 0 to enable sleep mode.
 	return 0;
-	
+
 	if (!test_bit(HAS_ALARM, &ds1307->flags))
 		return -EINVAL;
 
@@ -678,6 +689,7 @@ static int ds1307_probe(struct i2c_client *client,
 	struct ds1307_platform_data *pdata = client->dev.platform_data;
 	static const int	bbsqi_bitpos[] = {
 		[ds_1337] = 0,
+		[ds_1341] = 0,
 		[ds_1339] = DS1339_BIT_BBSQI,
 		[ds_3231] = DS3231_BIT_BBSQW,
 	};
@@ -710,44 +722,145 @@ static int ds1307_probe(struct i2c_client *client,
 
 	switch (ds1307->type) {
 	case ds_1337:
+	case ds_1341:
 	case ds_1339:
 	case ds_3231:
-		/* get registers that the "rtc" read below won't read... */
-		tmp = ds1307->read_block_data(ds1307->client,
-				DS1337_REG_CONTROL, 2, buf);
-		if (tmp != 2) {
-			dev_dbg(&client->dev, "read error %d\n", tmp);
-			err = -EIO;
-			goto exit_free;
-		}
+		{
+			bool regs_not_yet_read = true, status_reg_updated = false, has_alarm_supported = true;
+			if (ds1307->type == ds_1341
+					&& of_property_read_bool(client->dev.of_node, "enable-sciaps-SQWnINTB-workaround")) {
+				uint8_t updated = 0;
+				dev_warn(&client->dev, "rtc ds1341: enable-sciaps-SQWnINTB-workaround is on!\n");
+				tmp = ds1307->read_block_data(ds1307->client,
+								DS1341_REG_ALARM2_MIN, 3, buf);
 
-		/* oscillator off?  turn it on, so clock can tick. */
-		if (ds1307->regs[0] & DS1337_BIT_nEOSC)
-			ds1307->regs[0] &= ~DS1337_BIT_nEOSC;
+				if (tmp != 3) {
+					dev_dbg(&client->dev, "read error %d\n", tmp);
+					err = -EIO;
+					goto exit_free;
+				}
 
-		/*
-		 * Using IRQ?  Disable the square wave and both alarms.
-		 * For some variants, be sure alarms can trigger when we're
-		 * running on Vbackup (BBSQI/BBSQW)
-		 */
-		if (ds1307->client->irq > 0 && chip->alarm) {
-			INIT_WORK(&ds1307->work, ds1307_work);
+				dev_warn(&client->dev, "%s: %02x %02x %02x\n",
+					"rtc ds1341 A2 registers:",
+					ds1307->regs[0], ds1307->regs[1],
+					ds1307->regs[2]);
 
-			ds1307->regs[0] |= DS1337_BIT_INTCN
-					| bbsqi_bitpos[ds1307->type];
-			ds1307->regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+				// Enable alarm once per minute and reset previously set ALARM2 configuration
+				if (ds1307->regs[0] != DS1341_BIT_AxM) {
+					ds1307->regs[0] = DS1341_BIT_AxM;
+					i2c_smbus_write_byte_data(client, DS1341_REG_ALARM2_MIN, ds1307->regs[0]);
+					updated = 1;
+				}
+				if (ds1307->regs[1] != DS1341_BIT_AxM) {
+					ds1307->regs[1] = DS1341_BIT_AxM;
+					i2c_smbus_write_byte_data(client, DS1341_REG_ALARM2_MIN + 1, ds1307->regs[1]);
+					updated = 1;
+				}
+				if (ds1307->regs[2] != DS1341_BIT_AxM) {
+					ds1307->regs[2] = DS1341_BIT_AxM;
+					i2c_smbus_write_byte_data(client, DS1341_REG_ALARM2_MIN + 2, ds1307->regs[2]);
+					updated = 1;
+				}
 
-			want_irq = true;
-		}
+				if (updated) {
+					dev_warn(&client->dev, "%s: %02x %02x %02x\n",
+						"rtc ds1341 A2 registers UPDATED:",
+						ds1307->regs[0], ds1307->regs[1],
+						ds1307->regs[2]);
+				}
+				// read control register
+				tmp = ds1307->read_block_data(ds1307->client,
+							DS1337_REG_CONTROL, 2, buf);
+				if (tmp != 2) {
+					dev_dbg(&client->dev, "read error %d\n", tmp);
+					err = -EIO;
+					goto exit_free;
+				}
+				regs_not_yet_read = false;
+				// Disable DS1337_BIT_A1I and enable DS1337_BIT_A1I if needed:
+				if ((ds1307->regs[0] & (DS1337_BIT_A2IE | DS1337_BIT_A1IE)) != DS1337_BIT_A2IE) {
+					ds1307->regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+					ds1307->regs[0] |= DS1337_BIT_A2IE;
+				}
+				// Now disable the alarm support all together
+				has_alarm_supported = false;
+			}
 
-		i2c_smbus_write_byte_data(client, DS1337_REG_CONTROL,
-							ds1307->regs[0]);
 
-		/* oscillator fault?  clear flag, and warn */
-		if (ds1307->regs[1] & DS1337_BIT_OSF) {
-			i2c_smbus_write_byte_data(client, DS1337_REG_STATUS,
-				ds1307->regs[1] & ~DS1337_BIT_OSF);
-			dev_warn(&client->dev, "SET TIME!\n");
+			if (regs_not_yet_read) {
+				/* get registers that the "rtc" read below won't read... */
+				tmp = ds1307->read_block_data(ds1307->client,
+						DS1337_REG_CONTROL, 2, buf);
+			}
+			if (tmp != 2) {
+				dev_dbg(&client->dev, "read error %d\n", tmp);
+				err = -EIO;
+				goto exit_free;
+			}
+
+			/* oscillator off?  turn it on, so clock can tick. */
+			if (ds1307->regs[0] & DS1337_BIT_nEOSC)
+				ds1307->regs[0] &= ~DS1337_BIT_nEOSC;
+
+			/*
+			 * Using IRQ?  Disable the square wave and both alarms.
+			 * For some variants, be sure alarms can trigger when we're
+			 * running on Vbackup (BBSQI/BBSQW)
+			 */
+			if (ds1307->client->irq > 0 && chip->alarm && has_alarm_supported) {
+				INIT_WORK(&ds1307->work, ds1307_work);
+
+				ds1307->regs[0] |= DS1337_BIT_INTCN
+						| bbsqi_bitpos[ds1307->type];
+				ds1307->regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+
+				want_irq = true;
+				dev_warn(&client->dev, "rtc ds1341: using irq and alarm!\n");
+			}
+
+
+			if (ds1307->type == ds_1341) {
+				dev_warn(&client->dev, "rtc ds1341\n");
+				/*
+				 * Make sure CLKIN/nINTA and SQW/nINTB configured as A1F and A2F
+				 */
+				ds1307->regs[1] &= ~DS1341_BIT_ECLK;
+				ds1307->regs[0] |= DS1337_BIT_INTCN;
+				status_reg_updated = true;
+
+				/*
+				 * By the default DOSF is enabled. Disabling the oscilator sensing is useful in reducing power consumption.
+				 */
+				if (of_property_read_bool(client->dev.of_node, "disable-oscillator-stop-flag"))
+					ds1307->regs[1] |= DS1341_BIT_DOSF;
+				else
+					ds1307->regs[1] &= ~DS1341_BIT_DOSF;
+
+				/*
+				 * By the default EGFIL is disabled. Disabling the glitch filter is useful in reducing power consumption.
+				 */
+				if (of_property_read_bool(client->dev.of_node, "enable-glitch-filter"))
+					ds1307->regs[0] |= DS1341_BIT_EGFIL;
+				else
+					ds1307->regs[0] &= ~DS1341_BIT_EGFIL;
+
+				dev_warn(&client->dev, "rtc ds1341: Setting CONTROL to 0x%x and STATUS to 0x%x\n", ds1307->regs[0], ds1307->regs[1]);
+
+			}
+
+			i2c_smbus_write_byte_data(client, DS1337_REG_CONTROL,
+								ds1307->regs[0]);
+
+			/* oscillator fault?  clear flag, and warn */
+			if (ds1307->regs[1] & DS1337_BIT_OSF) {
+				ds1307->regs[1] &= ~DS1337_BIT_OSF;
+				status_reg_updated = true;
+				dev_warn(&client->dev, "SET TIME!\n");
+			}
+			if (status_reg_updated) {
+				i2c_smbus_write_byte_data(client, DS1337_REG_STATUS,
+								ds1307->regs[1]);
+			}
 		}
 		break;
 

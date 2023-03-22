@@ -85,11 +85,20 @@
 			reg = <0x59>;
 		};
 
-		/* DS1307 RTC module */
-		rtc@0x68 {
-			compatible = "dallas,ds1307";
+		///* DS1307 RTC module */
+		//rtc@0x68 {
+		//	compatible = "dallas,ds1307";
+		//	reg = <0x68>;
+		//};
+
+		ds1341: rtc@68 {
+			compatible = "dallas,ds1341";
+			disable-oscillator-stop-flag;
+			//enable-glitch-filter;
+			enable-sciaps-SQWnINTB-workaround;
 			reg = <0x68>;
 		};
+
 
 		nose_cam_leds@0x62 {
 			compatible = "nxp,pca9633";
