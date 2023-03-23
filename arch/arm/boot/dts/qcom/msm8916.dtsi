@@ -447,7 +447,7 @@
 		pinctrl-names = "sleep", "default";
 		pinctrl-0 = <&hsuart_sleep>;
 		pinctrl-1 = <&hsuart_active>;
-		/*status = "disabled";*/
+		//status = "disabled";
 	};
 */
 
