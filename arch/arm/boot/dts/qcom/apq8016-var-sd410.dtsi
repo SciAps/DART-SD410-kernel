@@ -120,6 +120,8 @@
 			sciaps,voltage-charge-low-thres-uV = <13500000>;
 			//sciaps,gpio-charge-in-progress = <&msm_gpio 62 0>;
 			//sciaps,gpio-charge-completed = <&msm_gpio 21 0>;
+			sciaps,support-shutdown = <1>;
+			sciaps,shutdown-timer	= <30>;
 
 			status = "ok";
 		};

@@ -227,7 +227,7 @@ static int sciaps_micro_delete_sysfs(struct i2c_client *client)
 	return 0;
 }
 
-static struct i2c_client *sciaps_micro_i2c_client;
+static struct i2c_client *sciaps_micro_i2c_client = NULL;
 
 static int sciaps_micro_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
@@ -326,6 +326,46 @@ static struct i2c_driver sciaps_micro_driver = {
 };
 
 module_i2c_driver(sciaps_micro_driver);
+
+int sciaps_micro_read_register(uint8_t reg, uint16_t *value_out)
+{
+	struct i2c_client* client = sciaps_micro_i2c_client;
+	int err;
+	uint16_t value;
+
+	err = sciaps_micro_i2c_read_reg(client, reg, &value);
+	if(err < 0) {
+		pr_err("%s: error reading from i2c bus: 0x%x", __func__, err);
+	}
+	else {
+		pr_debug("%s: Register 0x%x is 0x%x\n", __func__, reg, value);
+		if (value_out)
+		   *value_out = value;
+	}
+
+	return err;
+}
+EXPORT_SYMBOL(sciaps_micro_read_register);
+
+int sciaps_micro_check_battery_presence(void)
+{
+	uint16_t value;
+	int rc;
+
+	if ((rc = sciaps_micro_read_register(0x40, &value)) < 0) {
+		// log if needed.
+	}
+	else {
+		if((value&SCIAPS_MICRO_BATTERY_NOT_PRESENT) == SCIAPS_MICRO_BATTERY_NOT_PRESENT) {
+			rc = SCIAPS_MICRO_BATTERY_NOT_PRESENT;
+		}
+		else {
+			rc = SCIAPS_MICRO_BATTERY_PRESENT;
+		}
+	}
+	return rc;
+}
+EXPORT_SYMBOL(sciaps_micro_check_battery_presence);
 
 MODULE_AUTHOR("Paul Soucy <paul@dev-smart.com>");
 MODULE_DESCRIPTION("Sciaps Power Board Micro I2C client driver");
