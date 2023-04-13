@@ -18,8 +18,10 @@
 #include <linux/slab.h>
 #include <linux/of_gpio.h>
 #include <linux/reboot.h>
+#include <linux/string.h>
 
 #include <linux/qpnp/power-on.h>
+#include <linux/mfd/sciaps_micro.h>
 
 //#define DEV_DBG	dev_info
 //#define DEV_DBG	dev_dbg
@@ -30,7 +32,7 @@
 
 
 
-#define LTC294X_WORK_DELAY		10	/* Update delay in seconds */
+#define LTC294X_WORK_DELAY		2//10	/* Update delay in seconds */
 
 #define LTC294X_MAX_VALUE		0xFFFF
 #define LTC294X_MID_SUPPLY		0x7FFF
@@ -43,7 +45,12 @@
 #define LTC2941_VOLTAGE_CHARGE_LOW_THRES_uV	13500000
 #define LTC2941_MIN_CHARGE_LOW_THRES 0
 
-#define LTC294x_DRIVER_VERSION "1.01.001"
+#define SCIAPS_SUPPORT_SHUTDOWN_DEFAULT 0
+#define SCIAPS_SHUTDOWN_TIMER_DEFAULT	20
+
+// 1.01.002 - Battery removal detection
+// 1.01.003 - support for automatic shutdown if battery is not present
+#define LTC294x_DRIVER_VERSION "1.01.003"
 
 enum ltc294x_reg {
 	LTC294X_REG_STATUS		= 0x00,
@@ -74,8 +81,8 @@ enum ltc294x_reg {
 #define LTC2941_NUM_REGS	0x08
 #define LTC2943_NUM_REGS	0x18
 
-#define LTC294x_BATT_CAPACITY_DEFAULT	1
-#define LTC294x_BATT_CAPACITY_MIN		1
+#define LTC294x_BATT_CAPACITY_DEFAULT	2
+#define LTC294x_BATT_CAPACITY_MIN		3
 
 struct ltc294x_info {
 	struct i2c_client *client;	/* I2C Client pointer */
@@ -88,6 +95,7 @@ struct ltc294x_info {
 #endif
 	struct power_supply dc_psy;
 	struct power_supply* usb_psy;
+	struct delayed_work shutdown_work;	/* Shutdown work scheduler */
 	struct delayed_work work;	/* Work scheduler */
 	int num_regs;	/* Number of registers (chip type) */
 	int charge;	/* Last charge register content */
@@ -97,6 +105,10 @@ struct ltc294x_info {
 
 	int gpio_charge_in_progress;
 	int gpio_charge_completed;
+
+	uint32_t	sciaps_support_shutdown;
+	uint32_t	sciaps_shutdown_timer;
+	uint8_t		shutdown_work_running;
 
 	//status tracking
 	uint8_t			batt_status;
@@ -183,7 +195,7 @@ static int ltc294x_reset(const struct ltc294x_info *info, int prescaler_exp)
 	if (ret < 0) {
 		dev_warn(&info->client->dev,
 			"Could not read registers from device\n");
-		goto error_exit;
+		goto ltc294x_reset_error_exit;
 	}
 
 	control = LTC294X_REG_CONTROL_PRESCALER_SET(prescaler_exp) |
@@ -198,7 +210,7 @@ static int ltc294x_reset(const struct ltc294x_info *info, int prescaler_exp)
 		if (ret < 0) {
 			dev_warn(&info->client->dev,
 				"Could not write register\n");
-			goto error_exit;
+			goto ltc294x_reset_error_exit;
 		}
 		DEV_DBG(&info->client->dev, "ltc294x_reset: Control register was reset\n");
 
@@ -245,7 +257,7 @@ static int ltc294x_reset(const struct ltc294x_info *info, int prescaler_exp)
 #endif
 	return 0;
 
-error_exit:
+ltc294x_reset_error_exit:
 	return ret;
 }
 
@@ -266,8 +278,11 @@ static int ltc294x_get_charge_now(const struct ltc294x_info *info, int *val)
 	int ret_val;
 	int value = ltc294x_read_charge_register(info);
 
-	if (value < 0)
+	if (value < 0) {
+		DEV_DBG(&info->client->dev, "   >>> %s --> ret: %d; raw value: %d(0x%x);\n",
+			__func__, value, value, value);
 		return value;
+	}
 	/* When r_sense < 0, this counts up when the battery discharges */
 	if (info->Qlsb < 0)
 		value -= 0xFFFF;
@@ -312,9 +327,9 @@ static int ltc294x_set_charge_now(const struct ltc294x_info *info, int val)
 	ret = ltc294x_write_regs(info->client,
 		LTC294X_REG_ACC_CHARGE_MSB, &dataw[0], 2);
 	if (ret < 0)
-		goto error_exit;
+		goto ltc294x_set_charge_now_error_exit;
 	/* Enable analog section */
-error_exit:
+ltc294x_set_charge_now_error_exit:
 	ctrl_reg &= ~LTC294X_REG_CONTROL_SHUTDOWN_MASK;
 	ret = ltc294x_write_regs(info->client,
 		LTC294X_REG_CONTROL, &ctrl_reg, 1);
@@ -328,8 +343,11 @@ static int ltc294x_get_charge_counter(
 	int ret_val;
 	int value = ltc294x_read_charge_register(info);
 
-	if (value < 0)
+	if (value < 0) {
+		DEV_DBG(&info->client->dev, "   >>> %s --> ret: %d; raw value: %d(0x%x);\n",
+			__func__, value, value, value);
 		return value;
+	}
 	value -= LTC294X_MID_SUPPLY;
 	ret_val = convert_bin_to_uAh(info, value);
 	if (val)
@@ -603,33 +621,50 @@ static void ltc294x_external_power_changed(struct power_supply *psy)
 		}
 	}
 }
+
+static void shutdown_work_func(struct work_struct *work)
+{
+	sciaps_device_power_off(SCIAPS_DEVICE_POWER_OFF_OPT_SRC_BatteryRemoved);
+}
+
 #define LTC294x_BATTERY_DISCHARGING_THRES_CURR				(-50000)
 #define LTC294x_BATTERY_MAX_CHARGE							(0xffff)
 #define LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN		(0x300)
 #define LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX		(0xfd6f)
 
-static void ltc294x_update(struct ltc294x_info *info, bool update_it)
+static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 {
 	int gauge_voltage, gauge_current, gauge_temperature, charge_now, charge_in_progress, charge_complete, batt_status, dc_present;
 	bool updated = false;
 	uint32_t capacity;
-	int charge = ltc294x_read_charge_register(info);
+	int charge = ((ret >= 0) ? ltc294x_read_charge_register(info) : ret);
+	bool not_available = false;
+	bool no_battery = false;
 
 	if (charge < 0
 			|| ltc294x_get_voltage(info, &gauge_voltage) < 0
 			|| ltc294x_get_current(info, &gauge_current) < 0
 			|| ltc294x_get_temperature(info, &gauge_temperature) < 0
 			|| ltc294x_get_charge_now(info, &charge_now) < 0) {
+
+		int battery_presence = sciaps_micro_check_battery_presence();
+
+		if (battery_presence != 0) {
+			no_battery = true;
+		}
+
 		batt_status = POWER_SUPPLY_STATUS_UNKNOWN;
+		not_available = true;
+		//info->batt_capacity = LTC294x_BATT_CAPACITY_DEFAULT;
 
 	}
 	else {
-		if (update_it && (gauge_voltage <= info->voltage_crit_low_thres_uV 
+		if (update_it && (gauge_voltage <= info->voltage_crit_low_thres_uV
 							|| (charge_now && charge_now <= info->charge_low_thres && gauge_voltage < info->voltage_charge_low_thres_uV)
 						)) {
 			if (gauge_current <= LTC294x_BATTERY_DISCHARGING_THRES_CURR) {
-				DEV_DBG(&info->client->dev, "ltc294x_update: ----> Powering off...\n");
-				kernel_power_off();
+				DEV_DBG(&info->client->dev, "ltc294x_update: ----> Battery Low Alert! Powering off...\n");
+				sciaps_device_power_off(SCIAPS_DEVICE_POWER_OFF_OPT_SRC_BatteryLow);
 			}
 		}
 		if (info->gpio_charge_in_progress >= 0 && info->gpio_charge_completed >= 0) {
@@ -696,8 +731,27 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it)
 
 	}
 
+	if (info->sciaps_support_shutdown
+			&& info->sciaps_shutdown_timer) {
+		if (no_battery) {
+			if (!info->shutdown_work_running) {
+				dev_info(&info->client->dev, "sciaps -- starting shutdown_work work!\n");
+				schedule_delayed_work(&info->shutdown_work, info->sciaps_shutdown_timer * HZ);
+				info->shutdown_work_running = 1;
+			}
+		}
+		else {
+			if (info->shutdown_work_running) {
+				dev_info(&info->client->dev, "sciaps -- cancelling shutdown_work work!\n");
+				cancel_delayed_work(&info->shutdown_work);
+			}
+			info->shutdown_work_running = 0;
+		}
+	}
+
 	updated = false;
 	if (batt_status != info->batt_status) {
+		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  batt_status != info->batt_status\n");
 		info->batt_status = batt_status;
 		updated = true;
 		if (info->batt_status == POWER_SUPPLY_STATUS_FULL) {
@@ -718,6 +772,12 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it)
 		}
 
 	}
+	if (not_available  && info->batt_capacity != LTC294x_BATT_CAPACITY_DEFAULT) {
+		info->batt_capacity = LTC294x_BATT_CAPACITY_DEFAULT;
+		charge = info->charge_low_thres;
+		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (not_available  && info->batt_capacity != LTC294x_BATT_CAPACITY_DEFAULT)\n");
+		updated = true;
+	}
 	if (info->charge >= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX && charge <= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN) {
 		uint8_t value[2] = {(uint8_t)(LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX>>8), (uint8_t)LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX};
 		int ret;
@@ -726,6 +786,7 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it)
 		ret = ltc294x_write_regs(info->client,
 							LTC294X_REG_ACC_CHARGE_MSB, value, 2);
 
+		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (info->charge >= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX && charge <= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN)\n");
 		if (ret < 0) {
 			dev_warn(&info->client->dev,
 						"ltc294x_work: Could not write to register LTC294X_REG_ACC_CHARGE_MSB\n");
@@ -737,6 +798,8 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it)
 	if (charge != info->charge) {
 		uint16_t batt_max_capacity = LTC294x_BATTERY_MAX_CHARGE;
 		info->charge = charge;
+
+		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (charge != info->charge)\n");
 
 		if (batt_max_capacity > info->charge_low_thres) {
 			batt_max_capacity -= info->charge_low_thres;
@@ -756,24 +819,31 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it)
 			capacity /=100;
 		}
 
-		if (!capacity) {
-			//If capacity is 0% always show 1% as the device is to be powered off soon... 
+		if (not_available) {
+			capacity = LTC294x_BATT_CAPACITY_DEFAULT;
+		}
+		else if (!capacity) {
+			//If capacity is 0% always show 1% as the device is to be powered off soon...
 			capacity = LTC294x_BATT_CAPACITY_MIN;
 		}
 
 		if (capacity != info->batt_capacity) {
+			DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (capacity != info->batt_capacity)\n");
 			info->batt_capacity = capacity;
 			updated = true;
 		}
 	}
 
 	if (updated && update_it) {
+		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (updated && update_it)\n");
 		power_supply_changed(info->supply);
 	}
 
 	if (info->dc_present != dc_present) {
 		info->dc_present = dc_present;
+		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (info->dc_present != dc_present)\n");
 		if (update_it) {
+			DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (update_it)\n");
 			power_supply_changed(&info->dc_psy);
 			power_supply_changed(info->supply);
 		}
@@ -784,14 +854,19 @@ static void ltc294x_work(struct work_struct *work)
 {
 	struct ltc294x_info *info;
 
+	int ret;
+
 	info = container_of(work, struct ltc294x_info, work.work);
 
-	if (ltc294x_reset(info, info->prescaler_exp) < 0) {
-	}
-	else {
-		ltc294x_update(info, true);
-	}
+	ret = ltc294x_reset(info, info->prescaler_exp);
 
+	//if (ltc294x_reset(info, info->prescaler_exp) < 0) {
+	//}
+	//else {
+	//	ltc294x_update(info, true);
+	//}
+
+	ltc294x_update(info, true, ret);
 	schedule_delayed_work(&info->work, LTC294X_WORK_DELAY * HZ);
 }
 
@@ -807,7 +882,7 @@ static int determine_initial_status(struct ltc294x_info *info)
 		else {
 			info->batt_status = POWER_SUPPLY_STATUS_UNKNOWN;
 			info->batt_capacity = LTC294x_BATT_CAPACITY_DEFAULT;
-			ltc294x_update(info, false);
+			ltc294x_update(info, false, ret);
 		}
 	}
 	else {
@@ -937,6 +1012,32 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 		}
 		else {
 			info->charge_low_thres = charge_low_thres;
+		}
+	}
+
+	ret = of_property_read_u32(np, "sciaps,support-shutdown",
+					&info->sciaps_support_shutdown);
+	if (ret && ret != -EINVAL) {
+		info->sciaps_support_shutdown = SCIAPS_SUPPORT_SHUTDOWN_DEFAULT;
+		dev_info(&client->dev,
+			"Unable to read 'sciaps,support-shutdown'. Use default: %d\n", info->sciaps_support_shutdown);
+	}
+	else {
+		dev_info(&client->dev,
+			"'sciaps,support-shutdown' == %d\n", info->sciaps_support_shutdown);
+	}
+
+	if (info->sciaps_support_shutdown) {
+		ret = of_property_read_u32(np, "sciaps,shutdown-timer",
+						&info->sciaps_shutdown_timer);
+		if (ret && ret != -EINVAL) {
+			info->sciaps_shutdown_timer = SCIAPS_SHUTDOWN_TIMER_DEFAULT;
+			dev_info(&client->dev,
+				"Unable to read 'sciaps,shutdown-timer'. Use default: %d\n", info->sciaps_shutdown_timer);
+		}
+		else {
+			dev_info(&client->dev,
+				"'sciaps,shutdown-timer' == %d\n", info->sciaps_shutdown_timer);
 		}
 	}
 
@@ -1094,6 +1195,8 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 #endif
 
 	INIT_DELAYED_WORK(&info->work, ltc294x_work);
+	info->shutdown_work_running = 0;
+	INIT_DELAYED_WORK(&info->shutdown_work, shutdown_work_func);
 
 	ret = determine_initial_status(info);
 	if (ret < 0) {
@@ -1161,6 +1264,7 @@ static int ltc294x_suspend(struct device *dev)
 	struct ltc294x_info *info = i2c_get_clientdata(client);
 
 	cancel_delayed_work(&info->work);
+	cancel_delayed_work(&info->shutdown_work);
 	return 0;
 }
 
