@@ -54,6 +54,17 @@ enum pon_restart_reason {
 	PON_RESTART_REASON_RTC		= 0x03,
 };
 
+
+#define SCIAPS_DEVICE_POWER_OFF_OPT_SRC_Mask				0xff
+#define SCIAPS_DEVICE_POWER_OFF_OPT_SRC_Shift				0
+
+#define SCIAPS_DEVICE_POWER_OFF_OPT_SRC_PowerBtnLongPress	0x01
+#define SCIAPS_DEVICE_POWER_OFF_OPT_SRC_BatteryRemoved		0x02
+#define SCIAPS_DEVICE_POWER_OFF_OPT_SRC_BatteryLow			0x03
+
+
+extern void sciaps_device_power_off(uint32_t opt);
+
 #ifdef CONFIG_QPNP_POWER_ON
 int qpnp_pon_system_pwr_off(enum pon_power_off_type type);
 int qpnp_pon_is_warm_reset(void);

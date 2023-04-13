@@ -23,6 +23,8 @@
 #include <linux/interrupt.h>
 #include <linux/input.h>
 #include <linux/log2.h>
+#include <linux/reboot.h>
+#include <linux/string.h>
 #include <linux/qpnp/power-on.h>
 
 #define CREATE_MASK(NUM_BITS, POS) \
@@ -125,6 +127,9 @@
 
 #define QPNP_POFF_REASON_UVLO			13
 
+#define SCIAPS_SUPPORT_SHUTDOWN_DEFAULT 0
+#define SCIAPS_SHUTDOWN_TIMER_DEFAULT	10000
+
 enum pon_type {
 	PON_KPDPWR,
 	PON_RESIN,
@@ -135,6 +140,8 @@ enum pon_type {
 struct qpnp_pon_config {
 	u32 pon_type;
 	u32 support_reset;
+	u32 sciaps_support_shutdown;
+	u32 sciaps_shutdown_timer;
 	u32 key_code;
 	u32 s1_timer;
 	u32 s2_timer;
@@ -155,6 +162,7 @@ struct qpnp_pon {
 	int num_pon_config;
 	u16 base;
 	struct delayed_work bark_work;
+	struct delayed_work sciaps_shutdown_work;
 	u32 dbc;
 	int pon_trigger_reason;
 	int pon_power_off_reason;
@@ -549,6 +557,22 @@ qpnp_get_cfg(struct qpnp_pon *pon, u32 pon_type)
 	return NULL;
 }
 
+#define SCIAPS_DEVICE_POWER_OFF_CMD "/sbin/sciaps.poweroff"
+
+void sciaps_device_power_off(uint32_t opt)
+{
+	pr_info("%s: !!!--->Sciaps Poweroff. Reason: 0x%x;<---!!!\n", __func__, opt);
+
+	strcpy(poweroff_cmd,SCIAPS_DEVICE_POWER_OFF_CMD);
+	orderly_poweroff(true);
+}
+EXPORT_SYMBOL(sciaps_device_power_off);
+
+static void sciaps_shutdown_work_func(struct work_struct *work)
+{
+	sciaps_device_power_off(SCIAPS_DEVICE_POWER_OFF_OPT_SRC_PowerBtnLongPress);
+}
+
 static int
 qpnp_pon_input_dispatch(struct qpnp_pon *pon, u32 pon_type)
 {
@@ -593,6 +617,17 @@ qpnp_pon_input_dispatch(struct qpnp_pon *pon, u32 pon_type)
 	pr_debug("PMIC input: code=%d, sts=0x%hhx\n",
 					cfg->key_code, pon_rt_sts);
 	key_status = pon_rt_sts & pon_rt_bit;
+
+	if (cfg->sciaps_support_shutdown
+			&& cfg->sciaps_shutdown_timer
+			&& QPNP_PON_KPDPWR_N_SET == (pon_rt_bit & QPNP_PON_KPDPWR_N_SET)) {
+		if (key_status) {
+			schedule_delayed_work(&pon->sciaps_shutdown_work, msecs_to_jiffies(cfg->sciaps_shutdown_timer));
+		}
+		else {
+			cancel_delayed_work(&pon->sciaps_shutdown_work);
+		}
+	}
 
 	/* simulate press event in case release event occured
 	 * without a press event
@@ -1048,6 +1083,18 @@ static int qpnp_pon_config_init(struct qpnp_pon *pon)
 				return cfg->state_irq;
 			}
 
+			rc = of_property_read_u32(pp, "sciaps,support-shutdown",
+							&cfg->sciaps_support_shutdown);
+			if (rc && rc != -EINVAL) {
+				cfg->sciaps_support_shutdown = SCIAPS_SUPPORT_SHUTDOWN_DEFAULT;
+				dev_info(&pon->spmi->dev,
+					"Unable to read 'sciaps,support-shutdown'. Use default: %d\n", cfg->sciaps_support_shutdown);
+			}
+			else {
+				dev_info(&pon->spmi->dev,
+					"'sciaps,support-shutdown' == %d\n", cfg->sciaps_support_shutdown);
+			}
+
 			rc = of_property_read_u32(pp, "qcom,support-reset",
 							&cfg->support_reset);
 			if (rc && rc != -EINVAL) {
@@ -1244,6 +1291,19 @@ static int qpnp_pon_config_init(struct qpnp_pon *pon)
 				return -EINVAL;
 			}
 
+		}
+		if (cfg->sciaps_support_shutdown) {
+			rc = of_property_read_u32(pp, "sciaps,shutdown-timer",
+							&cfg->sciaps_shutdown_timer);
+			if (rc && rc != -EINVAL) {
+				cfg->sciaps_shutdown_timer = SCIAPS_SHUTDOWN_TIMER_DEFAULT;
+				dev_info(&pon->spmi->dev,
+					"Unable to read 'sciaps,shutdown-timer'. Use default: %d\n", cfg->sciaps_shutdown_timer);
+			}
+			else {
+				dev_info(&pon->spmi->dev,
+					"'sciaps,shutdown-timer' == %d\n", cfg->sciaps_shutdown_timer);
+			}
 		}
 		/*
 		 * Get the standard-key parameters. This might not be
@@ -1651,6 +1711,7 @@ static int qpnp_pon_probe(struct spmi_device *spmi)
 	dev_set_drvdata(&spmi->dev, pon);
 
 	INIT_DELAYED_WORK(&pon->bark_work, bark_work_func);
+	INIT_DELAYED_WORK(&pon->sciaps_shutdown_work, sciaps_shutdown_work_func);
 
 	/* register the PON configurations */
 	rc = qpnp_pon_config_init(pon);
@@ -1695,6 +1756,7 @@ static int qpnp_pon_remove(struct spmi_device *spmi)
 	device_remove_file(&spmi->dev, &dev_attr_debounce_us);
 
 	cancel_delayed_work_sync(&pon->bark_work);
+	cancel_delayed_work_sync(&pon->sciaps_shutdown_work);
 
 	if (pon->pon_input)
 		input_unregister_device(pon->pon_input);
