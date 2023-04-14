@@ -48,6 +48,12 @@
 #define SCIAPS_SUPPORT_SHUTDOWN_DEFAULT 0
 #define SCIAPS_SHUTDOWN_TIMER_DEFAULT	20
 
+#define LTC294x_BATTERY_DISCHARGING_THRES_CURR				(-50000)
+#define LTC294x_BATTERY_MAX_CHARGE							(0xffff)
+#define LTC294x_BATTERY_RESET_CHARGE						(0x7fff)
+#define LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN		(0x300)
+#define LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX		(0xfd6f)
+
 // 1.01.002 - Battery removal detection
 // 1.01.003 - support for automatic shutdown if battery is not present
 #define LTC294x_DRIVER_VERSION "1.01.003"
@@ -178,7 +184,7 @@ static int ltc294x_write_regs(struct i2c_client *client,
 	return 0;
 }
 
-static int ltc294x_reset(const struct ltc294x_info *info, int prescaler_exp)
+static int ltc294x_reset(struct ltc294x_info *info, int prescaler_exp)
 {
 	int ret;
 	u8 value;
@@ -212,10 +218,12 @@ static int ltc294x_reset(const struct ltc294x_info *info, int prescaler_exp)
 				"Could not write register\n");
 			goto ltc294x_reset_error_exit;
 		}
-		DEV_DBG(&info->client->dev, "ltc294x_reset: Control register was reset\n");
+
+		dev_info(&info->client->dev, "ltc294x_reset: Control register was reset\n");
 
 		{
-			int8_t value[2] = {(uint8_t)(info->charge_low_thres>>8), (uint8_t)(info->charge_low_thres) };
+			uint16_t charge_to_set = LTC294x_BATTERY_RESET_CHARGE;
+			int8_t value[2] = {(uint8_t)(charge_to_set>>8), (uint8_t)(charge_to_set) };
 			ret = ltc294x_write_regs(info->client,
 								LTC294X_REG_ACC_CHARGE_MSB, value, 2);
 
@@ -225,6 +233,7 @@ static int ltc294x_reset(const struct ltc294x_info *info, int prescaler_exp)
 			}
 			else {
 				DEV_DBG(&info->client->dev, "ltc294x_reset: ---->  Just updated LTC294X_REG_ACC_CHARGE_MSB!\n");
+				info->charge = charge_to_set;
 			}
 		}
 
@@ -627,11 +636,6 @@ static void shutdown_work_func(struct work_struct *work)
 	sciaps_device_power_off(SCIAPS_DEVICE_POWER_OFF_OPT_SRC_BatteryRemoved);
 }
 
-#define LTC294x_BATTERY_DISCHARGING_THRES_CURR				(-50000)
-#define LTC294x_BATTERY_MAX_CHARGE							(0xffff)
-#define LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN		(0x300)
-#define LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX		(0xfd6f)
-
 static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 {
 	int gauge_voltage, gauge_current, gauge_temperature, charge_now, charge_in_progress, charge_complete, batt_status, dc_present;
@@ -659,11 +663,37 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 
 	}
 	else {
+		DEV_DBG(&info->client->dev, "%s --> %d - %d - %d - %d\n", __func__, charge, gauge_voltage, gauge_current, charge_now);
+		if (false
+				|| (charge <= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN && gauge_voltage >= info->voltage_charge_low_thres_uV)
+				|| (info->charge >= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX && charge <= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN)
+				) {
+			uint8_t value[2] = {(uint8_t)(LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX>>8), (uint8_t)LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX};
+			int ret;
+			dev_info(&info->client->dev, "%s: Possible charge overflow detected!\n", __func__);
+			dev_info(&info->client->dev, "%s --> Charge: %d; Prev Charge: %d; Voltage: %d; Current: %d; charge_now: %d;\n", __func__, charge, info->charge, gauge_voltage, gauge_current, charge_now);
+			charge = LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX;
+
+			ret = ltc294x_write_regs(info->client,
+								LTC294X_REG_ACC_CHARGE_MSB, value, 2);
+
+			if (ret < 0) {
+				dev_warn(&info->client->dev,
+							"ltc294x_work: Could not write to register LTC294X_REG_ACC_CHARGE_MSB\n");
+			}
+			else {
+				DEV_DBG(&info->client->dev, "ltc294x_update: ---->  Just updated LTC294X_REG_ACC_CHARGE_MSB!\n");
+			}
+		}
+
 		if (update_it && (gauge_voltage <= info->voltage_crit_low_thres_uV
-							|| (charge_now && charge_now <= info->charge_low_thres && gauge_voltage < info->voltage_charge_low_thres_uV)
+							//|| (charge_now && charge_now <= info->charge_low_thres && gauge_voltage < info->voltage_charge_low_thres_uV)
+							|| (/*charge &&*/ charge <= info->charge_low_thres && gauge_voltage < info->voltage_charge_low_thres_uV)
 						)) {
+
 			if (gauge_current <= LTC294x_BATTERY_DISCHARGING_THRES_CURR) {
-				DEV_DBG(&info->client->dev, "ltc294x_update: ----> Battery Low Alert! Powering off...\n");
+				dev_info(&info->client->dev, "ltc294x_update: ----> Battery Low Alert! Powering off...\n");
+				dev_info(&info->client->dev, "%s --> Charge: %d; Prev Charge: %d; Voltage: %d; Current: %d; charge_now: %d;\n", __func__, charge, info->charge, gauge_voltage, gauge_current, charge_now);
 				sciaps_device_power_off(SCIAPS_DEVICE_POWER_OFF_OPT_SRC_BatteryLow);
 			}
 		}
@@ -772,28 +802,11 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 		}
 
 	}
-	if (not_available  && info->batt_capacity != LTC294x_BATT_CAPACITY_DEFAULT) {
+	if (not_available && info->batt_capacity != LTC294x_BATT_CAPACITY_DEFAULT) {
 		info->batt_capacity = LTC294x_BATT_CAPACITY_DEFAULT;
-		charge = info->charge_low_thres;
+		//----charge = info->charge_low_thres;
 		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (not_available  && info->batt_capacity != LTC294x_BATT_CAPACITY_DEFAULT)\n");
 		updated = true;
-	}
-	if (info->charge >= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX && charge <= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN) {
-		uint8_t value[2] = {(uint8_t)(LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX>>8), (uint8_t)LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX};
-		int ret;
-		charge = LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX;
-
-		ret = ltc294x_write_regs(info->client,
-							LTC294X_REG_ACC_CHARGE_MSB, value, 2);
-
-		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (info->charge >= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MAX && charge <= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN)\n");
-		if (ret < 0) {
-			dev_warn(&info->client->dev,
-						"ltc294x_work: Could not write to register LTC294X_REG_ACC_CHARGE_MSB\n");
-		}
-		else {
-			DEV_DBG(&info->client->dev, "ltc294x_update: ---->  Just updated LTC294X_REG_ACC_CHARGE_MSB!\n");
-		}
 	}
 	if (charge != info->charge) {
 		uint16_t batt_max_capacity = LTC294x_BATTERY_MAX_CHARGE;
@@ -816,7 +829,7 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 			capacity *= 10000;
 			capacity /= batt_max_capacity;
 			capacity += 50;
-			capacity /=100;
+			capacity /= 100;
 		}
 
 		if (not_available) {
@@ -824,7 +837,7 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 		}
 		else if (!capacity) {
 			//If capacity is 0% always show 1% as the device is to be powered off soon...
-			capacity = LTC294x_BATT_CAPACITY_MIN;
+			capacity = 1;//LTC294x_BATT_CAPACITY_MIN;
 		}
 
 		if (capacity != info->batt_capacity) {
@@ -872,7 +885,12 @@ static void ltc294x_work(struct work_struct *work)
 
 static int determine_initial_status(struct ltc294x_info *info)
 {
-	int ret = ltc294x_reset(info, info->prescaler_exp);
+	int ret;
+
+	info->charge = 0;
+
+	ret = ltc294x_reset(info, info->prescaler_exp);
+
 	if (info) {
 		info->batt_status	= POWER_SUPPLY_STATUS_UNKNOWN;
 		info->batt_capacity = LTC294x_BATT_CAPACITY_DEFAULT;
