@@ -205,9 +205,12 @@ static ssize_t sciaps_micro_write_data(struct device *dev,
 	return err;
 }
 
+static ssize_t sciaps_trigger_status_show(struct device *child, struct device_attribute* attr, char* buf);
+
 static DEVICE_ATTR(read_reg, 0666, sciaps_micro_print_reg, sciaps_micro_set_read_reg);
 static DEVICE_ATTR(write_reg, 0222, NULL, sciaps_micro_store_reg);
 static DEVICE_ATTR(write, 0222, NULL, sciaps_micro_write_data);
+static DEVICE_ATTR(sciaps_trigger, 0444, sciaps_trigger_status_show, NULL);
 
 static int sciaps_micro_setup_sysfs(struct i2c_client *client)
 {
@@ -225,6 +228,294 @@ static int sciaps_micro_delete_sysfs(struct i2c_client *client)
 	device_remove_file(&client->dev, &dev_attr_write);
 
 	return 0;
+}
+
+#include <linux/irq.h>
+#include <linux/interrupt.h>
+#include <linux/gpio.h>
+
+#define SCIAPS_TRIGGER_GPIO	1008
+#define SCIAPS_TRIGGER_DEBOUNCE_TIME_MS_DEFAULT 10
+#define SCIAPS_TRIGGER_STATE_DEFAULT	1
+
+static int sciaps_trigger_gpio = -1;
+static int sciaps_trigger_irq = -1;
+
+static struct delayed_work sciaps_trigger_debounce_work;
+static uint8_t sciaps_trigger_debounce_work_in_progress;
+static int sciaps_trigger_state = SCIAPS_TRIGGER_STATE_DEFAULT;
+static int sciaps_trigger_state_candidate;
+static int sciaps_trigger_debounce_time_ms = SCIAPS_TRIGGER_DEBOUNCE_TIME_MS_DEFAULT;
+
+static ssize_t sciaps_trigger_status_show(struct device *child, struct device_attribute* attr, char* buf)
+{
+	int value = 0;
+	value = sciaps_trigger_state;
+	return scnprintf(buf, PAGE_SIZE, "%x\n", value);
+}
+
+static void sciaps_notify_trigger(int value);
+
+static void sciaps_trigger_debounce_work_func(struct work_struct *work)
+{
+	int value = gpio_get_value(sciaps_trigger_gpio);
+
+	if (value == sciaps_trigger_state_candidate) {
+		if (sciaps_trigger_state_candidate != sciaps_trigger_state) {
+			sciaps_trigger_state = sciaps_trigger_state_candidate;
+			printk(KERN_INFO "%s: Trigger State changed to  %d;\n",
+				__func__,sciaps_trigger_state);
+			sciaps_notify_trigger(sciaps_trigger_state);
+		}
+	}
+	else {
+		sciaps_trigger_state_candidate = value;
+		schedule_delayed_work(&sciaps_trigger_debounce_work, msecs_to_jiffies(sciaps_trigger_debounce_time_ms));
+		return;
+	}
+	sciaps_trigger_debounce_work_in_progress = 0;
+
+}
+
+static irqreturn_t sciaps_trigger_irq_handler(int irq, void *dev_id)
+{
+	int trigger_value = gpio_get_value(sciaps_trigger_gpio);
+
+	if (sciaps_trigger_debounce_work_in_progress == 0
+			&& trigger_value != sciaps_trigger_state) {
+		sciaps_trigger_debounce_work_in_progress = 1;
+		sciaps_trigger_state_candidate = trigger_value;
+		schedule_delayed_work(&sciaps_trigger_debounce_work, msecs_to_jiffies(sciaps_trigger_debounce_time_ms));
+	}
+
+	return IRQ_NONE; //IRQ_HANDLED;
+}
+
+#define SCIAPS_TRIGGER_GPIO_CLEAN_BIT_REMOVE_FILES	0x01
+#define SCIAPS_TRIGGER_GPIO_CLEAN_BIT_UNEXPORT		0x02
+#define SCIAPS_TRIGGER_GPIO_CLEAN_ALL				0xff
+
+static void sciaps_sysfs_clean(void);
+static void trigger_gpio_clean(struct i2c_client *client, uint8_t mask)
+{
+	dev_info(&client->dev, "%s: Enter\n", __func__);
+
+	sciaps_sysfs_clean();
+
+	if (sciaps_trigger_irq != -1) {
+		free_irq(sciaps_trigger_irq, 0);
+		sciaps_trigger_irq = -1;
+	}
+	if (sciaps_trigger_gpio != -1) {
+		if (SCIAPS_TRIGGER_GPIO_CLEAN_BIT_REMOVE_FILES == (mask & SCIAPS_TRIGGER_GPIO_CLEAN_BIT_REMOVE_FILES)) {
+			struct gpio_chip* sciaps_trigger_gpio_chip = gpio_to_chip(sciaps_trigger_gpio);
+			if (sciaps_trigger_gpio_chip) {
+				device_remove_file(sciaps_trigger_gpio_chip->dev, &dev_attr_sciaps_trigger);
+			}
+
+		}
+		if (SCIAPS_TRIGGER_GPIO_CLEAN_BIT_UNEXPORT == (mask & SCIAPS_TRIGGER_GPIO_CLEAN_BIT_UNEXPORT)) {
+			gpio_unexport(sciaps_trigger_gpio);
+		}
+		gpio_free(sciaps_trigger_gpio);
+		sciaps_trigger_gpio = -1;
+	}
+}
+
+struct sciaps_attr {
+    struct attribute attr;
+    int value;
+};
+
+static struct sciaps_attr trigger_debounce_time_ms = {
+    .attr.name="trigger-debounce-ms",
+    .attr.mode = 0666,
+    .value = SCIAPS_TRIGGER_DEBOUNCE_TIME_MS_DEFAULT,
+};
+
+static struct sciaps_attr trigger = {
+    .attr.name="trigger",
+    .attr.mode = 0444,
+    .value = SCIAPS_TRIGGER_STATE_DEFAULT,
+};
+
+static struct attribute * sciaps_attrs[] = {
+    &trigger.attr,
+    &trigger_debounce_time_ms.attr,
+    NULL
+};
+
+static ssize_t sciaps_attr_show(struct kobject *kobj, struct attribute *attr, char *buf)
+{
+    struct sciaps_attr *sa = container_of(attr, struct sciaps_attr, attr);
+
+	if (sa == &trigger)
+		sa->value = sciaps_trigger_state;
+	else if (sa == &trigger_debounce_time_ms)
+		sa->value = sciaps_trigger_debounce_time_ms;
+	else
+		sa->value = -1;
+    pr_info( "%s: show called (%s). Value: %d;\n", __func__, sa->attr.name, sa->value);
+
+	return scnprintf(buf, PAGE_SIZE, "%d\n", sa->value);
+}
+
+static struct kobject *mykobj;
+
+static void sciaps_notify_trigger(int value)
+{
+    struct sciaps_attr *sa = &trigger;
+
+	sa->value = value;
+
+    sysfs_notify(mykobj, NULL, "trigger");
+}
+
+static ssize_t sciaps_attr_store(struct kobject *kobj, struct attribute *attr, const char *buf, size_t len)
+{
+    struct sciaps_attr *sa = container_of(attr, struct sciaps_attr, attr);
+	int value = -1;
+
+    sscanf(buf, "%d", &value);
+
+    pr_info("%s: store called (%s). Value: %d/%d (old/new)\n", __func__, sa->attr.name, sa->value, value);
+
+	if (sa == &trigger_debounce_time_ms) {
+		trigger_debounce_time_ms.value = value;
+		sciaps_trigger_debounce_time_ms = trigger_debounce_time_ms.value;
+
+	}
+
+    return sizeof(int);
+}
+
+static struct sysfs_ops sciaps_sysfs_ops = {
+    .show = sciaps_attr_show,
+    .store = sciaps_attr_store,
+};
+
+static struct kobj_type sciaps_kobj_type = {
+    .sysfs_ops = &sciaps_sysfs_ops,
+    .default_attrs = sciaps_attrs,
+};
+
+static int sciaps_sysfs_init(void)
+{
+    int err = -1;
+    pr_info("%s: init\n", __func__);
+    mykobj = kzalloc(sizeof(*mykobj), GFP_KERNEL);
+    /* mykobj = kobject_create() is not exported */
+    if (mykobj) {
+        kobject_init(mykobj, &sciaps_kobj_type);
+        if (kobject_add(mykobj, NULL, "%s", "sciaps")) {
+             err = -1;
+             pr_info("%s: kobject_add() failed\n", __func__);
+             kobject_put(mykobj);
+             mykobj = NULL;
+        }
+        err = 0;
+    }
+    return err;
+}
+
+static void sciaps_sysfs_clean(void)
+{
+    if (mykobj) {
+        kobject_put(mykobj);
+        kfree(mykobj);
+    }
+    pr_info("%s: exit\n", __func__);
+}
+
+static int trigger_gpio_init(struct i2c_client *client)
+{
+	int ret;
+	uint8_t clean_mask = 0;
+
+	dev_info(&client->dev, "%s: Enter\n", __func__);
+
+	mykobj = 0;
+
+	sciaps_trigger_debounce_work_in_progress = 0;
+	sciaps_trigger_state = SCIAPS_TRIGGER_STATE_DEFAULT;
+	sciaps_trigger_state_candidate = SCIAPS_TRIGGER_STATE_DEFAULT;
+	ret = gpio_is_valid(SCIAPS_TRIGGER_GPIO);
+	if (ret) {
+		ret = sciaps_sysfs_init();
+		if (ret) {
+			dev_err(&client->dev, "%s: sciaps_sysfs_init failed with err: %d\n",
+					__func__, ret);
+			goto trigger_gpio_fail;
+		}
+		ret = gpio_request(SCIAPS_TRIGGER_GPIO, "sciaps_trigger_gpio");
+		if (ret) {
+			dev_err(&client->dev, "%s: gpio %d request failed with err: %d\n",
+					__func__, SCIAPS_TRIGGER_GPIO, ret);
+			goto trigger_gpio_fail;
+		}
+		else {
+			sciaps_trigger_gpio = SCIAPS_TRIGGER_GPIO;
+		}
+		ret = gpio_direction_input(sciaps_trigger_gpio);
+		if (ret) {
+			dev_err(&client->dev, "%s: gpio %d gpio_direction_input failed with err: %d\n",
+					__func__, sciaps_trigger_gpio, ret);
+			goto trigger_gpio_fail;
+		}
+		ret = gpio_export(sciaps_trigger_gpio, false);
+		if (ret) {
+			dev_err(&client->dev, "%s: gpio %d gpio_export failed with err: %d\n",
+					__func__, sciaps_trigger_gpio, ret);
+			goto trigger_gpio_fail;
+		}
+		clean_mask |= SCIAPS_TRIGGER_GPIO_CLEAN_BIT_UNEXPORT;
+		{
+			struct gpio_chip* sciaps_trigger_gpio_chip = gpio_to_chip(sciaps_trigger_gpio);
+			if (sciaps_trigger_gpio_chip) {
+				ret = device_create_file(sciaps_trigger_gpio_chip->dev, &dev_attr_sciaps_trigger);
+				if (ret) {
+					dev_err(&client->dev, "%s: gpio %d device_create_file failed with err: %d\n",
+							__func__, sciaps_trigger_gpio, ret);
+					goto trigger_gpio_fail;
+				}
+				else {
+					clean_mask |= SCIAPS_TRIGGER_GPIO_CLEAN_BIT_REMOVE_FILES;
+				}
+			}
+			else {
+				dev_err(&client->dev, "%s: gpio %d gpio_to_chip failed\n",
+						__func__, sciaps_trigger_gpio);
+				goto trigger_gpio_fail;
+			}
+		}
+		ret = request_irq(gpio_to_irq(sciaps_trigger_gpio)
+							, (irq_handler_t)sciaps_trigger_irq_handler
+							, (IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING )
+							, "sciaps_trigger_irq_handler"
+							, NULL);
+		if (ret) {
+			dev_err(&client->dev, "%s: gpio %d request_irq %d failed with err: %d\n",
+					__func__, sciaps_trigger_gpio, gpio_to_irq(sciaps_trigger_gpio), ret);
+			goto trigger_gpio_fail;
+		}
+		else {
+			sciaps_trigger_irq = gpio_to_irq(sciaps_trigger_gpio);
+			INIT_DELAYED_WORK(&sciaps_trigger_debounce_work, sciaps_trigger_debounce_work_func);
+		}
+
+	}
+	else {
+		dev_err(&client->dev, "%s: Invalid gpio %d\n", __func__,
+					sciaps_trigger_gpio);
+		goto trigger_gpio_fail;
+	}
+
+	return 0;
+
+trigger_gpio_fail:
+	trigger_gpio_clean(client, clean_mask);
+
+	return ret;
 }
 
 static struct i2c_client *sciaps_micro_i2c_client = NULL;
@@ -256,6 +547,8 @@ static int sciaps_micro_probe(struct i2c_client *client,
 
 	sciaps_micro_setup_sysfs(client);
 
+	trigger_gpio_init(client);
+
 	dev_info(&client->dev, "device probed\n");
 
 	return 0;
@@ -267,6 +560,9 @@ static int sciaps_micro_remove(struct i2c_client *client)
 	sciaps_micro = i2c_get_clientdata(client);
 
 	sciaps_micro_delete_sysfs(client);
+
+	trigger_gpio_clean(client, SCIAPS_TRIGGER_GPIO_CLEAN_ALL);
+
 	i2c_unregister_device(client);
 
 	kfree(sciaps_micro);
