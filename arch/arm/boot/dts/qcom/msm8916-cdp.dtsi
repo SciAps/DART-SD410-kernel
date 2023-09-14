@@ -358,9 +358,11 @@
 	};
 };
 
-//-------------&blsp1_uart1 {
-//-------------	status = "ok";
-//-------------};
+//For Ketek DPP3: must be "disabled"
+&blsp1_uart1 {
+	//status = "ok";
+	status = "disabled";
+};
 
 &sdhc_1 {
 	vdd-supply = <&pm8916_l8>;
