@@ -143,7 +143,11 @@ struct sciaps_data_t* ketek_dpp3_spi_data;
 
 #define KETEK_DPP3_BUFFER_SIZE(length)	((((uint16_t)length > SCIAPS_KETEK_DPP3_PID_MCARead_Max_RespLength) ? (SCIAPS_KETEK_DPP3_PID_MCARead_Max_RespLength + SCIAPS_KETEK_DPP3_PID_MCARead_Additional_Alloc_Buffer_Size) : ((uint16_t)length) + SCIAPS_KETEK_DPP3_PID_MCARead_Additional_Alloc_Buffer_Size))
 
+#ifdef USE_DYNAMIC
 static uint8_t* ketek_dpp3_command_buffer;
+#else
+static uint8_t ketek_dpp3_command_buffer[SCIAPS_KETEK_DPP3_PID_MCARead_Max_RespLength + SCIAPS_KETEK_DPP3_PID_MCARead_Additional_Alloc_Buffer_Size ];
+#endif
 
 
 static uint8_t GetMCUPassthroughRespCL(uint8_t* data) {
@@ -234,9 +238,10 @@ static ssize_t ketek_dpp3_char_dev_read(struct file *file, char __user *buf,
 	if (!access_ok(VERIFY_WRITE, buf, count))
 		return -EFAULT;
 
+#ifdef USE_DYNAMIC
 	if (!ketek_dpp3_command_buffer)
 		return -ENOMEM;
-
+#endif
 			//---->   || count > SCIAPS_KETEK_DPP3_PID_MCARead_Max_RespLength)
 
 	if (ketek_dpp3_spi_data == 0)
@@ -372,13 +377,16 @@ static ssize_t ketek_dpp3_char_dev_read(struct file *file, char __user *buf,
 		}
 		if (prev_length) {
 			if (prev_length < ketek_dpp3_spi_data->_data._ketek_dpp3._mcaDataLength) {
-
+#ifdef USE_DYNAMIC
 				ketek_dpp3_command_buffer = krealloc(ketek_dpp3_command_buffer, KETEK_DPP3_BUFFER_SIZE(ketek_dpp3_spi_data->_data._ketek_dpp3._mcaDataLength), GFP_KERNEL);
 
 				if (!ketek_dpp3_command_buffer) {
 					dev_err(&spi->dev, "%s: unable to allocate command buffer of %d bytes", __func__, KETEK_DPP3_BUFFER_SIZE(ketek_dpp3_spi_data->_data._ketek_dpp3._mcaDataLength));
 					return -ENOMEM;
 				}
+#else
+				//nothing to do
+#endif
 
 			}
 		}
@@ -509,12 +517,16 @@ static ssize_t ketek_dpp3_char_dev_write(struct file *file, const char __user *b
 
 				dev_info(&spi->dev, "%s: Updated MCA Data Length to accommodate Sciaps DPP expected response length: %d", __func__, ketek_dpp3_spi_data->_data._ketek_dpp3._mcaDataLength);
 
+#ifdef USE_DYNAMIC
 				ketek_dpp3_command_buffer = krealloc(ketek_dpp3_command_buffer, KETEK_DPP3_BUFFER_SIZE(ketek_dpp3_spi_data->_data._ketek_dpp3._mcaDataLength), GFP_KERNEL);
 
 				if (!ketek_dpp3_command_buffer) {
 					dev_err(&spi->dev, "%s: unable to allocate command buffer of %d bytes", __func__, KETEK_DPP3_BUFFER_SIZE(ketek_dpp3_spi_data->_data._ketek_dpp3._mcaDataLength));
 					return -ENOMEM;
 				}
+#else
+				//nothing to do
+#endif
 
 			}
 
@@ -1030,8 +1042,9 @@ static int sciaps_ketek_dpp3_spi_probe(struct spi_device *spi)
 	struct sciaps_data_t* data;
 
 	ketek_dpp3_spi_data = 0;
+#ifdef USE_DYNAMIC
 	ketek_dpp3_command_buffer = 0;
-
+#endif
 	if (!spi) {
 		dev_err(&spi->dev, "%s: Invalid params", __func__);
 		return -EINVAL;
@@ -1101,7 +1114,7 @@ static int sciaps_ketek_dpp3_spi_probe(struct spi_device *spi)
 			data->_data._ketek_dpp3._sciapsExpectedRespDataLength = 0;
 
 			dev_info(&spi->dev, "%s: Default MCA Data Length: %d", __func__, data->_data._ketek_dpp3._mcaDataLength);
-
+#ifdef USE_DYNAMIC
 			ketek_dpp3_command_buffer = kmalloc(KETEK_DPP3_BUFFER_SIZE(data->_data._ketek_dpp3._mcaDataLength), GFP_KERNEL);
 
 			if (!ketek_dpp3_command_buffer) {
@@ -1109,6 +1122,9 @@ static int sciaps_ketek_dpp3_spi_probe(struct spi_device *spi)
 				dev_err(&spi->dev, "%s: unable to allocate command buffer of %d bytes", __func__, KETEK_DPP3_BUFFER_SIZE(data->_data._ketek_dpp3._mcaDataLength));
 				return ret;
 			}
+#else
+			//nothing to do
+#endif
 
 			if (ketek_dpp3_create_files(spi) != 0 ) {
 				ret = -ENODEV;
@@ -1157,6 +1173,7 @@ static int sciaps_ketek_dpp3_spi_probe(struct spi_device *spi)
 					data->_data._ketek_dpp3._mcaDataLength	= SCIAPS_KETEK_DPP3_MCADataLength(data->_data._ketek_dpp3._numberOfBins, data->_data._ketek_dpp3._bytesPerBin);
 					dev_info(&spi->dev, "%s: Updated MCA Data Length: %d", __func__, data->_data._ketek_dpp3._mcaDataLength);
 					if (length < data->_data._ketek_dpp3._mcaDataLength) {
+#ifdef USE_DYNAMIC
 
 						ketek_dpp3_command_buffer = krealloc(ketek_dpp3_command_buffer, KETEK_DPP3_BUFFER_SIZE(data->_data._ketek_dpp3._mcaDataLength), GFP_KERNEL);
 
@@ -1165,11 +1182,13 @@ static int sciaps_ketek_dpp3_spi_probe(struct spi_device *spi)
 							dev_err(&spi->dev, "%s: unable to reallocate command buffer to %d bytes", __func__, KETEK_DPP3_BUFFER_SIZE(data->_data._ketek_dpp3._mcaDataLength));
 							goto sciaps_ketek_dpp3_spi_probe_error;
 						}
+#else
+						//nothing to do
+#endif
 
 					}
 
 				}
-
 			}
 
 			{
@@ -1179,11 +1198,13 @@ static int sciaps_ketek_dpp3_spi_probe(struct spi_device *spi)
 					ketek_dpp3_command_buffer[0] = 0;
 				}
 				else {
+#ifdef USE_DYNAMIC
 					if (ketek_dpp3_command_buffer) {
 						kfree(ketek_dpp3_command_buffer);
 						ketek_dpp3_command_buffer = 0;
 					}
 					ketek_dpp3_spi_data = 0;
+#endif
 				}
 				dev_info(&spi->dev, "%s: misc_reigster for %s ret %d", __func__, spi->modalias, ret);
 			}
@@ -1196,10 +1217,12 @@ sciaps_ketek_dpp3_spi_probe_error:
 	mutex_destroy(&data->_lock);
 
 sciaps_ketek_dpp3_spi_probe_error_free_mem:
+#ifdef USE_DYNAMIC
 	if (ketek_dpp3_command_buffer) {
 		kfree(ketek_dpp3_command_buffer);
 		ketek_dpp3_command_buffer = 0;
 	}
+#endif
 	return ret;
 }
 
@@ -1217,10 +1240,12 @@ static int sciaps_ketek_dpp3_spi_remove(struct spi_device *spi)
 			misc_deregister(&ketek_dpp3_char_dev);
 			ketek_dpp3_spi_data = 0;
 		}
+#ifdef USE_DYNAMIC
 		if (ketek_dpp3_command_buffer) {
 			kfree(ketek_dpp3_command_buffer);
 			ketek_dpp3_command_buffer = 0;
 		}
+#endif
 	}
 	dev_err(&spi->dev, "%s: spi->modalias = %s;", __func__, spi->modalias);
 	return 0;
