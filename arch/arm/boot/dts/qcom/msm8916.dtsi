@@ -51,7 +51,8 @@
 		i2c6 = &i2c_6; /* I2C6 NFC qup6 device */
 		i2c3 = &i2c_3; /* I2C7 BLSP1 QUP3 (also BLSP3) device */
 		i2c4 = &i2c_4; /* I2C4 controller device */
-//        uart4 = &blsp1_uart1;
+		// Disable for Ketek DPP3
+		//uart4 = &blsp1_uart1;
 	};
 
 	cpus {
@@ -414,7 +415,7 @@
 		qcom,device-type = <3>;
 		qcom,pipe-attr-ee;
 	};
-/*
+
 	blsp1_uart1: uart@78af000 {
 		compatible = "qcom,msm-hsuart-v14";
 		reg = <0x78af000 0x200>,
@@ -447,11 +448,12 @@
 		pinctrl-names = "sleep", "default";
 		pinctrl-0 = <&hsuart_sleep>;
 		pinctrl-1 = <&hsuart_active>;
-		//status = "disabled";
+		//For Ketek DPP3: must be "disabled"
+		//status = "ok";
+		status = "disabled";
 	};
-*/
 
-	spi_1: spi@78b5000 { /*BLSP1: BLSP1 QUP0*/
+	spi_1: spi@78b5000 { /* BLSP1: BLSP1 QUP0 */
 		compatible = "qcom,spi-qup-v2";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -480,7 +482,9 @@
 		qcom,bam-consumer-pipe-index = <4>;
 		qcom,bam-producer-pipe-index = <5>;
 		qcom,master-id = <86>;
+		//For Ketek DPP3: must be "ok"
 		status = "ok";
+		//status = "disabled";
 
 		ketek_dpp3@0 {
 			compatible = "ketek,dpp3";
