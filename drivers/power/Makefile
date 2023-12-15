@@ -72,4 +72,6 @@ obj-$(CONFIG_BATTERY_BCL)	+= battery_current_limit.o
 obj-$(CONFIG_MSM_BCL_CTL)	+= msm_bcl.o
 obj-$(CONFIG_MSM_BCL_PERIPHERAL_CTL) += bcl_peripheral.o
 obj-$(CONFIG_POWER_RESET)	+= reset/
+obj-$(CONFIG_SMB_LTC4100_CHARGER)	+= smb-ltc4100-charger.o
+obj-$(CONFIG_SMB_TI_BQ40Z80_BATTERY)	+= smb-ti-bq40z80-battery.o
 obj-y				+= qcom/
