@@ -56,7 +56,8 @@
 
 // 1.01.002 - Battery removal detection
 // 1.01.003 - support for automatic shutdown if battery is not present
-#define LTC294x_DRIVER_VERSION "1.01.003"
+// 1.02.001 - IE battery support
+#define LTC294x_DRIVER_VERSION "1.02.001"
 
 enum ltc294x_reg {
 	LTC294X_REG_STATUS		= 0x00,
@@ -87,20 +88,21 @@ enum ltc294x_reg {
 #define LTC2941_NUM_REGS	0x08
 #define LTC2943_NUM_REGS	0x18
 
-#define LTC294x_BATT_CAPACITY_DEFAULT	2
-#define LTC294x_BATT_CAPACITY_MIN		3
+#define LTC294x_BATT_CAPACITY_NOT_AVAILABLE	0
+#define LTC294x_BATT_CAPACITY_DEFAULT	1
+#define LTC294x_BATT_CAPACITY_MIN		1
 
 struct ltc294x_info {
 	struct i2c_client *client;	/* I2C Client pointer */
 	struct device     *dev;
-	struct power_supply *supply;	/* Supply pointer */
+//	struct power_supply *supply;	/* Supply pointer */
 #if 0
 	struct power_supply_desc supply_desc;	/* Supply description */
 #else
 	struct power_supply batt_psy;
 #endif
 	struct power_supply dc_psy;
-	struct power_supply* usb_psy;
+//	struct power_supply* usb_psy;
 	struct delayed_work shutdown_work;	/* Shutdown work scheduler */
 	struct delayed_work work;	/* Work scheduler */
 	int num_regs;	/* Number of registers (chip type) */
@@ -124,6 +126,8 @@ struct ltc294x_info {
 	uint16_t		charge_low_thres;
 	uint32_t		voltage_charge_low_thres_uV;
 	uint32_t		voltage_crit_low_thres_uV;
+	uint8_t			batt_psy_registered;
+	uint8_t			dc_psy_registered;
 };
 
 static inline int convert_bin_to_uAh(
@@ -159,7 +163,7 @@ static int ltc294x_read_regs(struct i2c_client *client,
 
 	ret = i2c_transfer(client->adapter, &msgs[0], 2);
 	if (ret < 0) {
-		dev_warn(&client->dev, "ltc2941 read_reg failed!\n");
+		DEV_DBG(&client->dev, "ltc2941 read_reg failed!\n");
 		return ret;
 	}
 
@@ -199,7 +203,7 @@ static int ltc294x_reset(struct ltc294x_info *info, int prescaler_exp)
 	//}
 	ret = ltc294x_read_regs(info->client, LTC294X_REG_CONTROL, &value, 1);
 	if (ret < 0) {
-		dev_warn(&info->client->dev,
+		DEV_DBG(&info->client->dev,
 			"Could not read registers from device\n");
 		goto ltc294x_reset_error_exit;
 	}
@@ -459,7 +463,7 @@ static int ltc294x_get_prop_charge_type(struct ltc294x_info *info)
 static int ltc294x_get_prop_batt_capacity(struct ltc294x_info *info)
 {
 	if (!info)
-		return LTC294x_BATT_CAPACITY_DEFAULT;
+		return LTC294x_BATT_CAPACITY_NOT_AVAILABLE;
 
 	return info->batt_capacity;
 }
@@ -599,10 +603,9 @@ static void ltc294x_external_power_changed(struct power_supply *psy)
 {
 	struct ltc294x_info *info = container_of(psy,
 				struct ltc294x_info, batt_psy);
-	union power_supply_propval prop = {0,};
-	int rc;
-
-	DEV_DBG(&info->client->dev, "----> ltc294x_external_power_changed\n");
+	//union power_supply_propval prop = {0,};
+	//int rc;
+	dev_info(&info->client->dev, "--- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> ltc294x_external_power_changed\n");
 
 #if 0
 	rc = info->usb_psy->get_property(info->usb_psy,
@@ -618,7 +621,8 @@ static void ltc294x_external_power_changed(struct power_supply *psy)
 		}
 	}
 #endif
-	rc = info->usb_psy->get_property(info->supply,
+#if  0
+	rc = info->usb_psy->get_property(&info->supply,
 				POWER_SUPPLY_PROP_ONLINE, &prop);
 	if (rc < 0)
 		pr_err("ltc294x_external_power_changed: could not read BATT ONLINE property, rc=%d\n", rc);
@@ -629,6 +633,7 @@ static void ltc294x_external_power_changed(struct power_supply *psy)
 				pr_err("ltc294x_external_power_changed: could not set batt online, rc=%d\n", rc);
 		}
 	}
+#endif
 }
 
 static void shutdown_work_func(struct work_struct *work)
@@ -802,10 +807,10 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 		}
 
 	}
-	if (not_available && info->batt_capacity != LTC294x_BATT_CAPACITY_DEFAULT) {
-		info->batt_capacity = LTC294x_BATT_CAPACITY_DEFAULT;
+	if (not_available && info->batt_capacity != LTC294x_BATT_CAPACITY_NOT_AVAILABLE) {
+		info->batt_capacity = LTC294x_BATT_CAPACITY_NOT_AVAILABLE;
 		//----charge = info->charge_low_thres;
-		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (not_available  && info->batt_capacity != LTC294x_BATT_CAPACITY_DEFAULT)\n");
+		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (not_available  && info->batt_capacity != LTC294x_BATT_CAPACITY_NOT_AVAILABLE)\n");
 		updated = true;
 	}
 	if (charge != info->charge) {
@@ -833,11 +838,11 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 		}
 
 		if (not_available) {
-			capacity = LTC294x_BATT_CAPACITY_DEFAULT;
+			capacity = LTC294x_BATT_CAPACITY_NOT_AVAILABLE;
 		}
 		else if (!capacity) {
 			//If capacity is 0% always show 1% as the device is to be powered off soon...
-			capacity = 1;//LTC294x_BATT_CAPACITY_MIN;
+			capacity = LTC294x_BATT_CAPACITY_MIN;
 		}
 
 		if (capacity != info->batt_capacity) {
@@ -849,7 +854,7 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 
 	if (updated && update_it) {
 		DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (updated && update_it)\n");
-		power_supply_changed(info->supply);
+		power_supply_changed(&info->batt_psy);
 	}
 
 	if (info->dc_present != dc_present) {
@@ -858,14 +863,49 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 		if (update_it) {
 			DEV_DBG(&info->client->dev, "ltc294x_update: --!!!!!!!!-->  if (update_it)\n");
 			power_supply_changed(&info->dc_psy);
-			power_supply_changed(info->supply);
+			power_supply_changed(&info->batt_psy);
 		}
 	}
 }
 
+#define UNKNOWN			0
+#define ACTIVE			1
+#define PASSIVE			2
+
+static uint8_t g_active = UNKNOWN;
+static struct ltc294x_info *g_info = NULL;
+//int8_t is_ltc294x_active() {
+//	return g_active;
+//}
+//extern is_ti_bq40z80_active(void);
+extern void deactivate_ti_bq40z80(void);
+
+void deactivate_ltc294x(void)
+{
+	if (g_active != PASSIVE) {
+		g_active = PASSIVE;
+		if (g_info && g_info->shutdown_work_running) {
+			dev_info(&g_info->client->dev, "%s: sciaps -- cancelling shutdown_work work!\n", __func__);
+			cancel_delayed_work(&g_info->shutdown_work);
+			g_info->shutdown_work_running = 0;
+		}
+		if (g_info && g_info->batt_psy_registered) {
+			power_supply_unregister(&g_info->batt_psy);
+			g_info->batt_psy_registered = 0;
+		}
+		if (g_info && g_info->dc_psy_registered) {
+			power_supply_unregister(&g_info->dc_psy);
+			g_info->dc_psy_registered = 0;
+		}
+	}
+}
+
+static int i2c_read_errs = 0;
+
 static void ltc294x_work(struct work_struct *work)
 {
 	struct ltc294x_info *info;
+	#define READ_ERR_LIMIT 30
 
 	int ret;
 
@@ -873,14 +913,63 @@ static void ltc294x_work(struct work_struct *work)
 
 	ret = ltc294x_reset(info, info->prescaler_exp);
 
+	if (ret < 0) {
+		if (g_active != ACTIVE) {
+			if (i2c_read_errs <= READ_ERR_LIMIT) {
+				if (i2c_read_errs == READ_ERR_LIMIT)
+					dev_err(&info->client->dev,
+						"%s: Too many i2c errors.  Entering slow poll mode\n", __func__);
+				i2c_read_errs++;
+			}
+		}
+	}
+	else {
+		i2c_read_errs = 0;
+		deactivate_ti_bq40z80();
+		if (g_active != ACTIVE) {
+			g_active = ACTIVE;
+			if (info->batt_psy_registered) {
+				power_supply_unregister(&info->batt_psy);
+				info->batt_psy_registered = 0;
+			}
+			if (info->dc_psy_registered) {
+				power_supply_unregister(&info->dc_psy);
+				info->dc_psy_registered = 0;
+			}
+			ret = power_supply_register(&info->client->dev, &info->batt_psy);
+			if ( ret < 0) {
+				dev_err(&info->client->dev,
+					"%s: Unable to register batt_psy ret = %d\n", __func__, ret);
+			}
+			else {
+				info->batt_psy_registered = 1;
+			}
+			ret = power_supply_register(&info->client->dev, &info->dc_psy);
+			if ( ret < 0) {
+				dev_err(&info->client->dev,
+					"%s: Unable to register dc_psy ret = %d\n", __func__, ret);
+				ret = 0;
+			}
+			else {
+				info->dc_psy_registered = 1;
+			}
+		}
+	}
+
 	//if (ltc294x_reset(info, info->prescaler_exp) < 0) {
 	//}
 	//else {
 	//	ltc294x_update(info, true);
 	//}
-
-	ltc294x_update(info, true, ret);
-	schedule_delayed_work(&info->work, LTC294X_WORK_DELAY * HZ);
+	if (g_active == ACTIVE) {
+		ltc294x_update(info, true, ret);
+		schedule_delayed_work(&info->work, LTC294X_WORK_DELAY * HZ);
+	}
+	else {
+		if (i2c_read_errs > READ_ERR_LIMIT)
+			schedule_delayed_work(&info->work, 4*LTC294X_WORK_DELAY*HZ); else
+			schedule_delayed_work(&info->work, LTC294X_WORK_DELAY*HZ);
+	}
 }
 
 static int determine_initial_status(struct ltc294x_info *info)
@@ -899,7 +988,7 @@ static int determine_initial_status(struct ltc294x_info *info)
 		}
 		else {
 			info->batt_status = POWER_SUPPLY_STATUS_UNKNOWN;
-			info->batt_capacity = LTC294x_BATT_CAPACITY_DEFAULT;
+			info->batt_capacity = LTC294x_BATT_CAPACITY_NOT_AVAILABLE;
 			ltc294x_update(info, false, ret);
 		}
 	}
@@ -938,8 +1027,16 @@ static int ltc294x_i2c_remove(struct i2c_client *client)
 {
 	struct ltc294x_info *info = i2c_get_clientdata(client);
 
+	g_info = NULL;
 	cancel_delayed_work(&info->work);
-	power_supply_unregister(info->supply);
+	if (info->batt_psy_registered) {
+		power_supply_unregister(&info->batt_psy);
+		info->batt_psy_registered = 0;
+	}
+	if (info->dc_psy_registered) {
+		power_supply_unregister(&info->dc_psy);
+		info->dc_psy_registered = 0;
+	}
 
 	if (info->gpio_charge_in_progress >= 0) {
 		gpio_free(info->gpio_charge_in_progress);
@@ -953,7 +1050,7 @@ static int ltc294x_i2c_remove(struct i2c_client *client)
 }
 
 static char *ltc294x_power_dc_supplied_to[] = {
-	"battery-gauge",
+	"main-battery",
 };
 
 
@@ -971,27 +1068,30 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 	u32 voltage_crit_low_thres_uV;
 	u32 voltage_charge_low_thres_uV;
 	struct device_node *np;
-	struct power_supply *usb_psy;
+//	struct power_supply *usb_psy;
 
 	dev_info(&client->dev, "ltc294x_i2c_probe. Version: %s\n", LTC294x_DRIVER_VERSION);
 
-	usb_psy = power_supply_get_by_name("usb");
-	if (!usb_psy) {
-		dev_err(&client->dev, "ltc294x_i2c_probe: USB supply not found; defer probe\n");
-		return -EPROBE_DEFER;
-	}
+//	usb_psy = power_supply_get_by_name("usb");
+//	if (!usb_psy) {
+//		dev_err(&client->dev, "ltc294x_i2c_probe: USB supply not found; defer probe\n");
+//		return -EPROBE_DEFER;
+//	}
 
 	info = devm_kzalloc(&client->dev, sizeof(*info), GFP_KERNEL);
 	if (info == NULL)
 		return -ENOMEM;
 
+	g_info = info;
+	info->batt_psy_registered = 0;
+	info->dc_psy_registered = 0;
 	device_init_wakeup(&client->dev, 1);
 	i2c_set_clientdata(client, info);
 
 	np = of_node_get(client->dev.of_node);
 
 	info->num_regs = id->driver_data;
-	info->batt_psy.name = "battery-gauge";//np->name;
+	info->batt_psy.name = "main-battery";//np->name;
 
 	info->dc_psy.name = "dc";
 	info->charge_low_thres				= LTC2941_MIN_CHARGE_LOW_THRES;
@@ -1176,7 +1276,7 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 
 	info->client = client;
 	info->dev = &client->dev;
-	info->usb_psy = usb_psy;
+//	info->usb_psy = usb_psy;
 	info->batt_psy.type = POWER_SUPPLY_TYPE_BATTERY;
 	info->batt_psy.properties = ltc294x_properties;
 	if (info->num_regs >= LTC294X_REG_TEMPERATURE_LSB)
@@ -1245,6 +1345,7 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 		schedule_delayed_work(&info->work, LTC294X_WORK_DELAY * HZ);
 	}
 #else
+#if 0
 	ret = power_supply_register(&client->dev, &info->batt_psy);
 	if (ret < 0) {
 		dev_err(&client->dev, "ltc294x_i2c_probe: failed to register ltc2941\n");
@@ -1269,13 +1370,15 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 
 		schedule_delayed_work(&info->work, LTC294X_WORK_DELAY * HZ);
 	}
+#else
+	schedule_delayed_work(&info->work, LTC294X_WORK_DELAY * HZ);
+#endif
 
 #endif
 	return 0;
 }
 
 #ifdef CONFIG_PM_SLEEP
-
 static int ltc294x_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
