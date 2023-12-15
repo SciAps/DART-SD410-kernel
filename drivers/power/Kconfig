@@ -390,6 +390,18 @@ config SMB135X_CHARGER
 	  The driver reports the charger status via the power supply framework.
 	  A charger status change triggers an IRQ via the device STAT pin.
 
+config SMB_LTC4100_CHARGER
+	tristate "SMB LTC4100 Battery Charger"
+	depends on I2C
+	help
+	  Say Y to include support for SMBus LTC4100 Battery Charger.
+
+config SMB_TI_BQ40Z80_BATTERY
+	tristate "SMB TI BQ40Z80 Battery Monitor"
+	depends on I2C
+	help
+	  Say Y to include support for SMBus TI BQ40Z80 Battery Monitor.
+
 config SMB1360_CHARGER_FG
 	tristate "SMB1360 Charger and Fuel Guage"
 	depends on I2C
