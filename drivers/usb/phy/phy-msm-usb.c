@@ -4581,7 +4581,7 @@ static int otg_power_get_property_usb(struct power_supply *psy,
 		break;
 	/* Reflect USB enumeration */
 	case POWER_SUPPLY_PROP_ONLINE:
-		val->intval = motg->online;
+		val->intval = 0;//motg->online;
 		break;
 	case POWER_SUPPLY_PROP_TYPE:
 		val->intval = psy->type;
