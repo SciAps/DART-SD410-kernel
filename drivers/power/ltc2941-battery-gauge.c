@@ -641,6 +641,12 @@ static void shutdown_work_func(struct work_struct *work)
 	sciaps_device_power_off(SCIAPS_DEVICE_POWER_OFF_OPT_SRC_BatteryRemoved);
 }
 
+#define NO_BATTERY_COUNT_LIMIT			200
+#define NO_BATTERY_RESET_COUNT_LIMIT	2
+
+static uint8_t s_no_battery_count = 0;
+static  int8_t s_no_battery_reset_count = NO_BATTERY_RESET_COUNT_LIMIT;
+
 static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 {
 	int gauge_voltage, gauge_current, gauge_temperature, charge_now, charge_in_progress, charge_complete, batt_status, dc_present;
@@ -659,7 +665,25 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 		int battery_presence = sciaps_micro_check_battery_presence();
 
 		if (battery_presence != 0) {
+			if (s_no_battery_count < NO_BATTERY_COUNT_LIMIT)
+				s_no_battery_count++;
+			s_no_battery_reset_count = NO_BATTERY_RESET_COUNT_LIMIT;
 			no_battery = true;
+		}
+		else {
+			// Check again
+			if (s_no_battery_count > 0 ) {
+				if (s_no_battery_reset_count > 0) {
+					if (s_no_battery_count < NO_BATTERY_COUNT_LIMIT)
+						s_no_battery_count++;
+					s_no_battery_reset_count--;
+					no_battery = true;
+				}
+				else {
+					s_no_battery_count = 0;
+					s_no_battery_reset_count = NO_BATTERY_RESET_COUNT_LIMIT;
+				}
+			}
 		}
 
 		batt_status = POWER_SUPPLY_STATUS_UNKNOWN;
@@ -668,6 +692,7 @@ static void ltc294x_update(struct ltc294x_info *info, bool update_it, int ret)
 
 	}
 	else {
+
 		DEV_DBG(&info->client->dev, "%s --> %d - %d - %d - %d\n", __func__, charge, gauge_voltage, gauge_current, charge_now);
 		if (false
 				|| (charge <= LTC294x_BATTERY_CHARGE_OVERFLOW_PROTECTION_MIN && gauge_voltage >= info->voltage_charge_low_thres_uV)
