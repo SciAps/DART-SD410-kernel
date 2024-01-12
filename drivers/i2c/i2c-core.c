@@ -1505,6 +1505,11 @@ int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 }
 EXPORT_SYMBOL(__i2c_transfer);
 
+
+
+#define RETRY_NDELAY		(5000)
+#define RETRY_COUNT			(4)
+
 /**
  * i2c_transfer - execute a single or combined I2C message
  * @adap: Handle to I2C bus
@@ -1519,7 +1524,7 @@ EXPORT_SYMBOL(__i2c_transfer);
  */
 int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 {
-	int ret;
+	int ret, count = RETRY_COUNT;
 
 	/* REVISIT the fault reporting model here is weak:
 	 *
@@ -1538,6 +1543,7 @@ int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 	 *    (discarding status on the first one).
 	 */
 
+i2c_transfer_try_it_again:
 	if (adap->algo->master_xfer) {
 #ifdef DEBUG
 		for (ret = 0; ret < num; ret++) {
@@ -1559,6 +1565,16 @@ int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 
 		ret = __i2c_transfer(adap, msgs, num);
 		i2c_unlock_adapter(adap);
+		if (count)
+			count--;
+
+		if ((ret == -ENOENT || ret == -EAGAIN) && count) {
+			dev_info(&adap->dev, "%s : Possible I2C_MSM_ERR_ARB_LOST error: %d. Retrying...", __func__, ret);
+
+			ndelay(RETRY_NDELAY);
+
+			goto i2c_transfer_try_it_again;
+		}
 
 		return ret;
 	} else {
@@ -2291,9 +2307,10 @@ s32 i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr, unsigned short flags,
 		   union i2c_smbus_data *data)
 {
 	unsigned long orig_jiffies;
-	int try;
+	int try, rc, count = RETRY_COUNT;
 	s32 res;
 
+i2c_smbus_xfer_try_it_again:
 	flags &= I2C_M_TEN | I2C_CLIENT_PEC | I2C_CLIENT_SCCB;
 
 	if (adapter->algo->smbus_xfer) {
@@ -2321,8 +2338,20 @@ s32 i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr, unsigned short flags,
 		 */
 	}
 
-	return i2c_smbus_xfer_emulated(adapter, addr, flags, read_write,
+	rc = i2c_smbus_xfer_emulated(adapter, addr, flags, read_write,
 				       command, protocol, data);
+	if (count)
+		count--;
+
+	if ((rc == -ENOENT || rc == -EAGAIN) && count) {
+		dev_info(&adapter->dev, "%s : Possible I2C_MSM_ERR_ARB_LOST error: %d. Retrying...", __func__, rc);
+
+		ndelay(RETRY_NDELAY);
+
+		goto i2c_smbus_xfer_try_it_again;
+	}
+
+	return rc;
 }
 EXPORT_SYMBOL(i2c_smbus_xfer);
 

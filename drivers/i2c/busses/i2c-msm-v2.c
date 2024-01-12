@@ -1735,14 +1735,20 @@ static irqreturn_t i2c_msm_qup_isr(int irq, void *devid)
 		 * If there is more than 1 error here, last one sticks.
 		 * The order of the error set here matters.
 		 */
-		if (i2c_status & QUP_ARB_LOST)
+		if (i2c_status & QUP_ARB_LOST) {
+			//dev_info(ctrl->dev, "irq: QUP_ARB_LOST\n");
 			ctrl->xfer.err = I2C_MSM_ERR_ARB_LOST;
+		}
 
-		if (i2c_status & QUP_BUS_ERROR)
+		if (i2c_status & QUP_BUS_ERROR) {
+			//dev_info(ctrl->dev, "irq: QUP_BUS_ERROR\n");
 			ctrl->xfer.err = I2C_MSM_ERR_BUS_ERR;
+		}
 
-		if (i2c_status & QUP_PACKET_NACKED)
+		if (i2c_status & QUP_PACKET_NACKED) {
+			//dev_info(ctrl->dev, "irq: QUP_PACKET_NACKED\n");
 			ctrl->xfer.err = I2C_MSM_ERR_NACK;
+		}
 	}
 
 	/* check for FIFO over/under runs error */
@@ -2007,6 +2013,8 @@ static int i2c_msm_qup_post_xfer(struct i2c_msm_ctrl *ctrl, int err)
 		/* reset the qup core */
 		i2c_msm_qup_state_set(ctrl, QUP_STATE_RESET);
 		err = -ETIMEDOUT;
+	} else if ((ctrl->xfer.err == I2C_MSM_ERR_ARB_LOST)) {
+		err = -EAGAIN;
 	} else if (ctrl->xfer.err == I2C_MSM_ERR_NACK) {
 		err = -ENOTCONN;
 	}
