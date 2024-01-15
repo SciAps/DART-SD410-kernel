@@ -920,9 +920,9 @@ static void smb_ti_bq40z80_delayed_work(struct work_struct *work)
 			}
 		}
 		usleep_range(100, 10000);
-		CHECK_READ_WORD(SMBUS_BATTERY_REG_RSOC, cache.capacity, 0, 101)
+		CHECK_READ_WORD(SMBUS_BATTERY_REG_RSOC, cache.capacity, 0, 110)
 		//usleep_range(100, 10000);
-		CHECK_READ_WORD(SMBUS_BATTERY_REG_ASOC, cache.capacity_abs, 0, 101)
+		CHECK_READ_WORD(SMBUS_BATTERY_REG_ASOC, cache.capacity_abs, 0, 110)
 		//usleep_range(100, 10000);
 		CHECK_READ_WORD(SMBUS_BATTERY_REG_TEMP, cache.temperature, 0, 0)
 		//usleep_range(100, 10000);
