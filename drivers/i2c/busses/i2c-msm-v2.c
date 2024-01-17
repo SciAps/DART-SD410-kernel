@@ -1746,15 +1746,17 @@ static irqreturn_t i2c_msm_qup_isr(int irq, void *devid)
 		}
 
 		if (i2c_status & QUP_PACKET_NACKED) {
-			//dev_info(ctrl->dev, "irq: QUP_PACKET_NACKED\n");
+			//if (i2c_status & (QUP_ARB_LOST|QUP_BUS_ERROR))
+			//	dev_info(ctrl->dev, "irq: QUP_PACKET_NACKED while (QUP_ARB_LOST|QUP_BUS_ERROR)\n");
 			ctrl->xfer.err = I2C_MSM_ERR_NACK;
 		}
 	}
 
 	/* check for FIFO over/under runs error */
-	if (err_flags & QUP_ERR_FLGS_MASK)
+	if (err_flags & QUP_ERR_FLGS_MASK) {
+		//dev_info(ctrl->dev, "irq: QUP_ERR_FLGS_MASK\n");
 		ctrl->xfer.err = I2C_MSM_ERR_OVR_UNDR_RUN;
-
+	}
 	/* Dump the register values before reset the core */
 	if (ctrl->xfer.err && ctrl->dbgfs.dbg_lvl >= MSM_DBG)
 		i2c_msm_dbg_qup_reg_dump(ctrl);
