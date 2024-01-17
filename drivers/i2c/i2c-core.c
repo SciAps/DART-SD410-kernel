@@ -1568,8 +1568,10 @@ i2c_transfer_try_it_again:
 		if (count)
 			count--;
 
-		if ((ret == -ENOENT || ret == -EAGAIN) && count) {
-			dev_info(&adap->dev, "%s : Possible I2C_MSM_ERR_ARB_LOST error: %d. Retrying...", __func__, ret);
+		//if (ret < 0 && ret != -ENOTCONN)
+		//	dev_dbg(&adap->dev, "%s : Transfer error:  %d\n.", __func__, ret);
+		if ((ret == -ENOENT || ret == -ESRCH || ret == -EAGAIN) && count) {
+			dev_info(&adap->dev, "%s : Possible QUP_ARB_LOST/QUP_BUS_ERROR errors. Ret: %d. Retrying...\n", __func__, ret);
 
 			ndelay(RETRY_NDELAY);
 
@@ -2343,8 +2345,10 @@ i2c_smbus_xfer_try_it_again:
 	if (count)
 		count--;
 
-	if ((rc == -ENOENT || rc == -EAGAIN) && count) {
-		dev_info(&adapter->dev, "%s : Possible I2C_MSM_ERR_ARB_LOST error: %d. Retrying...", __func__, rc);
+	//if (rc < 0 && rc != -ENOTCONN)
+	//	dev_dbg(&adapter->dev, "%s : Transfer error:  %d\n.", __func__, rc);
+	if ((rc == -ENOENT || rc == -ESRCH || rc == -EAGAIN) && count) {
+		dev_info(&adapter->dev, "%s : Possible QUP_ARB_LOST/QUP_BUS_ERROR errors. rc: %d. Retrying...", __func__, rc);
 
 		ndelay(RETRY_NDELAY);
 
