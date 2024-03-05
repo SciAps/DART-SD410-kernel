@@ -1,0 +1,61 @@
+&mdss_mdp {
+	// Citrobits Mipi  DSI Bridge Board: 1lane 60 fps 142 Mbps
+    dsi_sciaps_otd_27in_cb: qcom,mdss_dsi_sciaps_otd_27in_cb {
+            qcom,mdss-dsi-panel-name = "ortustech com27h2p video mode panel v1.0 - Citrobits MIPI DSI Board";
+            qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
+            qcom,mdss-dsi-panel-type = "dsi_video_mode";
+            qcom,mdss-dsi-panel-destination = "display_1";
+            qcom,mdss-dsi-panel-framerate = <60>;
+            qcom,mdss-dsi-virtual-channel-id = <0>;
+            qcom,mdss-dsi-stream = <0>;
+            qcom,mdss-dsi-panel-width = <240>;
+            qcom,mdss-dsi-panel-height = <320>;
+            qcom,mdss-dsi-h-front-porch = <17>;
+            qcom,mdss-dsi-h-back-porch = <20>;
+            qcom,mdss-dsi-h-pulse-width = <10>;
+            qcom,mdss-dsi-h-sync-skew = <0>;
+            qcom,mdss-dsi-v-back-porch = <10>;
+            qcom,mdss-dsi-v-front-porch = <10>;
+            qcom,mdss-dsi-v-pulse-width = <5>;
+            qcom,mdss-dsi-h-left-border = <0>;
+            qcom,mdss-dsi-h-right-border = <0>;
+            qcom,mdss-dsi-v-top-border = <0>;
+            qcom,mdss-dsi-v-bottom-border = <0>;
+			qcom,mdss-dsi-bpp = <24>;
+			qcom,mdss-dsi-color-order = "rgb_swap_bgr";
+            qcom,mdss-dsi-underflow-color = <0xff>;
+            qcom,mdss-dsi-border-color = <0>;
+            qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+            qcom,mdss-dsi-off-command-state = "dsi_lp_mode";
+            qcom,mdss-dsi-h-sync-pulse = <1>;
+            qcom,mdss-dsi-traffic-mode = "non_burst_sync_pulse";
+            qcom,mdss-dsi-bllp-eof-power-mode;
+            qcom,mdss-dsi-bllp-power-mode;
+            qcom,mdss-dsi-lane-0-state;
+            qcom,mdss-dsi-panel-timings = [3D 0E 04 00 26 28 08 10 07 03 04 00];
+            qcom,mdss-dsi-t-clk-post = <5>;
+            qcom,mdss-dsi-t-clk-pre = <16>;
+            qcom,mdss-dsi-dma-trigger = "trigger_sw";
+            qcom,mdss-dsi-mdp-trigger = "none";
+            qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_pwm";
+            qcom,mdss-dsi-bl-pmic-pwm-frequency = <33>; //us -> ~30KHz - 33.3(3) - 33.28 us measured
+			qcom,mdss-dsi-bl-min-level = <30>; //~3.52us of 33.28us
+            qcom,mdss-dsi-bl-pmic-bank-select = <0>;
+            qcom,mdss-dsi-pwm-gpio = <&pm8916_mpps 4 0>;
+            //--qcom,mdss-dsi-reset-sequence = <1 10>;
+            qcom,mdss-pan-physical-width-dimension = <43>;
+            qcom,mdss-pan-physical-height-dimension = <56>;
+			// The command mode is not supported by the bridge.
+			// Send them anyway but with no delays
+			qcom,mdss-dsi-on-command = [
+							//
+				05 01 00 00 00 00 01 11		// exit_sleep_mode	- sleep 120(H'78) ms
+				05 01 00 00 00 00 01 29		// set_display_on	- sleep optinal 16(H'10) ms
+			];
+			qcom,mdss-dsi-off-command = [
+				05 01 00 00 00 00 01 28		// set_display_off	- sleep optinal 16(H'10) ms
+                05 01 00 00 00 00 01 10		// enter_sleep_mode	- sleep optinal 16(H'10) ms
+			];
+    };
+
+};
