@@ -864,6 +864,11 @@ void deactivate_ti_bq40z80(void)
 	}
 }
 
+#define NO_BATTERY_COUNT_LIMIT			200
+#define NO_BATTERY_RESET_COUNT_LIMIT	2
+
+static uint8_t s_no_battery_count = 0;
+static  int8_t s_no_battery_reset_count = NO_BATTERY_RESET_COUNT_LIMIT;
 
 static void smb_ti_bq40z80_delayed_work(struct work_struct *work)
 {
@@ -967,7 +972,29 @@ static void smb_ti_bq40z80_delayed_work(struct work_struct *work)
 			}
 		}
 		else {
-			no_battery = true;
+			int battery_presence = sciaps_micro_check_battery_presence();
+			no_battery = false;
+			if (battery_presence != 0) {
+				if (s_no_battery_count < NO_BATTERY_COUNT_LIMIT)
+					s_no_battery_count++;
+				s_no_battery_reset_count = NO_BATTERY_RESET_COUNT_LIMIT;
+				no_battery = true;
+			}
+			else {
+				// Check again
+				if (s_no_battery_count > 0 ) {
+					if (s_no_battery_reset_count > 0) {
+						if (s_no_battery_count < NO_BATTERY_COUNT_LIMIT)
+							s_no_battery_count++;
+						s_no_battery_reset_count--;
+						no_battery = true;
+					}
+					else {
+						s_no_battery_count = 0;
+						s_no_battery_reset_count = NO_BATTERY_RESET_COUNT_LIMIT;
+					}
+				}
+			}
 		}
 	}
 
