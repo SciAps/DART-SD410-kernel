@@ -634,7 +634,7 @@ int sciaps_micro_read_register(uint8_t reg, uint16_t *value_out)
 		pr_err("%s: error reading from i2c bus: 0x%x", __func__, err);
 	}
 	else {
-		pr_info("%s: Register 0x%x is 0x%x\n", __func__, reg, value);
+		pr_debug("%s: Register 0x%x is 0x%x\n", __func__, reg, value);
 		if (value_out)
 		   *value_out = value;
 	}
