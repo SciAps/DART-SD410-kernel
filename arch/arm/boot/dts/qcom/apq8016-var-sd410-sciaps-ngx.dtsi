@@ -1,0 +1,48 @@
+/* Copyright (c) 2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "apq8016-var-sd410.dtsi"
+#include "apq8016-camera-sensor-var-sd410-sciaps-ngx.dtsi"
+
+&soc {
+	i2c@78b6000 { /* BLSP1 QUP2 */
+	    status = "ok";
+		ublox-gps@42 {
+			compatible = "ublox-sam-m10q-i2c";
+			reg = <0x42>;
+			ubx,hAccRejectHardThreshold		= <35000>;	// mm
+			ubx,pDOPRejectHardThreshold		= <3000>;	// 0.01
+			ubx,pDOPRejectThreshold			= <1000>;	// 0.01
+			ubx,hAccAcceptThreshold			= <15000>;	// mm
+			ubx,nSatsAcceptAlwaysThreshold	= <5>;		// # of sats
+			ublox,rst-pin-gpio		= <&msm_gpio 120 0>;
+			ublox,extint-pin-gpio	= <&msm_gpio 21 0>;
+			status = "ok";
+		};
+	};
+
+	i2c@78ba000 { /* BLSP1 QUP6 */
+		status = "ok";
+		focaltech@38{
+			status = "ok";
+		};
+
+		sn65dsi84@2c {
+			status = "ok";
+		};
+	};
+};
+
+&mdss_fb0 {
+	sciaps,mdss-fb-splash-multi-image-group = <30>;
+};
+

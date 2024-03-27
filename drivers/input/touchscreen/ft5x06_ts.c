@@ -42,6 +42,10 @@
 #define FT_SUSPEND_LEVEL 1
 #endif
 
+static int s_cmdline_param_enable = 0;
+
+module_param_named(enable, s_cmdline_param_enable, int, S_IRUSR);
+
 #define FT_DRIVER_VERSION	0x02
 
 #define FT_META_REGS		3
@@ -266,7 +270,7 @@ struct ft5x06_ts_data {
 	struct pinctrl_state *pinctrl_state_active;
 	struct pinctrl_state *pinctrl_state_suspend;
 	struct pinctrl_state *pinctrl_state_release;
-	
+
 };
 
 static int ft5x06_ts_start(struct device *dev);
@@ -749,7 +753,7 @@ static irqreturn_t ft5x06_ts_interrupt(int irq, void *dev_id)
 			break;
 
 		update_input = true;
-		
+
 		x = (buf[FT_TOUCH_X_H_POS + FT_ONE_TCH_LEN * i] & 0x0F) << 8 |
 			(buf[FT_TOUCH_X_L_POS + FT_ONE_TCH_LEN * i]);
 		y = (buf[FT_TOUCH_Y_H_POS + FT_ONE_TCH_LEN * i] & 0x0F) << 8 |
@@ -2102,6 +2106,14 @@ static int ft5x06_ts_probe(struct i2c_client *client,
 	u8 reg_value;
 	u8 reg_addr;
 	int err, len;
+
+	dev_info(&client->dev,
+			"%s : ---> s_cmdline_param_enable: %d\n", __func__, s_cmdline_param_enable);
+
+	if (!s_cmdline_param_enable) {
+		dev_info(&client->dev,"%s : Possibly disabled using 'enable' param. Goodbye!!!\n", __func__);
+		return -ENODEV;
+	}
 
 	if (client->dev.of_node) {
 		pdata = devm_kzalloc(&client->dev,

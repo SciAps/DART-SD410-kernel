@@ -1,0 +1,26 @@
+#
+# SciAps Device Drivers
+#
+
+menuconfig SCIAPS_DRIVERS
+	bool "SciAps drivers"
+	depends on HAS_IOMEM
+	help
+		SciAps drivers
+
+if SCIAPS_DRIVERS
+config SCIAPS_KETEK_DPP3_SPI
+	tristate "SciAps Ketek DPP3 Driver"
+	depends on SCIAPS_DRIVERS && SPI_MASTER
+	default n
+	help
+	  Ketek DPP3 Support 
+
+config SCIAPS_SAM_M10Q_I2C
+	tristate "SciAps U-Blox SAM M10Q I2C driver"
+	depends on SCIAPS_DRIVERS && I2C
+	default n
+	help
+	  U-Blox SAM M10Q
+
+endif #SCIAPS_DRIVERS

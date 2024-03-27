@@ -137,10 +137,6 @@
 	vbus_otg-supply = <&vph_pwr_vreg>;
 };
 
-&blsp1_uart1 {
-	status = "ok";
-};
-
 &blsp1_uart2 {
 	status = "ok";
 	pinctrl-names = "default";

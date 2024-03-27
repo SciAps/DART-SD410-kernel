@@ -1,0 +1,40 @@
+/* Copyright (c) 2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "apq8016-var-sd410.dtsi"
+#include "apq8016-camera-sensor-var-sd410-sciaps-ngl.dtsi"
+
+&soc {
+	i2c@78b8000 { /* BLSP1 QUP4 */
+        status = "ok";
+
+		ie-battery@b {
+            sciaps,support-shutdown = <0>;
+            status = "ok";
+        };
+
+		battery@0x64 {
+			sciaps,support-shutdown = <0>;
+			status = "ok";
+		};
+	};
+
+};
+
+&blsp1_uart1 {
+	status = "ok";
+};
+
+&mdss_fb0 {
+	sciaps,mdss-fb-splash-multi-image-group = <35>;
+};
+

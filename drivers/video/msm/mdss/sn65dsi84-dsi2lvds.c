@@ -32,6 +32,9 @@
 #define FT_SUSPEND_LEVEL 1
 #endif
 
+static int s_cmdline_param_enable = 1;
+
+module_param_named(enable, s_cmdline_param_enable, int, S_IRUSR);
 
 
 struct sn65dsi84_data {
@@ -107,7 +110,7 @@ static int ft5x0x_write_reg(struct i2c_client *client, u8 addr, const u8 val)
 
 	buf[0] = addr;
 	buf[1] = val;
-	
+
 	return sn65dsi84_i2c_write(client, buf, sizeof(buf));
 }
 
@@ -122,6 +125,14 @@ static int sn65dsi84_probe(struct i2c_client *client,
 	int values[100];
 	int chipid[]={0x35, 0x38, 0x49, 0x53, 0x44, 0x20, 0x20, 0x20, 0x01};
 	char address,value;
+
+	dev_info(&client->dev,
+			"%s : ---> s_cmdline_param_enable: %d\n", __func__, s_cmdline_param_enable);
+
+	if (!s_cmdline_param_enable) {
+		dev_info(&client->dev,"%s : Possibly disabled using 'enable' param. Goodbye!!!\n", __func__);
+		return -ENODEV;
+	}
 
 	for(i=0;i<sizeof(chipid)/sizeof(int);i++)
 	{
@@ -152,7 +163,7 @@ static int sn65dsi84_probe(struct i2c_client *client,
 		dev_err(&client->dev, "Unable to read 'sn65dsi84,addresses'\n");
 		return err;
 	}
-	
+
 	prop = of_find_property(np, "sn65dsi84,values", NULL);
 	if (!prop)
 		return -EINVAL;
@@ -170,7 +181,7 @@ static int sn65dsi84_probe(struct i2c_client *client,
 		dev_err(&client->dev, "Unable to read 'sn65dsi84,values'\n");
 		return err;
 	}
-	
+
 	for(i=0;i<size;i++)
 	{
 		ft5x0x_write_reg(client, addresses[i],values[i]);

@@ -124,7 +124,7 @@
 		};
 
 		cross-conn-det {
-			qcom,pins = <&gp 120>;
+			qcom,pins = <&gp 107>;
 			qcom,num-grp-pins = <1>;
 			qcom,pin-func = <0>;
 			label = "cross-conn-det-sw";
@@ -340,6 +340,58 @@
 			qcom,pin-func = <0>;
 			label = "spi0-cs0-suspend";
 			spi0_cs0_sleep: cs0_sleep {
+				drive-strength = <2>;
+				bias-disable = <0>;
+			};
+		};
+
+		// spi1 spi_1 is BLSP1 QUP0 (also called BLSP1)
+		spi1_active {
+			/* MOSI, MISO, CLK */
+			qcom,pins = <&gp 0>, <&gp 1>, <&gp 3>;
+			qcom,num-grp-pins = <3>;
+			qcom,pin-func = <1>;
+			label = "spi1-active";
+			/* active state */
+			spi1_default: spi1_default {
+				drive-strength = <12>; /* 12 MA */
+				bias-disable = <0>; /* No PULL */
+			};
+		};
+
+		spi1_suspend {
+			/* MOSI, MISO, CLK */
+			qcom,pins = <&gp 0>, <&gp 1>, <&gp 3>;
+			qcom,num-grp-pins = <3>;
+			qcom,pin-func = <0>;
+			label = "spi1-suspend";
+			/* suspended state */
+			spi1_sleep: spi1_sleep {
+				drive-strength = <2>; /* 2 MA */
+				bias-pull-down; /* pull down */
+			};
+		};
+
+		spi1_cs0_active {
+			/* CS */
+			qcom,pins = <&gp 2>;
+			qcom,num-grp-pins = <1>;
+			qcom,pin-func = <1>;
+			label = "spi1-cs0-active";
+			spi1_cs0_active: cs0_active {
+				drive-strength = <2>;
+				bias-disable = <0>;
+			};
+		};
+
+
+		spi1_cs0_suspend {
+			/* CS */
+			qcom,pins = <&gp 2>;
+			qcom,num-grp-pins = <1>;
+			qcom,pin-func = <0>;
+			label = "spi1-cs0-suspend";
+			spi1_cs0_sleep: cs0_sleep {
 				drive-strength = <2>;
 				bias-disable = <0>;
 			};

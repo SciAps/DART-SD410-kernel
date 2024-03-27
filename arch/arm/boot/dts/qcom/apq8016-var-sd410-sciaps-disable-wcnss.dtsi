@@ -1,0 +1,49 @@
+/* Copyright (c) 2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	qcom,wcnss-wlan@0a000000 {
+		status = "disabled";
+	};
+	qcom,pronto@a21b000 {
+		status = "disabled";
+	};
+	qcom,smem@86300000 {
+		qcom,smd-wcnss {
+			status = "disabled";
+		};
+		qcom,smsm-wcnss {
+			status = "disabled";
+		};
+	};
+	qcom,smdtty {
+		smdtty_apps_fm: qcom,smdtty-apps-fm {
+			status = "disabled";
+		};
+		smdtty_apps_riva_bt_acl: smdtty-apps-riva-bt-acl {
+			status = "disabled";
+		};
+		smdtty_apps_riva_bt_cmd: qcom,smdtty-apps-riva-bt-cmd {
+			status = "disabled";
+		};
+		smdtty_apps_riva_ant_cmd: smdtty-apps-riva-ant-cmd {
+			status = "disabled";
+		};
+		smdtty_apps_riva_ant_data: smdtty-apps-riva-ant-data {
+			status = "disabled";
+		};
+	};
+	qcom,mss@4080000 {
+		status = "disabled";
+	};
+};
+

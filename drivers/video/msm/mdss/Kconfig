@@ -50,3 +50,9 @@ config FB_MSM_MDSS_SPLASH_SCIAPS_X
 	---help---
 	MDSS Splash Logo Sciaps Logo X
 
+config FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE
+	bool "MDSS Splash Logo Sciaps Multi Image Support"
+	default n
+	---help---
+	MDSS Splash Logo Sciaps Multi Image Support
+

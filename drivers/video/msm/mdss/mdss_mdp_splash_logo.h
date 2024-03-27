@@ -31,6 +31,9 @@ struct msm_fb_splash_info {
 	void			*splash_buffer;
 	int			pipe_ndx[2];
 	bool			splash_pipe_allocated;
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_X) && defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	uint16_t		sciaps_multi_image_group;
+#endif
 };
 
 struct msm_fb_data_type;

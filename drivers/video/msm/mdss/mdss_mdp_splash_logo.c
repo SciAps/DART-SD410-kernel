@@ -22,13 +22,28 @@
 #include <linux/of_address.h>
 #include <linux/fb.h>
 #include <linux/mm.h>
+#include <linux/zlib.h>
 #include <asm/page.h>
 
 #include "mdss_fb.h"
 #include "mdss_mdp.h"
 
 #if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_X)
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+
+#define CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE_GROUP_X 30
+#define CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE_GROUP_Z 35
+
+//#include "splash_sciaps_x_240_320.h"
+#include "sciaps_z_splash_240_320_202_202.rgb.zz.h"
+#include "sciaps_z_splash_480_640_402_403.rgb.zz.h"
+#include "sciaps_x_splash_240_320_186_186.rgb.zz.h"
+#include "sciaps_x_splash_480_640_404_403.rgb.zz.h"
+
+
+#else
 #include "splash_sciaps_x.h"
+#endif
 #else
 #include "splash.h"
 #endif
@@ -284,6 +299,81 @@ int mdss_mdp_splash_cleanup(struct msm_fb_data_type *mfd,
 end:
 	return rc;
 }
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+static const char* mdss_mdp_splash_multi_get_image(struct msm_fb_data_type *mfd, uint16_t* image_width_out, uint16_t* image_height_out, uint8_t* image_format_out, uint8_t* image_bpp_out, uint8_t* image_compressed_out, uint32_t* image_size_out, uint32_t* image_size_compressed_out)
+{
+	uint32_t image_size = 0, image_size_compressed;
+	uint16_t image_width = 0, image_height = 0;
+	uint8_t image_format = 0, image_bpp = 0, image_compressed = 0;
+	const char* splash_image = NULL;
+
+	if(!mfd)
+		return NULL;
+
+	if (mfd->panel_info) {
+		if (mfd->splash_info.sciaps_multi_image_group == CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE_GROUP_X) {
+			if (mfd->panel_info->xres >= 404 && mfd->panel_info->yres >= 403) {
+				splash_image = sciaps_x_splash_480_640_404_403_rgb_zz;
+				image_size_compressed = sciaps_x_splash_480_640_404_403_rgb_zz_len;
+				pr_debug("%s: splash -> using sciaps_x_splash_480_640_404_403_rgb_zz at 0x%llx\n", __func__, (uint64_t)splash_image);
+			}
+			else if (mfd->panel_info->xres >= 186 && mfd->panel_info->yres >= 186) {
+				splash_image = sciaps_x_splash_240_320_186_186_rgb_zz;
+				image_size_compressed = sciaps_x_splash_240_320_186_186_rgb_zz_len;
+				pr_debug("%s: splash -> using sciaps_x_splash_240_320_186_186_rgb_zz at 0x%llx\n", __func__, (uint64_t)splash_image);
+			}
+		}
+		else if (mfd->splash_info.sciaps_multi_image_group == CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE_GROUP_Z) {
+			if (mfd->panel_info->xres >= 402 && mfd->panel_info->yres >= 403) {
+				splash_image = sciaps_z_splash_480_640_402_403_rgb_zz;
+				image_size_compressed = sciaps_z_splash_480_640_402_403_rgb_zz_len;
+				pr_debug("%s: splash -> using sciaps_z_splash_480_640_402_403_rgb_zz at 0x%llx\n", __func__, (uint64_t)splash_image);
+			}
+			else if (mfd->panel_info->xres >= 202 && mfd->panel_info->yres >= 202) {
+				splash_image = sciaps_z_splash_240_320_202_202_rgb_zz;
+				image_size_compressed = sciaps_z_splash_240_320_202_202_rgb_zz_len;
+				pr_debug("%s: splash -> using sciaps_z_splash_240_320_202_202_rgb_zz at 0x%llx\n", __func__, (uint64_t)splash_image);
+			}
+		}
+
+	}
+	{
+		if (splash_image) {
+			image_width =		splash_image[0];
+			image_width <<= 8;
+			image_width |=		splash_image[1];
+			image_height =		splash_image[2];
+			image_height <<= 8;
+			image_height |=		splash_image[3];
+			image_format =		splash_image[4];
+			image_bpp =			splash_image[5];
+			image_compressed =	splash_image[6];
+
+			image_size = (uint32_t)image_width * image_height * image_bpp;
+
+			if (image_width_out)
+				*image_width_out = image_width;
+			if (image_height_out)
+				*image_height_out = image_height;
+			if (image_format_out)
+				*image_format_out = image_format;
+			if (image_bpp_out)
+				*image_bpp_out = image_bpp;
+			if (image_size_out)
+				*image_size_out = image_size;
+			if (image_compressed_out)
+				*image_compressed_out = image_compressed;
+			if (image_size_compressed_out)
+				*image_size_compressed_out = image_size_compressed;
+
+			pr_debug("%s: splash -> image info => res: %dx%d: format: %d; bpp: %d; compressed: %d; size: %d; size compressed: %d;\n", __func__, image_width, image_height, image_format, image_bpp, image_compressed, image_size, image_size_compressed);
+
+			splash_image += 7;
+		}
+	}
+	return splash_image;
+}
+#endif
 
 static struct mdss_mdp_pipe *mdss_mdp_splash_get_pipe(
 					struct msm_fb_data_type *mfd,
@@ -292,8 +382,16 @@ static struct mdss_mdp_pipe *mdss_mdp_splash_get_pipe(
 	struct mdss_mdp_pipe *pipe;
 	int ret;
 	struct mdss_mdp_data *buf;
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	uint32_t image_size;
+#else
 	uint32_t image_size = SPLASH_IMAGE_WIDTH * SPLASH_IMAGE_HEIGHT
 						* SPLASH_IMAGE_BPP;
+#endif
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	if (!mdss_mdp_splash_multi_get_image(mfd, NULL, NULL, NULL, NULL, NULL, &image_size, NULL))
+		return NULL;
+#endif
 
 	ret = mdss_mdp_overlay_pipe_setup(mfd, req, &pipe, NULL, true);
 	if (ret)
@@ -326,6 +424,9 @@ static int mdss_mdp_splash_kickoff(struct msm_fb_data_type *mfd,
 	int ret;
 	bool use_single_pipe = false;
 	struct msm_fb_splash_info *sinfo;
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	uint8_t image_format;
+#endif
 
 	if (!mfd)
 		return -EINVAL;
@@ -340,6 +441,11 @@ static int mdss_mdp_splash_kickoff(struct msm_fb_data_type *mfd,
 
 	if (mutex_lock_interruptible(&mdp5_data->ov_lock))
 		return -EINVAL;
+
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	if (!mdss_mdp_splash_multi_get_image(mfd, NULL, NULL, &image_format, NULL, NULL, NULL, NULL))
+		return -EINVAL;
+#endif
 
 	ret = mdss_mdp_overlay_start(mfd);
 	if (ret) {
@@ -381,7 +487,14 @@ static int mdss_mdp_splash_kickoff(struct msm_fb_data_type *mfd,
 	req.dst_rect.w = req.src_rect.w;
 	req.src.height = req.dst_rect.h = req.src_rect.h =
 			src_rect->h;
+
+
+
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	req.src.format =  image_format;
+#else
 	req.src.format = SPLASH_IMAGE_FORMAT;
+#endif
 	req.id = MSMFB_NEW_REQUEST;
 	req.z_order = MDSS_MDP_STAGE_0;
 	req.alpha = 0xff;
@@ -433,8 +546,15 @@ static int mdss_mdp_display_splash_image(struct msm_fb_data_type *mfd)
 {
 	int rc = 0;
 	struct fb_info *fbi;
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	uint32_t image_len, image_compressed_len;
+	uint16_t image_width, image_height;
+	uint8_t image_bpp, image_compressed;
+	const char* splash_image = NULL;
+#else
 	uint32_t image_len = SPLASH_IMAGE_WIDTH * SPLASH_IMAGE_HEIGHT
 						* SPLASH_IMAGE_BPP;
+#endif
 	struct mdss_rect src_rect, dest_rect;
 	struct msm_fb_splash_info *sinfo;
 
@@ -444,9 +564,25 @@ static int mdss_mdp_display_splash_image(struct msm_fb_data_type *mfd)
 		goto end;
 	}
 
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	if (!(splash_image = mdss_mdp_splash_multi_get_image(mfd, &image_width, &image_height, NULL, &image_bpp, &image_compressed, &image_len, &image_compressed_len))) {
+		rc =  -EINVAL;
+		goto end;
+	}
+#endif
+
 	fbi = mfd->fbi;
 	sinfo = &mfd->splash_info;
 
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	if (image_width > fbi->var.xres ||
+		  image_height > fbi->var.yres ||
+		  image_bpp > (fbi->var.bits_per_pixel >> 3)) {
+		pr_err("invalid splash parameter configuration\n");
+		rc = -EINVAL;
+		goto end;
+	}
+#else
 	if (SPLASH_IMAGE_WIDTH > fbi->var.xres ||
 		  SPLASH_IMAGE_HEIGHT > fbi->var.yres ||
 		  SPLASH_IMAGE_BPP > (fbi->var.bits_per_pixel >> 3)) {
@@ -454,16 +590,24 @@ static int mdss_mdp_display_splash_image(struct msm_fb_data_type *mfd)
 		rc = -EINVAL;
 		goto end;
 	}
+#endif
 
 	sinfo->pipe_ndx[0] = INVALID_PIPE_INDEX;
 	sinfo->pipe_ndx[1] = INVALID_PIPE_INDEX;
 
 	src_rect.x = 0;
 	src_rect.y = 0;
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	dest_rect.w = src_rect.w = image_width;
+	dest_rect.h = src_rect.h = image_height;
+	dest_rect.x = (fbi->var.xres >> 1) - (image_width >> 1);
+	dest_rect.y = (fbi->var.yres >> 1) - (image_height >> 1);
+#else
 	dest_rect.w = src_rect.w = SPLASH_IMAGE_WIDTH;
 	dest_rect.h = src_rect.h = SPLASH_IMAGE_HEIGHT;
 	dest_rect.x = (fbi->var.xres >> 1) - (SPLASH_IMAGE_WIDTH >> 1);
 	dest_rect.y = (fbi->var.yres >> 1) - (SPLASH_IMAGE_HEIGHT >> 1);
+#endif
 
 	rc = mdss_mdp_splash_alloc_memory(mfd, image_len);
 	if (rc) {
@@ -471,7 +615,56 @@ static int mdss_mdp_display_splash_image(struct msm_fb_data_type *mfd)
 		goto end;
 	}
 
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	if (image_compressed) {
+		// inflate
+		z_stream infstream;
+
+		int workspace_size = zlib_inflate_workspacesize();
+		void* workspace = kzalloc(workspace_size, GFP_KERNEL);
+		pr_debug("%s: splash -> inflating -> worksapce size: %d; from %d bytes to %d bytes!\n", __func__, workspace_size, image_compressed_len, image_len);
+
+		if (workspace) {
+			int zrc = Z_ERRNO;
+			memset(&infstream, 0x00, sizeof(infstream));
+			infstream.next_in	= (Byte*)splash_image;
+			infstream.avail_in	= (uInt)(image_compressed_len);
+			infstream.next_out	= (Byte*)sinfo->splash_buffer;
+			infstream.avail_out	= (uInt)image_len;
+			infstream.workspace = workspace;
+
+
+			if (		Z_OK			== (zrc = zlib_inflateInit(&infstream))
+					&&	Z_STREAM_END	== (zrc = zlib_inflate(&infstream, Z_FINISH))
+					&&	Z_OK			== (zrc = zlib_inflateEnd(&infstream))) {
+				pr_debug("%s: splash -> inflating ->  GOOD!!! zrc: %d;\n", __func__, zrc);
+
+			}
+			else {
+				pr_err("%s: splash -> inflating failed ->  Hmmmm..... zrc: %d;\n", __func__, zrc);
+			}
+
+			kfree(workspace);
+
+			if (zrc != Z_OK) {
+				rc = -ENOENT;
+				pr_err("%s: splash image inflation failed\n", __func__);
+				goto end;
+			}
+		}
+		else {
+			pr_err("%s: splash -> infstream.workspace buffer allocation failed. size: %d;\n", __func__, workspace_size);
+			rc = -ENOMEM;
+			goto end;
+		}
+
+	}
+	else {
+		memcpy(sinfo->splash_buffer, splash_image, image_len);
+	}
+#else
 	memcpy(sinfo->splash_buffer, splash_bgr888_image, image_len);
+#endif
 
 	rc = mdss_mdp_splash_iommu_attach(mfd);
 	if (rc)
@@ -579,10 +772,28 @@ static __ref int mdss_mdp_splash_parse_dt(struct msm_fb_data_type *mfd)
 	int len = 0, rc = 0;
 	u32 offsets[2];
 	struct device_node *pnode, *child_node;
+	uint32_t dt_value_u32;
 
 	mfd->splash_info.splash_logo_enabled =
 				of_property_read_bool(pdev->dev.of_node,
 				"qcom,mdss-fb-splash-logo-enabled");
+
+#if defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_X) && defined(CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE)
+	rc = of_property_read_u32(pdev->dev.of_node, "sciaps,mdss-fb-splash-multi-image-group",
+					&dt_value_u32);
+
+	if (rc < 0) {
+		mfd->splash_info.sciaps_multi_image_group = CONFIG_FB_MSM_MDSS_SPLASH_SCIAPS_MULTI_IMAGE_GROUP_X;
+		dev_info(&pdev->dev,
+			"Unable to read 'sciaps,mdss-fb-splash-multi-image-group'. Use default: %d\n", mfd->splash_info.sciaps_multi_image_group);
+	}
+	else {
+		mfd->splash_info.sciaps_multi_image_group = (uint16_t)dt_value_u32;
+		dev_info(&pdev->dev,
+			"'sciaps,mdss-fb-splash-multi-image-group' == %d\n", mfd->splash_info.sciaps_multi_image_group);
+	}
+	rc = 0;
+#endif
 
 	of_find_property(pdev->dev.of_node, "qcom,memblock-reserve", &len);
 	if (len) {

@@ -30,7 +30,7 @@
  *
  *
  */
- 
+
 /*=============================================================*/
 // INCLUDE FILE
 /*=============================================================*/
@@ -69,6 +69,10 @@ struct regulator *g_ReguVdd = NULL;
 struct regulator *g_ReguVcc_i2c = NULL;
 #endif //CONFIG_ENABLE_REGULATOR_POWER_ON
 
+static int s_cmdline_param_enable = 1;
+
+module_param_named(enable, s_cmdline_param_enable, int, S_IRUSR);
+
 /*=============================================================*/
 // FUNCTION DEFINITION
 /*=============================================================*/
@@ -84,7 +88,15 @@ static int /*__devinit*/ touch_driver_probe(struct i2c_client *client,
 #endif //CONFIG_ENABLE_REGULATOR_POWER_ON
 
     printk("*** %s ***\n", __func__);
-    
+
+	dev_info(&client->dev,
+			"%s : ---> s_cmdline_param_enable: %d\n", __func__, s_cmdline_param_enable);
+
+	if (!s_cmdline_param_enable) {
+		dev_info(&client->dev,"%s : Possibly disabled using 'enable' param. Goodbye!!!\n", __func__);
+		return -ENODEV;
+	}
+
     if (client == NULL)
     {
         printk("i2c client is NULL\n");
@@ -99,7 +111,7 @@ static int /*__devinit*/ touch_driver_probe(struct i2c_client *client,
 		//return -EINVAL;
 	}
 	else {
-	    ret = regulator_set_voltage(g_ReguVdd, 2600000, 3300000); 
+	    ret = regulator_set_voltage(g_ReguVdd, 2600000, 3300000);
 	    if (ret)
 	    {
 	        printk("Could not set to 2800mv.\n");
@@ -111,7 +123,7 @@ static int /*__devinit*/ touch_driver_probe(struct i2c_client *client,
 		//return -EINVAL;
 	}
 	else {
-	    ret = regulator_set_voltage(g_ReguVcc_i2c, 1800000, 1800000);  
+	    ret = regulator_set_voltage(g_ReguVcc_i2c, 1800000, 1800000);
 	    if (ret)
 	    {
 	        printk("Could not set to 1800mv.\n");
@@ -134,7 +146,7 @@ static int touch_driver_remove(struct i2c_client *client)
 static const struct i2c_device_id touch_device_id[] =
 {
     {ILI_TP_IC_NAME, 0},
-    {}, /* should not omitted */ 
+    {}, /* should not omitted */
 };
 
 MODULE_DEVICE_TABLE(i2c, touch_device_id);
