@@ -447,8 +447,10 @@ static ssize_t ketek_dpp3_char_dev_write(struct file *file, const char __user *b
 	if (!access_ok(VERIFY_READ, buf, count))
 		return -EFAULT;
 
+#ifdef USE_DYNAMIC
 	if (ketek_dpp3_command_buffer == 0)
 		return -ENOMEM;
+#endif
 
 	if (ketek_dpp3_spi_data == 0)
 		return -ENODEV;
