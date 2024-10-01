@@ -68,6 +68,8 @@ dtb-$(CONFIG_ARCH_MSM8916) += apq8016-var-sd410-sciaps-ngx-ampteck-dpp2.dtb \
 	apq8016-var-sd410-sciaps-ngx-ampteck-dpp2-no-wcnss.dtb \
 	apq8016-var-sd410-sciaps-ngx-dpp3.dtb \
 	apq8016-var-sd410-sciaps-ngx-dpp3-no-wcnss.dtb \
+	apq8016-var-sd410-sciaps-btx.dtb \
+	apq8016-var-sd410-sciaps-btx-no-wcnss.dtb \
 	apq8016-var-sd410-sciaps-ngl.dtb \
 	apq8016-var-sd410-sciaps-ngl-no-wcnss.dtb
 dtb-$(CONFIG_ARCH_MSM8226) += msm8226-sim.dtb \

@@ -7,18 +7,41 @@
 #include <linux/sysfs.h>
 #include <linux/mod_devicetable.h>
 #include <linux/of.h>
+#include <linux/of_device.h>
+#include <linux/of_gpio.h>
 #include <linux/i2c.h>
 #include <linux/types.h>
+#include <linux/pinctrl/consumer.h>
 
 #include <linux/qpnp/power-on.h>
 
 #include <linux/mfd/sciaps_micro.h>
 
+#define SCIAPS_CARRIER_BOARD_HW_REV_10_PLUS_BLUE		10
+#define SCIAPS_CARRIER_BOARD_HW_REV_PRIOR_REV_10_RED	6
+#define SCIAPS_CARRIER_BOARD_HW_REV_UNKNOWN				0
+
+#define SCIAPS_DPP_MUX_SELECT_WORK 0
+#if SCIAPS_DPP_MUX_SELECT_WORK
+#error SCIAPS_DPP_MUX_SELECT_WORK MUST be disabled in this version!!!
+#endif
+
+const char* dpp_mux_select_dt_name = "sciaps,dpp-mux-select";
+const char* dpp_mux_select_legacy_dt_name = "sciaps,dpp-mux-select-legacy";
 
 struct sciaps_micro_data {
 	struct	i2c_client	*client;
 	u8 read_reg;
 	u16 read_reg_value;
+	int dpp_mux_select_gpio_pin_value;
+	int dpp_mux_select_gpio_pin;
+	bool dpp_mux_select_gpio_pin_free;
+	int dpp_mux_select_legacy_gpio_pin;
+	bool dpp_mux_select_legacy_gpio_pin_free;
+	int carrier_board_hw_rev;
+#if SCIAPS_DPP_MUX_SELECT_WORK
+	struct delayed_work	work;
+#endif
 	bool			nvram_unlocked;
 };
 
@@ -34,6 +57,24 @@ static sciaps_micro_cmds sciaps_micro_known_cmds[] = {
 };
 
 static const int libs_cmd_num = sizeof(sciaps_micro_known_cmds)/sizeof(sciaps_micro_cmds);
+
+#if SCIAPS_DPP_MUX_SELECT_WORK
+static void dpp_mux_select_legacy_delayed_work(struct work_struct *work)
+{
+	struct  sciaps_micro_data *data;
+
+	data = container_of(work, struct sciaps_micro_data, work.work);
+
+	if (data->dpp_mux_select_legacy_gpio_pin_free && data->carrier_board_hw_rev == SCIAPS_CARRIER_BOARD_HW_REV_PRIOR_REV_10_RED) {
+		if (data->dpp_mux_select_gpio_pin_value != gpio_get_value(data->dpp_mux_select_legacy_gpio_pin)) {
+			dev_info(&data->client->dev, "%s-%d: Oops... Legacy MUX Select level changed unexpectedly! Setting it back to %d via GPIO_%d(%s)\n", __func__, HZ, data->dpp_mux_select_gpio_pin_value, data->dpp_mux_select_legacy_gpio_pin, dpp_mux_select_legacy_dt_name);
+			gpio_set_value(data->dpp_mux_select_legacy_gpio_pin, data->dpp_mux_select_gpio_pin_value);
+		}
+
+		schedule_delayed_work(&data->work, 10/*1*HZ*/);
+	}
+}
+#endif
 
 #if 0
 static int sciaps_micro_i2c_read(struct i2c_client *client, int count,
@@ -520,10 +561,35 @@ trigger_gpio_fail:
 
 static struct i2c_client *sciaps_micro_i2c_client = NULL;
 
+#define SCIAPS_DPP_MUX_SELECT_PIN_GPIO			(108 + 902)
+#define SCIAPS_DPP_MUX_SELECT_LEGACY_PIN_GPIO	(96 + 902)
+
+#define PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE "dpp_mux_select_active"
+
 static int sciaps_micro_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
 	struct sciaps_micro_data *sciaps_micro;
+	struct pinctrl *pinctrl;
+	struct pinctrl_state *set_state;
+	struct device *dev = &client->dev;
+
+
+
+	/* Get pinctrl if target uses pinctrl */
+	pinctrl = devm_pinctrl_get(dev);
+	if (IS_ERR(pinctrl)) {
+		if (PTR_ERR(pinctrl) == -EPROBE_DEFER) {
+			dev_warn(dev, "%s: devm_pinctrl_get rc: %ld(EPROBE_DEFER)\n", __func__, PTR_ERR(pinctrl));
+			return -EPROBE_DEFER;
+		}
+
+		dev_warn(dev, "%s: devm_pinctrl_get rc: %ld\n", __func__, PTR_ERR(pinctrl));
+		pinctrl = NULL;
+	}
+	else {
+		dev_info(dev, "%s: devm_pinctrl_get SUCCESS\n", __func__);
+	}
 
 	sciaps_micro = kzalloc(sizeof(struct sciaps_micro_data), GFP_KERNEL);
 	if (!sciaps_micro) {
@@ -535,6 +601,123 @@ static int sciaps_micro_probe(struct i2c_client *client,
 	sciaps_micro->read_reg = 0;
 	sciaps_micro->read_reg_value = 0;
 	sciaps_micro->nvram_unlocked = 0;
+	sciaps_micro->dpp_mux_select_gpio_pin = -1; //SCIAPS_DPP_MUX_SELECT_PIN_GPIO;
+	sciaps_micro->dpp_mux_select_gpio_pin_free = false;
+	sciaps_micro->dpp_mux_select_legacy_gpio_pin = -1; //SCIAPS_DPP_MUX_SELECT_LEGACY_PIN_GPIO;
+	sciaps_micro->dpp_mux_select_legacy_gpio_pin_free = false;
+	sciaps_micro->carrier_board_hw_rev = SCIAPS_CARRIER_BOARD_HW_REV_UNKNOWN;
+	sciaps_micro->dpp_mux_select_gpio_pin_value = 1;
+
+#if SCIAPS_DPP_MUX_SELECT_WORK
+	INIT_DELAYED_WORK(&sciaps_micro->work, dpp_mux_select_legacy_delayed_work);
+#endif
+
+	{
+		struct device_node *np = of_node_get(client->dev.of_node);
+		int dpp_mux_select = -1;
+
+		if (np) {
+			dpp_mux_select = -1;
+			if (1 == of_gpio_named_count(np, dpp_mux_select_dt_name)) {
+				if (pinctrl) {
+					set_state = pinctrl_lookup_state(pinctrl, PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE);
+					if (IS_ERR(set_state)) {
+						dev_err(dev, "%s: pinctrl_lookup_state rc: %ld for %s\n", __func__, PTR_ERR(pinctrl), PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE);
+						//return PTR_ERR(set_state);
+					}
+					else {
+						int retval;
+						dev_info(dev, "%s: pinctrl_lookup_state for %s SUCCESS\n", __func__, PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE);
+						retval = pinctrl_select_state(pinctrl, set_state);
+						if (retval) {
+							dev_err(dev,"%s: cannot set ts pinctrl state for %s rc: %d\n", __func__, PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE, retval);
+						}
+						else {
+							dev_info(dev, "%s: pinctrl_select_state for %s SUCCESS\n", __func__, PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE);
+							pinctrl = NULL;
+						}
+					}
+				}
+
+				dpp_mux_select  = of_get_named_gpio(np, dpp_mux_select_dt_name, 0);
+
+				dev_info(&client->dev,
+						"%s :  %s is %d\n", __func__, dpp_mux_select_dt_name, dpp_mux_select);
+
+				if (gpio_is_valid(dpp_mux_select)) {
+					dev_info(&client->dev,
+							"%s : %s gpio is valid\n", __func__, dpp_mux_select_dt_name);
+				}
+				else {
+					dpp_mux_select = SCIAPS_DPP_MUX_SELECT_PIN_GPIO;
+					dev_warn(&client->dev,
+							"%s : %s gpio is NOT valid. Using default: %d\n", __func__, dpp_mux_select_dt_name, dpp_mux_select);
+				}
+			}
+			else {
+				dev_warn(&client->dev,
+						"%s : Could not find %s in the devicetree. Do nothing!\n", __func__, dpp_mux_select_dt_name);
+			}
+			if (dpp_mux_select != -1)
+				sciaps_micro->dpp_mux_select_gpio_pin = dpp_mux_select;
+
+			dpp_mux_select = -1;
+			if (1 == of_gpio_named_count(np, dpp_mux_select_legacy_dt_name)) {
+				if (pinctrl) {
+					set_state = pinctrl_lookup_state(pinctrl, PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE);
+					if (IS_ERR(set_state)) {
+						dev_err(dev, "%s: pinctrl_lookup_state rc: %ld for %s\n", __func__, PTR_ERR(pinctrl), PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE);
+						//return PTR_ERR(set_state);
+					}
+					else {
+						int retval;
+						dev_info(dev, "%s: pinctrl_lookup_state for %s SUCCESS\n", __func__, PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE);
+						retval = pinctrl_select_state(pinctrl, set_state);
+						if (retval) {
+							dev_err(dev,"%s: cannot set ts pinctrl state for %s rc: %d\n", __func__, PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE, retval);
+						}
+						else {
+							dev_info(dev, "%s: pinctrl_select_state for %s SUCCESS\n", __func__, PINCTRL_SCIAPS_DPP_MUX_SELECT_ACTIVE);
+							pinctrl = NULL;
+						}
+					}
+				}
+
+				dpp_mux_select  = of_get_named_gpio(np, dpp_mux_select_legacy_dt_name, 0);
+
+				dev_info(&client->dev,
+						"%s :  %s is %d\n", __func__, dpp_mux_select_legacy_dt_name, dpp_mux_select);
+
+				if (gpio_is_valid(dpp_mux_select)) {
+					dev_info(&client->dev,
+							"%s : %s gpio is valid\n", __func__, dpp_mux_select_legacy_dt_name);
+				}
+				else {
+					dpp_mux_select = SCIAPS_DPP_MUX_SELECT_LEGACY_PIN_GPIO;
+					dev_warn(&client->dev,
+							"%s : %s gpio is NOT valid. Using default: %d\n", __func__, dpp_mux_select_legacy_dt_name, dpp_mux_select);
+				}
+			}
+			else {
+				dev_warn(&client->dev,
+						"%s : Could not find %s in the devicetree. Do nothing!\n", __func__, dpp_mux_select_legacy_dt_name);
+			}
+			if (dpp_mux_select != -1) {
+				sciaps_micro->dpp_mux_select_legacy_gpio_pin = dpp_mux_select;
+				if (sciaps_micro->dpp_mux_select_gpio_pin == -1) {
+					sciaps_micro->dpp_mux_select_gpio_pin = SCIAPS_DPP_MUX_SELECT_PIN_GPIO;
+					dev_warn(&client->dev,
+							"%s : %s gpio is NOT set. Using default: %d\n", __func__, dpp_mux_select_dt_name, sciaps_micro->dpp_mux_select_gpio_pin);
+
+				}
+			}
+
+		}
+		else {
+			dev_warn(&client->dev,
+					"%s : Could not retrive of_node. Do nothing for %s and %s\n", __func__, dpp_mux_select_dt_name, dpp_mux_select_legacy_dt_name);
+		}
+	}
 
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
 		dev_err(&client->dev, "i2c not supported\n");
@@ -549,6 +732,67 @@ static int sciaps_micro_probe(struct i2c_client *client,
 
 	trigger_gpio_init(client);
 
+	if (sciaps_micro->dpp_mux_select_gpio_pin != -1 && sciaps_micro->dpp_mux_select_legacy_gpio_pin != -1) {
+		int rc;
+		rc = gpio_request(sciaps_micro->dpp_mux_select_gpio_pin, dpp_mux_select_dt_name);
+		if (rc) {
+			dev_err(&client->dev, "%s: gpio %d(%s) request failed with err: %d\n",
+					__func__, sciaps_micro->dpp_mux_select_gpio_pin, dpp_mux_select_dt_name,  rc);
+		}
+		else {
+			sciaps_micro->dpp_mux_select_gpio_pin_free = true;
+			gpio_export(sciaps_micro->dpp_mux_select_gpio_pin, false);
+		}
+
+		rc = gpio_request(sciaps_micro->dpp_mux_select_legacy_gpio_pin, dpp_mux_select_legacy_dt_name);
+		if (rc) {
+			dev_err(&client->dev, "%s: gpio %d(%s) request failed with err: %d\n",
+					__func__, sciaps_micro->dpp_mux_select_legacy_gpio_pin, dpp_mux_select_legacy_dt_name,  rc);
+		}
+		else {
+			sciaps_micro->dpp_mux_select_legacy_gpio_pin_free = true;
+			gpio_export(sciaps_micro->dpp_mux_select_legacy_gpio_pin, false);
+		}
+
+		{
+			int dpp_mux_select_value, dpp_mux_select_legacy_value;
+
+			dev_info(&client->dev, "%s: Verifing HW Rev of the carrier board (GPIO_%d vs GPIO_%d)...\n", __func__, sciaps_micro->dpp_mux_select_gpio_pin, sciaps_micro->dpp_mux_select_legacy_gpio_pin);
+			gpio_direction_input(sciaps_micro->dpp_mux_select_gpio_pin);
+			gpio_direction_input(sciaps_micro->dpp_mux_select_legacy_gpio_pin);
+
+			dpp_mux_select_value = gpio_get_value(sciaps_micro->dpp_mux_select_gpio_pin);
+			dpp_mux_select_legacy_value = gpio_get_value(sciaps_micro->dpp_mux_select_legacy_gpio_pin);
+
+			dev_info(&client->dev, "%s: %s is %d and %s is %d\n",
+					__func__, dpp_mux_select_dt_name, dpp_mux_select_value, dpp_mux_select_legacy_dt_name, dpp_mux_select_legacy_value);
+
+			if (dpp_mux_select_value == 1 && dpp_mux_select_legacy_value == 0) {
+				sciaps_micro->carrier_board_hw_rev = SCIAPS_CARRIER_BOARD_HW_REV_10_PLUS_BLUE;
+			}
+			else if (dpp_mux_select_value == 0 && dpp_mux_select_legacy_value == 1) {
+				sciaps_micro->carrier_board_hw_rev = SCIAPS_CARRIER_BOARD_HW_REV_PRIOR_REV_10_RED;
+#if SCIAPS_DPP_MUX_SELECT_WORK
+				schedule_delayed_work(&sciaps_micro->work, 1*HZ);
+#endif
+			}
+			else {
+				sciaps_micro->carrier_board_hw_rev = SCIAPS_CARRIER_BOARD_HW_REV_UNKNOWN;
+			}
+		}
+
+		dev_info(&client->dev, "%s: HW Rev of the carrier board is %d\n", __func__, sciaps_micro->carrier_board_hw_rev);
+
+		dev_info(&client->dev, "%s: Setting %s as output to %d\n", __func__, dpp_mux_select_dt_name, sciaps_micro->dpp_mux_select_gpio_pin_value);
+		gpio_direction_output(sciaps_micro->dpp_mux_select_gpio_pin, sciaps_micro->dpp_mux_select_gpio_pin_value);
+		gpio_set_value(sciaps_micro->dpp_mux_select_gpio_pin, sciaps_micro->dpp_mux_select_gpio_pin_value);
+
+		dev_info(&client->dev, "%s: Setting %s as output to %d\n", __func__, dpp_mux_select_legacy_dt_name, sciaps_micro->dpp_mux_select_gpio_pin_value);
+		gpio_direction_output(sciaps_micro->dpp_mux_select_legacy_gpio_pin, sciaps_micro->dpp_mux_select_gpio_pin_value);
+		gpio_set_value(sciaps_micro->dpp_mux_select_legacy_gpio_pin, sciaps_micro->dpp_mux_select_gpio_pin_value);
+
+	}
+
 	dev_info(&client->dev, "device probed\n");
 
 	return 0;
@@ -562,6 +806,18 @@ static int sciaps_micro_remove(struct i2c_client *client)
 	sciaps_micro_delete_sysfs(client);
 
 	trigger_gpio_clean(client, SCIAPS_TRIGGER_GPIO_CLEAN_ALL);
+
+	if (sciaps_micro->dpp_mux_select_gpio_pin_free && sciaps_micro->dpp_mux_select_gpio_pin != -1) {
+		gpio_free(sciaps_micro->dpp_mux_select_gpio_pin);
+	}
+	sciaps_micro->dpp_mux_select_gpio_pin = -1;
+	sciaps_micro->dpp_mux_select_gpio_pin_free = false;
+
+	if (sciaps_micro->dpp_mux_select_legacy_gpio_pin_free && sciaps_micro->dpp_mux_select_legacy_gpio_pin != -1) {
+		gpio_free(sciaps_micro->dpp_mux_select_legacy_gpio_pin);
+	}
+	sciaps_micro->dpp_mux_select_legacy_gpio_pin = -1;
+	sciaps_micro->dpp_mux_select_legacy_gpio_pin_free = false;
 
 	i2c_unregister_device(client);
 
