@@ -641,7 +641,7 @@ static uint8_t s_default_config_status;
 
 static void dev_info_data(struct ublox_sam_m10q_info_t* chip, char* prefix, uint8_t* data, uint16_t data_len)
 {
-	static char str[16*3], str_byte[10];
+	static char str[16*3 + 1], str_byte[10];
 	int i;
 
 	str[0] = 0;
@@ -662,7 +662,7 @@ static void dev_info_data(struct ublox_sam_m10q_info_t* chip, char* prefix, uint
 
 static void dev_dbg_data(struct ublox_sam_m10q_info_t* chip, char* prefix, uint8_t* data, uint16_t data_len)
 {
-	static char str[16*3], str_byte[10];
+	static char str[16*3 + 1], str_byte[10];
 	int i;
 
 	str[0] = 0;

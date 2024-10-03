@@ -26,6 +26,16 @@
 			sciaps,support-shutdown = <0>;
 			status = "ok";
 		};
+
+		i2c@78b8000 { /* BLSP1 QUP4 */
+			status = "ok";
+
+			sciaps_micro@59 {
+				compatible = "sciaps_micro";
+				reg = <0x59>;
+				status = "ok";
+			};
+		};
 	};
 
 };
