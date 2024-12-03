@@ -31,34 +31,29 @@
 &soc {
 	i2c@78b8000 { /* BLSP1 QUP4 */
         ie-battery@b {
-			//status = "okay";
             status = "disabled";
 		};
         ie-charger@9 {
-			//status = "okay";
             status = "disabled";
 		};
 		battery@0x64 {
-			//status = "okay";
             status = "disabled";
 		};
-        ie-nh3054hd34-battery@b {
-            compatible = "nh2054";
+        ie-dual-battery@b {
+            compatible = "nh2054-dual";
             reg = <0xb>;
-            //sciaps,support-shutdown = <1>;
-            //sciaps,shutdown-timer   = <25>;
-            //sciaps,capacity-low-thres-mAh = <10>;
-            //sciaps,capacity-low-thres = <5>; // 0.5 %
-            //sciaps,voltage-crit-low-thres-mV = <11000>;
-            //sciaps,voltage-low-thres-mV = <14000>;
-            //status = "disabled";
+            sciaps,support-shutdown = <1>;
+            sciaps,shutdown-timer   = <15>;
+			sciaps,capacity-low-thres-mAh = <0>; // calculated based on sciaps,capacity-low-thres
+            sciaps,capacity-low-thres = <5>; // 0.5 %
+            sciaps,voltage-crit-low-thres-mV = <11000>;
+            sciaps,voltage-low-thres-mV = <14000>;
 			status = "okay";
         };
 
-        ie-charger@9 {
+        ltc1760-charger@9 {
             compatible = "ltc1760";
             reg = <0xa>;
-            //status = "disabled";
 			status = "okay";
         };
 	};

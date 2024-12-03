@@ -31,8 +31,8 @@
 			status = "ok";
 
 			sciaps_micro@59 {
-				compatible = "sciaps_micro";
-				reg = <0x59>;
+				//compatible = "sciaps_micro";
+				//reg = <0x59>;
 				status = "ok";
 			};
 		};

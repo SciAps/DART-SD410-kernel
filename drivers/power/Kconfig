@@ -330,6 +330,11 @@ config CHARGER_MAX8998
 	  Say Y to enable support for the battery charger control sysfs and
 	  platform data of MAX8998/LP3974 PMICs.
 
+config CHARGER_LTC1760
+	tristate "LTC1760 battery charger"
+	help
+	  Say Y to enable support for LTC dual smart battery charger
+
 config CHARGER_BQ2415X
 	tristate "TI BQ2415x battery charger driver"
 	depends on I2C
@@ -401,6 +406,12 @@ config SMB_TI_BQ40Z80_BATTERY
 	depends on I2C
 	help
 	  Say Y to include support for SMBus TI BQ40Z80 Battery Monitor.
+
+config SMB_IE_NH2054_BATTERY
+	tristate "SMB IE NHx054 Battery Monitor(Pair) - SciAps"
+	depends on I2C
+	help
+	  Say Y to include support for SMBus IE NH2054\NH3054 (SciAps) Battery Monitor.
 
 config SMB1360_CHARGER_FG
 	tristate "SMB1360 Charger and Fuel Guage"

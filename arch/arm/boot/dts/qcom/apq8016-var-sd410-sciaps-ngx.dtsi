@@ -34,12 +34,12 @@
         status = "ok";
 
 		sciaps_micro@59 {
-			compatible = "sciaps_micro";
+			//compatible = "sciaps_micro";
 			pinctrl-names = "dpp_mux_select_active";
 			pinctrl-0 = <&gpio_dpp_mux_select_active &gpio_dpp_mux_select_legacy_active>;
 			sciaps,dpp-mux-select			= <&msm_gpio 108 0>;
 			sciaps,dpp-mux-select-legacy	= <&msm_gpio 96 0>;
-			reg = <0x59>;
+			//reg = <0x59>;
 			status = "ok";
 		};
 	};
