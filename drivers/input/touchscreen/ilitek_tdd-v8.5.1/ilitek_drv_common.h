@@ -76,7 +76,7 @@
 /*--------------------------------------------------------------------------*/
 /* COMPILE OPTION DEFINITION                                                */
 /*--------------------------------------------------------------------------*/
-
+#define CONFIG_SWAP_X_Y
 /*
  * Note.
  * The below compile option is used to enable the specific device driver code handling for distinct smart phone developer platform.
@@ -164,7 +164,7 @@
 /*
  * Note.
  * The below compile option is used to enable segment read debug mode finger touch data for MSG28XX/MSG58XX/MSG58XXA only.
- * Since I2C transaction length limitation for some specific MTK BB chip(EX. MT6589/MT6572/...) or QCOM BB chip, the debug mode finger touch data of MSG28XX/MSG58XX/MSG58XXA can not be retrieved by one time I2C read operation.  
+ * Since I2C transaction length limitation for some specific MTK BB chip(EX. MT6589/MT6572/...) or QCOM BB chip, the debug mode finger touch data of MSG28XX/MSG58XX/MSG58XXA can not be retrieved by one time I2C read operation.
  * So we need to retrieve the complete finger touch data by segment read.
  * By default, this compile option is enabled.
  */
@@ -194,7 +194,7 @@
  */
 //#define CONFIG_ENABLE_GESTURE_DEBUG_MODE
 
-#define CONFIG_ENABLE_CLICK_FOR_DRIVER 
+#define CONFIG_ENABLE_CLICK_FOR_DRIVER
 #endif //CONFIG_ENABLE_GESTURE_WAKEUP
 // ------------------- #endif CONFIG_ENABLE_GESTURE_WAKEUP ------------------- //
 
@@ -223,7 +223,7 @@
  * Else, the update firmware bin file shall be stored in an one dimensional array format.
  * By default, this compile option is enabled.
  */
-#define CONFIG_UPDATE_FIRMWARE_BY_TWO_DIMENSIONAL_ARRAY 
+#define CONFIG_UPDATE_FIRMWARE_BY_TWO_DIMENSIONAL_ARRAY
 
 #endif //CONFIG_UPDATE_FIRMWARE_BY_SW_ID
 // ------------------- #endif CONFIG_UPDATE_FIRMWARE_BY_SW_ID ------------------- //
@@ -305,17 +305,17 @@
 
 
 /*
- * Note. 
+ * Note.
  * The below two compile option is used to enable update firmware with 8 byte or 32 byte each time for MSG28XX/MSG58XX/MSG58XXA.
  * If the below two compile option is disabled, then update firmware with 128 byte each time for MSG28XX/MSG58XX/MSG58XXA.
  * By default, the below two compile option is disabled.
  */
-//#define CONFIG_ENABLE_UPDATE_FIRMWARE_WITH_8_BYTE_EACH_TIME 
+//#define CONFIG_ENABLE_UPDATE_FIRMWARE_WITH_8_BYTE_EACH_TIME
 //#define CONFIG_ENABLE_UPDATE_FIRMWARE_WITH_32_BYTE_EACH_TIME
 
 
 /*
- * Note. 
+ * Note.
  * The below compile option is used to enable high speed isp mode for update firmware of MSG28XX/MSG58XX/MSG58XXA.
  * By default, the below compile option is disabled.
  */
@@ -347,7 +347,7 @@
 
 #ifndef CONFIG_ENABLE_TOUCH_PIN_CONTROL
 // TODO : Please FAE colleague to confirm with customer device driver engineer about the value of RST and INT GPIO setting
-#define MS_TS_MSG_IC_GPIO_RST   GPIO_TOUCH_RESET //53 //35 
+#define MS_TS_MSG_IC_GPIO_RST   GPIO_TOUCH_RESET //53 //35
 #define MS_TS_MSG_IC_GPIO_INT   GPIO_TOUCH_IRQ   //52 //37
 #endif //CONFIG_ENABLE_TOUCH_PIN_CONTROL
 
@@ -360,7 +360,7 @@
 #endif //CONFIG_ENABLE_TOUCH_PIN_CONTROL
 
 #ifdef CONFIG_ENABLE_PROXIMITY_DETECTION
-//#include <linux/input/vir_ps.h> 
+//#include <linux/input/vir_ps.h>
 
 #define GTP_ADDR_LENGTH       (2)
 #define GTP_IOCTL_MAGIC 			(0x1C)
@@ -407,7 +407,7 @@ extern struct ctp_config_info config_info;
 #include <linux/amlogic/gpio-amlogic.h>
 #include <linux/of_irq.h>
 
-#endif 
+#endif
 #include <linux/of_gpio.h>
 
 #ifdef CONFIG_ENABLE_REGULATOR_POWER_ON
@@ -420,7 +420,7 @@ extern struct ctp_config_info config_info;
 #endif //CONFIG_ENABLE_NOTIFIER_FB
 
 #ifdef CONFIG_ENABLE_PROXIMITY_DETECTION
-//#include <linux/input/vir_ps.h> 
+//#include <linux/input/vir_ps.h>
 #include <linux/sensors.h>
 #endif //CONFIG_ENABLE_PROXIMITY_DETECTION
 
@@ -526,8 +526,8 @@ extern struct ctp_config_info config_info;
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 
 #ifdef CONFIG_TP_HAVE_KEY
-#define TOUCH_KEY_MENU    KEY_MENU 
-#define TOUCH_KEY_HOME    KEY_HOMEPAGE 
+#define TOUCH_KEY_MENU    KEY_MENU
+#define TOUCH_KEY_HOME    KEY_HOMEPAGE
 #define TOUCH_KEY_BACK    KEY_BACK
 #define TOUCH_KEY_SEARCH  KEY_SEARCH
 
@@ -550,10 +550,10 @@ extern struct ctp_config_info config_info;
 // Chip Id
 #define CHIP_TYPE_MSG28XX   (0x85) // EX. MSG2833/MSG2835/MSG2836/MSG2840/MSG2856/MSG5846
 #define CHIP_TYPE_MSG58XXA  (0xBF) // EX. MSG5846A
-#define CHIP_TYPE_MSG5846A  (0x5846) 
-#define CHIP_TYPE_MSG5856A  (0x5856) 
-#define CHIP_TYPE_MSG2836A  (0x2836) 
-#define CHIP_TYPE_MSG2846A  (0x2846) 
+#define CHIP_TYPE_MSG5846A  (0x5846)
+#define CHIP_TYPE_MSG5856A  (0x5856)
+#define CHIP_TYPE_MSG2836A  (0x2836)
+#define CHIP_TYPE_MSG2846A  (0x2846)
 #define CHIP_TYPE_ILI2117A  (0x2117) // EX. ILI2117A
 #define CHIP_TYPE_ILI2118A  (0x2118) // EX. ILI2118A
 
@@ -625,7 +625,7 @@ extern struct ctp_config_info config_info;
 
 #endif //CONFIG_ENABLE_GESTURE_WAKEUP
 
-#define FEATURE_GESTURE_WAKEUP_MODE         0x0001   
+#define FEATURE_GESTURE_WAKEUP_MODE         0x0001
 #define FEATURE_GESTURE_DEBUG_MODE          0x0002
 #define FEATURE_GESTURE_INFORMATION_MODE    0x0003
 
@@ -656,9 +656,9 @@ extern struct ctp_config_info config_info;
 #define MSGTOOL_IOCTL_RUN_CMD              _IO(MSGTOOL_MAGIC_NUMBER, 1)
 
 
-#define MSGTOOL_RESETHW           0x01 
-#define MSGTOOL_REGGETXBYTEVALUE  0x02 
-#define MSGTOOL_HOTKNOTSTATUS     0x03 
+#define MSGTOOL_RESETHW           0x01
+#define MSGTOOL_REGGETXBYTEVALUE  0x02
+#define MSGTOOL_HOTKNOTSTATUS     0x03
 #define MSGTOOL_FINGERTOUCH       0x04
 #define MSGTOOL_BYPASSHOTKNOT     0x05
 #define MSGTOOL_DEVICEPOWEROFF    0x06
@@ -723,7 +723,7 @@ extern struct ctp_config_info config_info;
 
 #define MUTUAL_DEMO_MODE_PACKET_LENGTH    (43) // for MSG28xx
 
-#define MUTUAL_MAX_TOUCH_NUM           (10) // for MSG28xx    
+#define MUTUAL_MAX_TOUCH_NUM           (10) // for MSG28xx
 #define MUTUAL_DEBUG_MODE_PACKET_LENGTH    (1280) // for MSG28xx. It is a predefined maximum packet length, not the actual packet length which queried from firmware.
 
 #define MSG28XX_FIRMWARE_MAIN_BLOCK_SIZE (128) //128K
@@ -751,9 +751,9 @@ extern struct ctp_config_info config_info;
 #ifdef CONFIG_ENABLE_GESTURE_WAKEUP
 #endif //CONFIG_ENABLE_GESTURE_WAKEUP
 
-#define FEATURE_FILM_MODE_LOW_STRENGTH     	    0x01 
-#define FEATURE_FILM_MODE_HIGH_STRENGTH         0x02 
-#define FEATURE_FILM_MODE_DEFAULT		        0x00 
+#define FEATURE_FILM_MODE_LOW_STRENGTH     	    0x01
+#define FEATURE_FILM_MODE_HIGH_STRENGTH         0x02
+#define FEATURE_FILM_MODE_DEFAULT		        0x00
 
 #define ENABLE_SUSPEND          1
 #define DISABLE_SUSPEND         0
@@ -780,7 +780,7 @@ extern u8 TOUCH_DRIVER_DEBUG_LOG_LEVEL;
 	                                               printk("ILITEK %s, lind = %d,"fmt, __func__, __LINE__, ##arg);\
                                         } while (0)
 
-#define DBG(dev, fmt, arg...) DEBUG_LEVEL(1, dev, fmt, ##arg) 
+#define DBG(dev, fmt, arg...) DEBUG_LEVEL(1, dev, fmt, ##arg)
 /*
 #define DEBUG_LEVEL(level, dev, fmt, arg...) do {\
 	                                           if (level <= TOUCH_DRIVER_DEBUG_LOG_LEVEL)\
@@ -802,12 +802,12 @@ extern u8 TOUCH_DRIVER_DEBUG_LOG_LEVEL;
 
 #define PRINTF_EMERG(fmt, ...)  printk(KERN_EMERG pr_fmt(fmt), ##__VA_ARGS__)
 #define PRINTF_ALERT(fmt, ...)  printk(KERN_ALERT pr_fmt(fmt), ##__VA_ARGS__)
-#define PRINTF_CRIT(fmt, ...)   printk(KERN_CRIT pr_fmt(fmt), ##__VA_ARGS__) 
+#define PRINTF_CRIT(fmt, ...)   printk(KERN_CRIT pr_fmt(fmt), ##__VA_ARGS__)
 #define PRINTF_ERR(fmt, ...)    printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
 #define PRINTF_WARN(fmt, ...)   printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
 #define PRINTF_NOTICE(fmt, ...) printk(KERN_NOTICE pr_fmt(fmt), ##__VA_ARGS__)
 #define PRINTF_INFO(fmt, ...)   printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
-#define PRINTF_DEBUG(fmt, ...)  printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__) 
+#define PRINTF_DEBUG(fmt, ...)  printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
 
 /*--------------------------------------------------------------------------*/
 /* DATA TYPE DEFINITION                                                     */
@@ -911,7 +911,7 @@ typedef struct {
 #else // ONE DIMENSIONAL ARRAY
     u8 *pUpdateBin;
 #endif //CONFIG_UPDATE_FIRMWARE_BY_TWO_DIMENSIONAL_ARRAY
-    
+
 } SwIdData_t;
 
 /*
@@ -932,7 +932,7 @@ typedef enum {
 typedef struct
 {
     u64 nCmdId;
-    u64 nSndCmdDataPtr;      //send data to fw  
+    u64 nSndCmdDataPtr;      //send data to fw
     u64 nSndCmdLen;
     u64 nRtnCmdDataPtr;      //receive data from fw
     u64 nRtnCmdLen;
@@ -1000,7 +1000,7 @@ extern void MsDrvInterfaceTouchDeviceResume(struct device *pDevice);
 extern void MsDrvInterfaceTouchDeviceSuspend(struct device *pDevice);
 #else
 #ifdef CONFIG_HAS_EARLYSUSPEND
-extern void MsDrvInterfaceTouchDeviceResume(struct early_suspend *pSuspend);        
+extern void MsDrvInterfaceTouchDeviceResume(struct early_suspend *pSuspend);
 extern void MsDrvInterfaceTouchDeviceSuspend(struct early_suspend *pSuspend);
 #endif
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD

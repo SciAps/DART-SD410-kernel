@@ -78,7 +78,7 @@ static struct early_suspend _gEarlySuspend;
 struct input_dev *g_ProximityInputDevice = NULL;
 
 u8 g_EnableTpProximity = 0;
-u8 g_FaceClosingTp = 0; // for QCOM platform -> 1 : close to, 0 : far away 
+u8 g_FaceClosingTp = 0; // for QCOM platform -> 1 : close to, 0 : far away
 #endif //CONFIG_ENABLE_PROXIMITY_DETECTION
 
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
@@ -86,7 +86,7 @@ extern struct tpd_device *tpd;
 
 #ifdef CONFIG_USE_IRQ_INTERRUPT_FOR_MTK_PLATFORM
 static struct work_struct _gFingerTouchWork;
-#else 
+#else
 static DECLARE_WAIT_QUEUE_HEAD(_gWaiter);
 static struct task_struct *_gThread = NULL;
 static int _gTpdFlag = 0;
@@ -94,7 +94,7 @@ static int _gTpdFlag = 0;
 
 #ifdef CONFIG_ENABLE_PROXIMITY_DETECTION
 u8 g_EnableTpProximity = 0;
-u8 g_FaceClosingTp = 1; // for MTK platform -> 0 : close to, 1 : far away 
+u8 g_FaceClosingTp = 1; // for MTK platform -> 0 : close to, 1 : far away
 #endif //CONFIG_ENABLE_PROXIMITY_DETECTION
 
 #ifdef CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
@@ -108,7 +108,7 @@ int _gIrq = -1;
 int MS_TS_MSG_IC_GPIO_RST = 0; // Must set a value other than 1
 int MS_TS_MSG_IC_GPIO_INT = 1; // Must set value as 1
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
-#endif 
+#endif
 
 #ifdef CONFIG_ENABLE_JNI_INTERFACE
 static MsgToolDrvCmd_t *_gMsgToolCmdIn = NULL;
@@ -314,7 +314,7 @@ static ssize_t _DrvProcfsForceFirmwareUpdateRead(struct file *pFile, char __user
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
 static ssize_t DrvMainProcfsMpTestCustomisedWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos);
 static ssize_t DrvMainProcfsMpTestCustomisedRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos);
-static const struct file_operations _gProcMpTestCustomised = { 
+static const struct file_operations _gProcMpTestCustomised = {
     .write = DrvMainProcfsMpTestCustomisedWrite,
     .read = DrvMainProcfsMpTestCustomisedRead,
 };
@@ -326,52 +326,52 @@ static ssize_t _DrvProcfsGetFilmModeRead(struct file *pFile, char __user *pBuffe
 static ssize_t _DrvProcfsSetFilmModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos);
 void DrvDBbusI2cResponseAck(void);
 extern int ms_atoi(char *nptr);
-static const struct file_operations _gProcChipType = { 
+static const struct file_operations _gProcChipType = {
     .read = _DrvProcfsChipTypeRead,
     .write = _DrvProcfsChipTypeWrite,
 };
 
-static const struct file_operations _gProcFirmwareData = { 
+static const struct file_operations _gProcFirmwareData = {
     .read = _DrvProcfsFirmwareDataRead,
     .write = _DrvProcfsFirmwareDataWrite,
 };
 
-static const struct file_operations _gProcApkFirmwareUpdate = { 
+static const struct file_operations _gProcApkFirmwareUpdate = {
     .read = _DrvProcfsFirmwareUpdateRead,
     .write = _DrvProcfsFirmwareUpdateWrite,
 };
 
-static const struct file_operations _gProcCustomerFirmwareVersion = { 
+static const struct file_operations _gProcCustomerFirmwareVersion = {
     .read = _DrvProcfsCustomerFirmwareVersionRead,
     .write = _DrvProcfsCustomerFirmwareVersionWrite,
 };
 
-static const struct file_operations _gProcPlatformFirmwareVersion = { 
+static const struct file_operations _gProcPlatformFirmwareVersion = {
     .read = _DrvProcfsPlatformFirmwareVersionRead,
     .write = _DrvProcfsPlatformFirmwareVersionWrite,
 };
 
-static const struct file_operations _gProcDeviceDriverVersion = { 
+static const struct file_operations _gProcDeviceDriverVersion = {
     .read = _DrvProcfsDeviceDriverVersionRead,
     .write = _DrvProcfsDeviceDriverVersionWrite,
 };
 
-static const struct file_operations _gProcSdCardFirmwareUpdate = { 
+static const struct file_operations _gProcSdCardFirmwareUpdate = {
     .read = _DrvProcfsSdCardFirmwareUpdateRead,
     .write = _DrvProcfsSdCardFirmwareUpdateWrite,
 };
 
-static const struct file_operations _gProcFirmwareDebug = { 
+static const struct file_operations _gProcFirmwareDebug = {
     .read = _DrvProcfsFirmwareDebugRead,
     .write = _DrvProcfsFirmwareDebugWrite,
 };
 
-static const struct file_operations _gProcFirmwareSetDebugValue = { 
+static const struct file_operations _gProcFirmwareSetDebugValue = {
     .read = _DrvProcfsFirmwareSetDebugValueRead,
     .write = _DrvProcfsFirmwareSetDebugValueWrite,
 };
 
-static const struct file_operations _gProcFirmwareSmBusDebug = { 
+static const struct file_operations _gProcFirmwareSmBusDebug = {
     .read = _DrvProcfsFirmwareSmBusDebugRead,
     .write = _DrvProcfsFirmwareSmBusDebugWrite,
 };
@@ -381,38 +381,38 @@ static const struct file_operations _gProcFirmwareSetDQMemValue = {
     .write = _DrvProcfsFirmwareSetDQMemValueWrite,
 };
 
-static const struct file_operations _gProcFirmwareMode = { 
+static const struct file_operations _gProcFirmwareMode = {
     .read = _DrvProcfsFirmwareModeRead,
     .write = _DrvProcfsFirmwareModeWrite,
 };
 
-static const struct file_operations _gProcFirmwareSensor = { 
+static const struct file_operations _gProcFirmwareSensor = {
     .read = _DrvProcfsFirmwareSensorRead,
     .write = _DrvProcfsFirmwareSensorWrite,
 };
 
-static const struct file_operations _gProcFirmwarePacketHeader = { 
+static const struct file_operations _gProcFirmwarePacketHeader = {
     .read = _DrvProcfsFirmwarePacketHeaderRead,
     .write = _DrvProcfsFirmwarePacketHeaderWrite,
 };
 
-static const struct file_operations _gProcQueryFeatureSupportStatus = { 
+static const struct file_operations _gProcQueryFeatureSupportStatus = {
     .read = _DrvProcfsQueryFeatureSupportStatusRead,
     .write = _DrvProcfsQueryFeatureSupportStatusWrite,
 };
 
-static const struct file_operations _gProcChangeFeatureSupportStatus = { 
+static const struct file_operations _gProcChangeFeatureSupportStatus = {
     .read = _DrvProcfsChangeFeatureSupportStatusRead,
     .write = _DrvProcfsChangeFeatureSupportStatusWrite,
 };
 
 #ifdef CONFIG_ENABLE_GESTURE_WAKEUP
-static const struct file_operations _gProcGestureWakeupMode = { 
+static const struct file_operations _gProcGestureWakeupMode = {
     .read = _DrvProcfsGestureWakeupModeRead,
     .write = _DrvProcfsGestureWakeupModeWrite,
 };
 #ifdef CONFIG_ENABLE_GESTURE_DEBUG_MODE
-static const struct file_operations _gProcGestureDebugMode = { 
+static const struct file_operations _gProcGestureDebugMode = {
     .read = _DrvProcfsGestureDebugModeRead,
     .write = _DrvProcfsGestureDebugModeWrite,
 };
@@ -420,7 +420,7 @@ static const struct file_operations _gProcGestureDebugMode = {
 #endif //CONFIG_ENABLE_GESTURE_WAKEUP
 
 #ifdef CONFIG_ENABLE_COUNT_REPORT_RATE
-static const struct file_operations _gProcReportRate = { 
+static const struct file_operations _gProcReportRate = {
     .read = _DrvProcfsReportRateRead,
     .write = _DrvProcfsReportRateWrite,
 };
@@ -452,26 +452,26 @@ static const struct file_operations _gProcFilmMode= {
 static const struct file_operations _gProcJniMethod = {
     .read = _DrvJniMsgToolRead,
     .write = _DrvJniMsgToolWrite,
-    .unlocked_ioctl = _DrvJniMsgToolIoctl,    
-    .compat_ioctl = _DrvJniMsgToolIoctl,    
+    .unlocked_ioctl = _DrvJniMsgToolIoctl,
+    .compat_ioctl = _DrvJniMsgToolIoctl,
 };
 #endif //CONFIG_ENABLE_JNI_INTERFACE
 
-static const struct file_operations _gProcSeLinuxLimitFirmwareUpdate = { 
+static const struct file_operations _gProcSeLinuxLimitFirmwareUpdate = {
     .read = _DrvProcfsSeLinuxLimitFirmwareUpdateRead,
 };
 
-static const struct file_operations _gProcForceFirmwareUpdate = { 
+static const struct file_operations _gProcForceFirmwareUpdate = {
     .read = _DrvProcfsForceFirmwareUpdateRead,
 };
-static const struct file_operations _gProcTrimCode = { 
+static const struct file_operations _gProcTrimCode = {
     .read = _DrvProcfsTrimCodeRead,
     .write = _DrvProcfsTrimCodeWrite,
 };
 //------------------------------------------------------------------------------//
 
 u32 SLAVE_I2C_ID_DBBUS = (0xC4>>1); //0x62 // for MSG28xx/MSG58xxA/ILI2117A/ILI2118A
-u32 SLAVE_I2C_ID_DWI2C = (0x4C>>1); //0x26 
+u32 SLAVE_I2C_ID_DWI2C = (0x4C>>1); //0x26
 
 u16 FIRMWARE_MODE_UNKNOWN_MODE = 0xFFFF;
 u16 FIRMWARE_MODE_DEMO_MODE = 0xFFFF;
@@ -513,7 +513,7 @@ int g_TpVirtualKeyDimLocal[MAX_KEY_NUM][4] = {{(TOUCH_SCREEN_X_MAX/4)/2*1,TOUCH_
                                                     {(TOUCH_SCREEN_X_MAX/4)/2*3,TOUCH_SCREEN_Y_MAX+BUTTON_H/2,BUTTON_W,BUTTON_H},
                                                     {(TOUCH_SCREEN_X_MAX/4)/2*5,TOUCH_SCREEN_Y_MAX+BUTTON_H/2,BUTTON_W,BUTTON_H},
                                                     {(TOUCH_SCREEN_X_MAX/4)/2*7,TOUCH_SCREEN_Y_MAX+BUTTON_H/2,BUTTON_W,BUTTON_H}};
-#endif 
+#endif
 #endif //CONFIG_ENABLE_REPORT_KEY_WITH_COORDINATE
 #endif //CONFIG_TP_HAVE_KEY
 
@@ -630,7 +630,7 @@ void DmaAlloc(void)
             I2CDMABuf_va = (u8 *)dma_alloc_coherent(&g_InputDevice->dev, MAX_I2C_TRANSACTION_LENGTH_LIMIT, &I2CDMABuf_pa, GFP_KERNEL);
         }
     }
-    
+
     if (NULL == I2CDMABuf_va)
     {
         DBG(&g_I2cClient->dev, "DmaAlloc FAILED!\n");
@@ -652,12 +652,12 @@ void DmaFree(void)
 {
     if (NULL != I2CDMABuf_va)
     {
-	      if (NULL != g_InputDevice)
-	      {
-	          dma_free_coherent(&g_InputDevice->dev, MAX_I2C_TRANSACTION_LENGTH_LIMIT, I2CDMABuf_va, I2CDMABuf_pa);
-	      }
-	      I2CDMABuf_va = NULL;
-	      I2CDMABuf_pa = 0;
+          if (NULL != g_InputDevice)
+          {
+              dma_free_coherent(&g_InputDevice->dev, MAX_I2C_TRANSACTION_LENGTH_LIMIT, I2CDMABuf_va, I2CDMABuf_pa);
+          }
+          I2CDMABuf_va = NULL;
+          I2CDMABuf_pa = 0;
 
         DBG(&g_I2cClient->dev, "DmaFree SUCCESS!\n");
     }
@@ -699,10 +699,10 @@ u8 RegGetHByteValue(u16 nAddr)
 
 void RegGetXBitValue(u16 nAddr, u8 * pRxData, u16 nLength, u16 nMaxI2cLengthLimit)
 {
-    u16 nReadAddr = nAddr;    
+    u16 nReadAddr = nAddr;
     u16 nReadSize = 0;
-    u16 nLeft = nLength;    
-    u16 nOffset = 0; 
+    u16 nLeft = nLength;
+    u16 nOffset = 0;
     u8 szTxData[3] = {0};
 
     szTxData[0] = 0x10;
@@ -723,11 +723,11 @@ void RegGetXBitValue(u16 nAddr, u8 * pRxData, u16 nLength, u16 nMaxI2cLengthLimi
             DBG(&g_I2cClient->dev, "*** RegGetXBitValue# Length >= I2cMax   nReadAddr=%x, nReadSize=%d ***\n", nReadAddr, nReadSize);
 
             szTxData[1] = (nReadAddr >> 8) & 0xFF;
-            szTxData[2] = nReadAddr & 0xFF;            
-        
+            szTxData[2] = nReadAddr & 0xFF;
+
             IicWriteData(SLAVE_I2C_ID_DBBUS, &szTxData[0], 3);
             IicReadData(SLAVE_I2C_ID_DBBUS, &pRxData[nOffset], nReadSize);
-        
+
             nReadAddr = nReadAddr + nReadSize;    //set next read address
             nLeft = nLeft - nReadSize;
             nOffset = nOffset + nReadSize;
@@ -739,26 +739,26 @@ void RegGetXBitValue(u16 nAddr, u8 * pRxData, u16 nLength, u16 nMaxI2cLengthLimi
             DBG(&g_I2cClient->dev, "*** RegGetXBitValue# Length < I2cMax   nReadAddr=%x, nReadSize=%d ***\n", nReadAddr, nReadSize);
 
             szTxData[1] = (nReadAddr >> 8) & 0xFF;
-            szTxData[2] = nReadAddr & 0xFF;            
-        
+            szTxData[2] = nReadAddr & 0xFF;
+
             IicWriteData(SLAVE_I2C_ID_DBBUS, &szTxData[0], 3);
             IicReadData(SLAVE_I2C_ID_DBBUS, &pRxData[nOffset], nReadSize);
-            
+
             nLeft = 0;
-            nOffset = nOffset + nReadSize;            
+            nOffset = nOffset + nReadSize;
             DBG(&g_I2cClient->dev, "*** RegGetXBitValue# Length < I2cMax   nLeft=%d, nOffset=%d ***\n", nLeft, nOffset);
         }
     }
 
-    mutex_unlock(&g_Mutex);    
+    mutex_unlock(&g_Mutex);
 }
 
 void RegGetXBitWrite4ByteValue(u16 nAddr, u8 * pRxData, u16 nLength, u16 nMaxI2cLengthLimit)
 {
-    u16 nReadAddr = nAddr;    
+    u16 nReadAddr = nAddr;
     u16 nReadSize = 0;
-    u16 nLeft = nLength;    
-    u16 nOffset = 0; 
+    u16 nLeft = nLength;
+    u16 nOffset = 0;
     u8 szTxData[4] = {0};
 
     szTxData[0] = 0x10;
@@ -779,11 +779,11 @@ void RegGetXBitWrite4ByteValue(u16 nAddr, u8 * pRxData, u16 nLength, u16 nMaxI2c
             DBG(&g_I2cClient->dev, "*** RegGetXBitValue# Length >= I2cMax   nReadAddr=%x, nReadSize=%d ***\n", nReadAddr, nReadSize);
 
             szTxData[2] = (nReadAddr >> 8) & 0xFF;
-            szTxData[3] = nReadAddr & 0xFF;            
-        
+            szTxData[3] = nReadAddr & 0xFF;
+
             IicWriteData(SLAVE_I2C_ID_DBBUS, &szTxData[0], 4);
             IicReadData(SLAVE_I2C_ID_DBBUS, &pRxData[nOffset], nReadSize);
-        
+
             nReadAddr = nReadAddr + nReadSize;    //set next read address
             nLeft = nLeft - nReadSize;
             nOffset = nOffset + nReadSize;
@@ -795,18 +795,18 @@ void RegGetXBitWrite4ByteValue(u16 nAddr, u8 * pRxData, u16 nLength, u16 nMaxI2c
             DBG(&g_I2cClient->dev, "*** RegGetXBitValue# Length < I2cMax   nReadAddr=%x, nReadSize=%d ***\n", nReadAddr, nReadSize);
 
             szTxData[2] = (nReadAddr >> 8) & 0xFF;
-            szTxData[3] = nReadAddr & 0xFF;            
-        
+            szTxData[3] = nReadAddr & 0xFF;
+
             IicWriteData(SLAVE_I2C_ID_DBBUS, &szTxData[0], 4);
             IicReadData(SLAVE_I2C_ID_DBBUS, &pRxData[nOffset], nReadSize);
-            
+
             nLeft = 0;
-            nOffset = nOffset + nReadSize;            
+            nOffset = nOffset + nReadSize;
             DBG(&g_I2cClient->dev, "*** RegGetXBitValue# Length < I2cMax   nLeft=%d, nOffset=%d ***\n", nLeft, nOffset);
         }
     }
 
-    mutex_unlock(&g_Mutex);    
+    mutex_unlock(&g_Mutex);
 }
 
 s32 RegSet16BitValue(u16 nAddr, u16 nData)
@@ -823,7 +823,7 @@ s32 RetryRegSet16BitValue(u16 nAddr, u16 nData)
 {
     s32 rc = 0;
     u32 nRetryCount = 0;
-    
+
     while (nRetryCount < 5)
     {
         mdelay(5);
@@ -840,7 +840,7 @@ s32 RetryRegSet16BitValue(u16 nAddr, u16 nData)
     {
         DBG(&g_I2cClient->dev, "RegSet16BitValue(0x%x, 0x%x) failed, rc = %d\n", nAddr, nData, rc);
     }
-    
+
     return rc;
 }
 
@@ -873,31 +873,31 @@ void RegSet16BitValueOff(u16 nAddr, u16 nData) //Set bit on nData from 1 to 0
 u16 RegGet16BitValueByAddressMode(u16 nAddr, AddressMode_e eAddressMode)
 {
     u16 nData = 0;
-    
+
     if (eAddressMode == ADDRESS_MODE_16BIT)
     {
         nAddr = nAddr - (nAddr & 0xFF) + ((nAddr & 0xFF) << 1);
     }
-    
+
     nData = RegGet16BitValue(nAddr);
-    
+
     return nData;
 }
-	
+
 void RegSet16BitValueByAddressMode(u16 nAddr, u16 nData, AddressMode_e eAddressMode)
 {
     if (eAddressMode == ADDRESS_MODE_16BIT)
     {
         nAddr = nAddr - (nAddr & 0xFF) + ((nAddr & 0xFF) << 1);
     }
-    
+
     RegSet16BitValue(nAddr, nData);
 }
 
-void RegMask16BitValue(u16 nAddr, u16 nMask, u16 nData, AddressMode_e eAddressMode) 
+void RegMask16BitValue(u16 nAddr, u16 nMask, u16 nData, AddressMode_e eAddressMode)
 {
     u16 nTmpData = 0;
-    
+
     if (nData > nMask)
     {
         return;
@@ -928,7 +928,7 @@ static void ReadFlashInit28XX(u16 cayenne_address,int nBlockType)
     DBG(&g_I2cClient->dev, "*** %s *** \n", __func__);
 
     //wriu 0x1608 0x20
-	RegSet16BitValue(0x1608, 0x20);
+    RegSet16BitValue(0x1608, 0x20);
     //wriu 0x1606 0x20
     RegSet16BitValue(0x1606, 0x20);
 
@@ -940,19 +940,19 @@ static void ReadFlashInit28XX(u16 cayenne_address,int nBlockType)
 
     if (nBlockType == EMEM_TYPE_INFO_BLOCK)
     {
-    	//set Info Block
-    	RegSetLByteValue((uint)0x1607, (uint)0x08);
+        //set Info Block
+        RegSetLByteValue((uint)0x1607, (uint)0x08);
 
         //set Info Double Buffer
-    	RegSetLByteValue((uint)0x1604, (uint)0x01);
+        RegSetLByteValue((uint)0x1604, (uint)0x01);
     }
     else
     {
         //set Main Block
-    	RegSetLByteValue((uint)0x1607, (uint)0x00);
+        RegSetLByteValue((uint)0x1607, (uint)0x00);
 
         //set Main Double Buffer
-    	RegSetLByteValue((uint)0x1604, (uint)0x01);
+        RegSetLByteValue((uint)0x1604, (uint)0x01);
     }
     // set FPGA flag
     RegSetLByteValue( 0x1610, 0x01);
@@ -991,43 +991,43 @@ static int ReadFlashRIU28XX(u32 nAddr,int nBlockType,int nLength,u8 *pFlashData)
     pFlashData[2] = (u8)(read_16_addr_c & 0xff);
     pFlashData[3] = (u8)((read_16_addr_c >> 8) & 0xff);
     //DEBUG("*** %s() pFlashData[0]:0x%x pFlashData[1]:0x%x pFlashData[2]:0x%x pFlashData[3]:0x%x***\n",
-    //		__func__,pFlashData[0],pFlashData[1],pFlashData[2],pFlashData[3]);
+    //      __func__,pFlashData[0],pFlashData[1],pFlashData[2],pFlashData[3]);
     return 0;
 }
 
 static int ReadFlash28XX(u32 nAddr,int nBlockType,int nLength,u8 *pFlashData)
 {
-	u16 _28xx_addr=nAddr/4;
-	u32 addr_star,addr_end,addr_step;
-	u32 read_byte=0;
+    u16 _28xx_addr=nAddr/4;
+    u32 addr_star,addr_end,addr_step;
+    u32 read_byte=0;
 
-	addr_star=nAddr;
-	addr_end=nAddr+nLength;
+    addr_star=nAddr;
+    addr_end=nAddr+nLength;
 
-	if ((addr_star>=EMEM_SIZE_MSG28XX) || (addr_end > EMEM_SIZE_MSG28XX))
-	{
+    if ((addr_star>=EMEM_SIZE_MSG28XX) || (addr_end > EMEM_SIZE_MSG28XX))
+    {
         DBG(&g_I2cClient->dev, "*** %s : addr_start = 0x%x , addr_end = 0x%x *** \n", __func__, addr_star,addr_end);
-		return -1;
-	}
+        return -1;
+    }
 
-	addr_step=4;
+    addr_step=4;
 
     ReadFlashInit28XX(_28xx_addr,nBlockType);
 
     for(addr_star=nAddr;addr_star<addr_end;addr_star+=addr_step)
     {
-    	_28xx_addr=addr_star/4;
+        _28xx_addr=addr_star/4;
 
-    	DBG(&g_I2cClient->dev, "*** %s() _28xx_addr:0x%x addr_star:0x%x addr_end:%x nLength:%d pFlashData:%p***\n", __func__,_28xx_addr,addr_star,addr_end,nLength,pFlashData);
-    	ReadFlashRIU28XX(_28xx_addr,nBlockType,nLength,(pFlashData+read_byte));
-    	DBG(&g_I2cClient->dev,"*** %s() pFlashData[%x]: %02x %02x %02x %02x read_byte:%d \n", __func__, addr_star, pFlashData[read_byte], pFlashData[read_byte+1], pFlashData[read_byte+2],pFlashData[read_byte+3],read_byte);
-    	//pFlashData+=addr_step;
-    	read_byte+=4;
+        DBG(&g_I2cClient->dev, "*** %s() _28xx_addr:0x%x addr_star:0x%x addr_end:%x nLength:%d pFlashData:%p***\n", __func__,_28xx_addr,addr_star,addr_end,nLength,pFlashData);
+        ReadFlashRIU28XX(_28xx_addr,nBlockType,nLength,(pFlashData+read_byte));
+        DBG(&g_I2cClient->dev,"*** %s() pFlashData[%x]: %02x %02x %02x %02x read_byte:%d \n", __func__, addr_star, pFlashData[read_byte], pFlashData[read_byte+1], pFlashData[read_byte+2],pFlashData[read_byte+3],read_byte);
+        //pFlashData+=addr_step;
+        read_byte+=4;
     }
 
     ReadFlashFinale28XX();
 
-	return 0;
+    return 0;
 }
 
 int ReadFlash(u8 nChipType,u32 nAddr,int nBlockType,int nLength,u8 *pFlashData)
@@ -1035,7 +1035,7 @@ int ReadFlash(u8 nChipType,u32 nAddr,int nBlockType,int nLength,u8 *pFlashData)
     int ret=0;
 
     DBG(&g_I2cClient->dev, "*** %s()  nChipType 0x%x***\n", __func__,nChipType);
-	ret=ReadFlash28XX(nAddr,nBlockType,nLength,pFlashData);
+    ret=ReadFlash28XX(nAddr,nBlockType,nLength,pFlashData);
 
     return ret;
 }
@@ -1164,42 +1164,42 @@ void DbBusWaitMCU(void)
     IicWriteData(SLAVE_I2C_ID_DBBUS, data, 1);
 
     data[0] = 0x61;
-    IicWriteData(SLAVE_I2C_ID_DBBUS, data, 1);    
+    IicWriteData(SLAVE_I2C_ID_DBBUS, data, 1);
 }
 
 void SetCfb(u8 Cfb)
 {
-	/// Setting Cfb
-	switch (Cfb)
-	{
-		case _50p: /// Cfb = 50p
-			RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0000, ADDRESS_MODE_16BIT);
-			RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0000, ADDRESS_MODE_16BIT);	/// 0x1523[10:8] = 0x0, Rfb: 180kohm
-	        break;
+    /// Setting Cfb
+    switch (Cfb)
+    {
+        case _50p: /// Cfb = 50p
+            RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0000, ADDRESS_MODE_16BIT);
+            RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0000, ADDRESS_MODE_16BIT);    /// 0x1523[10:8] = 0x0, Rfb: 180kohm
+            break;
 
-	    case _40p: /// Cfb = 40p
-	    	RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0020, ADDRESS_MODE_16BIT);
-	    	RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0100, ADDRESS_MODE_16BIT);	/// 0x1523[10:8] = 0x1, Rfb: 225kohm
-	        break;
+        case _40p: /// Cfb = 40p
+            RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0020, ADDRESS_MODE_16BIT);
+            RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0100, ADDRESS_MODE_16BIT);    /// 0x1523[10:8] = 0x1, Rfb: 225kohm
+            break;
 
-	    case _30p: /// Cfb = 30p
-	    	RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0040, ADDRESS_MODE_16BIT);
-	    	RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0200, ADDRESS_MODE_16BIT);	/// 0x1523[10:8] = 0x2, Rfb: 300kohm
-	    	break;
+        case _30p: /// Cfb = 30p
+            RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0040, ADDRESS_MODE_16BIT);
+            RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0200, ADDRESS_MODE_16BIT);    /// 0x1523[10:8] = 0x2, Rfb: 300kohm
+            break;
 
-	    case _20p: /// Cfb = 20p
-	    	RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0060, ADDRESS_MODE_16BIT);
-	      	RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0200, ADDRESS_MODE_16BIT);	/// 0x1523[10:8] = 0x2, Rfb: 300kohm
-	        break;
+        case _20p: /// Cfb = 20p
+            RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0060, ADDRESS_MODE_16BIT);
+            RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0200, ADDRESS_MODE_16BIT);    /// 0x1523[10:8] = 0x2, Rfb: 300kohm
+            break;
 
-	    case _10p: /// Cfb = 10p
-	    	RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0070, ADDRESS_MODE_16BIT);
-	    	RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0200, ADDRESS_MODE_16BIT);	/// 0x1523[10:8] = 0x2, Rfb: 300kohm
-	        break;
+        case _10p: /// Cfb = 10p
+            RegMask16BitValue(0x1528, (u16)0x0070, (u16)0x0070, ADDRESS_MODE_16BIT);
+            RegMask16BitValue(0x1523, (u16)0x0700, (u16)0x0200, ADDRESS_MODE_16BIT);    /// 0x1523[10:8] = 0x2, Rfb: 300kohm
+            break;
 
-	    default:
-	        break;
-	}
+        default:
+            break;
+    }
 }
 
 s32 IicWriteData(u8 nSlaveId, u8* pBuf, u16 nSize)
@@ -1217,7 +1217,7 @@ s32 IicWriteData(u8 nSlaveId, u8* pBuf, u16 nSize)
         },
     };
 #ifdef ROCKCHIP_PLATFORM
-	msgs[0].scl_rate = 400000;
+    msgs[0].scl_rate = 400000;
 #endif //ROCKCHIP_PLATFORM
     /* If everything went ok (i.e. 1 msg transmitted), return #bytes
        transmitted, else error code. */
@@ -1245,7 +1245,7 @@ s32 IicWriteData(u8 nSlaveId, u8* pBuf, u16 nSize)
                      goto out;
                  }
             }
-            
+
             if(nSize == 1)
             {
                 if(pBuf[0] == 0x45)
@@ -1284,7 +1284,7 @@ s32 IicWriteData(u8 nSlaveId, u8* pBuf, u16 nSize)
             if (nSize > 8 && NULL != I2CDMABuf_va)
             {
                 s32 i = 0;
-	          
+
                 for (i = 0; i < nSize; i ++)
                 {
                     I2CDMABuf_va[i] = pBuf[i];
@@ -1294,7 +1294,7 @@ s32 IicWriteData(u8 nSlaveId, u8* pBuf, u16 nSize)
             }
             else
             {
-                g_I2cClient->ext_flag = g_I2cClient->ext_flag & (~I2C_DMA_FLAG);	
+                g_I2cClient->ext_flag = g_I2cClient->ext_flag & (~I2C_DMA_FLAG);
                 rc = i2c_master_send(g_I2cClient, pBuf, nSize);
             }
 #else
@@ -1312,7 +1312,7 @@ s32 IicWriteData(u8 nSlaveId, u8* pBuf, u16 nSize)
                      goto out;
                  }
             }
-            
+
             if(nSize == 1)
             {
                 if(pBuf[0] == 0x45)
@@ -1325,14 +1325,14 @@ s32 IicWriteData(u8 nSlaveId, u8* pBuf, u16 nSize)
             {
                 PRINTF_ERR("IicWriteData() error %d, nSlaveId=%d, nSize=%d\n", rc, nSlaveId, nSize);
             }
-        }            
+        }
     }
     else
     {
         PRINTF_ERR("i2c client is NULL\n");
     }
 #endif
-    
+
 out:
     return rc;
 }
@@ -1352,7 +1352,7 @@ s32 IicReadData(u8 nSlaveId, u8* pBuf, u16 nSize)
         },
     };
 #ifdef ROCKCHIP_PLATFORM
-	msgs[0].scl_rate = 400000;
+    msgs[0].scl_rate = 400000;
 #endif //ROCKCHIP_PLATFORM
     /* If everything went ok (i.e. 1 msg transmitted), return #bytes
        transmitted, else error code. */
@@ -1365,7 +1365,7 @@ s32 IicReadData(u8 nSlaveId, u8* pBuf, u16 nSize)
         else
         {
             rc = i2c_transfer(g_I2cClient->adapter, msgs, 1);
-        
+
             if (rc == 1)
             {
                 rc = nSize;
@@ -1396,10 +1396,10 @@ s32 IicReadData(u8 nSlaveId, u8* pBuf, u16 nSize)
             if (nSize > 8 && NULL != I2CDMABuf_va)
             {
                 s32 i = 0;
-        
+
                 g_I2cClient->ext_flag = g_I2cClient->ext_flag | I2C_DMA_FLAG;
                 rc = i2c_master_recv(g_I2cClient, (unsigned char *)I2CDMABuf_pa, nSize);
-        
+
                 for (i = 0; i < nSize; i ++)
                 {
                     pBuf[i] = I2CDMABuf_va[i];
@@ -1407,7 +1407,7 @@ s32 IicReadData(u8 nSlaveId, u8* pBuf, u16 nSize)
             }
             else
             {
-                g_I2cClient->ext_flag = g_I2cClient->ext_flag & (~I2C_DMA_FLAG);	
+                g_I2cClient->ext_flag = g_I2cClient->ext_flag & (~I2C_DMA_FLAG);
                 rc = i2c_master_recv(g_I2cClient, pBuf, nSize);
             }
 #else
@@ -1423,14 +1423,14 @@ s32 IicReadData(u8 nSlaveId, u8* pBuf, u16 nSize)
             {
                 PRINTF_ERR("IicReadData() error %d, nSlaveId=%d, nSize=%d\n", rc, nSlaveId, nSize);
             }
-        }            
+        }
     }
     else
     {
         PRINTF_ERR("i2c client is NULL\n");
     }
 #endif
-    
+
     return rc;
 }
 
@@ -1464,7 +1464,7 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
     msgs[0].scl_rate = 400000;
     msgs[1].scl_rate = 400000;
 #endif //ROCKCHIP_PLATFORM
-    // If everything went ok (i.e. 1 msg transmitted), return #bytes transmitted, else error code. 
+    // If everything went ok (i.e. 1 msg transmitted), return #bytes transmitted, else error code.
     if (g_I2cClient != NULL)
     {
         if (nMaxI2cLengthLimit >= 256)
@@ -1475,8 +1475,8 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
         {
             nSegmentLength = 128;
         }
-        
-        PRINTF_ERR("nSegmentLength = %d\n", nSegmentLength);	// add for debug
+
+        PRINTF_ERR("nSegmentLength = %d\n", nSegmentLength);    // add for debug
 
         while (nLeft > 0)
         {
@@ -1486,8 +1486,8 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
             nRegAddr = nNextRegAddr;
             szWriteBuf[2] = nRegAddr;
 
-            PRINTF_ERR("nRegBank = 0x%x\n", nRegBank);	// add for debug
-            PRINTF_ERR("nRegAddr = 0x%x\n", nRegAddr);	// add for debug
+            PRINTF_ERR("nRegBank = 0x%x\n", nRegBank);  // add for debug
+            PRINTF_ERR("nRegAddr = 0x%x\n", nRegAddr);  // add for debug
 
             msgs[1].buf = &pBuf[nOffset];
 
@@ -1495,9 +1495,9 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
             {
                 if ((nRegAddr + nSegmentLength) < MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                 {
-                    nNextRegAddr = nRegAddr + nSegmentLength; 
-                    
-                    PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);	// add for debug
+                    nNextRegAddr = nRegAddr + nSegmentLength;
+
+                    PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);  // add for debug
 
                     msgs[1].len = nSegmentLength;
                     nLeft -= nSegmentLength;
@@ -1505,10 +1505,10 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                 }
                 else if ((nRegAddr + nSegmentLength) == MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                 {
-                    nNextRegAddr = 0x00; 		
+                    nNextRegAddr = 0x00;
                     nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
+                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
 
                     msgs[1].len = nSegmentLength;
                     nLeft -= nSegmentLength;
@@ -1519,13 +1519,13 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                     nNextRegAddr = 0x00;
                     nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                    PRINTF_INFO("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
-                    
+                    PRINTF_INFO("nNextRegBank = 0x%x\n", nNextRegBank); // add for debug
+
                     nOver = (nRegAddr + nSegmentLength) - MAX_TOUCH_IC_REGISTER_BANK_SIZE;
 
-                    PRINTF_ERR("nOver = 0x%x\n", nOver);	// add for debug
+                    PRINTF_ERR("nOver = 0x%x\n", nOver);    // add for debug
 
-                    msgs[1].len = nSegmentLength - nOver; 		
+                    msgs[1].len = nSegmentLength - nOver;
                     nLeft -= msgs[1].len;
                     nOffset += msgs[1].len;
                 }
@@ -1534,9 +1534,9 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
             {
                 if ((nRegAddr + nLeft) < MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                 {
-                    nNextRegAddr = nRegAddr + nLeft; 
-                    
-                    PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);	// add for debug
+                    nNextRegAddr = nRegAddr + nLeft;
+
+                    PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);  // add for debug
 
                     msgs[1].len = nLeft;
                     nLeft = 0;
@@ -1544,10 +1544,10 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                 }
                 else if ((nRegAddr + nLeft) == MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                 {
-                    nNextRegAddr = 0x00; 		
+                    nNextRegAddr = 0x00;
                     nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
+                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
 
                     msgs[1].len = nLeft;
                     nLeft = 0;
@@ -1558,13 +1558,13 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                     nNextRegAddr = 0x00;
                     nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
-                    
+                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
+
                     nOver = (nRegAddr + nLeft) - MAX_TOUCH_IC_REGISTER_BANK_SIZE;
 
-                    PRINTF_ERR("nOver = 0x%x\n", nOver);	// add for debug
+                    PRINTF_ERR("nOver = 0x%x\n", nOver);    // add for debug
 
-                    msgs[1].len = nLeft - nOver; 		
+                    msgs[1].len = nLeft - nOver;
                     nLeft -= msgs[1].len;
                     nOffset += msgs[1].len;
                 }
@@ -1578,7 +1578,7 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
             else // rc < 0
             {
                 PRINTF_ERR("IicSegmentReadDataByDbBus() -> i2c_transfer() error %d\n", rc);
-                
+
                 return rc;
             }
         }
@@ -1595,7 +1595,7 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
 #endif //CONFIG_ENABLE_DMA_IIC
         u16 nLength = 0;
         u8 nAddrBefore = g_I2cClient->addr;
-        
+
         g_I2cClient->addr = SLAVE_I2C_ID_DBBUS;
 
         if (nMaxI2cLengthLimit >= 256)
@@ -1607,7 +1607,7 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
             nSegmentLength = 128;
         }
 
-        PRINTF_ERR("nSegmentLength = %d\n", nSegmentLength);	// add for debug
+        PRINTF_ERR("nSegmentLength = %d\n", nSegmentLength);    // add for debug
 
 #ifdef CONFIG_ENABLE_DMA_IIC
         if (NULL != I2CDMABuf_va)
@@ -1622,26 +1622,26 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                 nRegAddr = nNextRegAddr;
                 szWriteBuf[2] = nRegAddr;
 
-                PRINTF_ERR("nRegBank = 0x%x\n", nRegBank);	// add for debug
-                PRINTF_ERR("nRegAddr = 0x%x\n", nRegAddr);	// add for debug
+                PRINTF_ERR("nRegBank = 0x%x\n", nRegBank);  // add for debug
+                PRINTF_ERR("nRegAddr = 0x%x\n", nRegAddr);  // add for debug
 
                 if (nLeft > nSegmentLength)
                 {
                     if ((nRegAddr + nSegmentLength) < MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                     {
-                        nNextRegAddr = nRegAddr + nSegmentLength; 
-                    
-                        PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);	// add for debug
+                        nNextRegAddr = nRegAddr + nSegmentLength;
+
+                        PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);  // add for debug
 
                         nLength = nSegmentLength;
                         nLeft -= nSegmentLength;
                     }
                     else if ((nRegAddr + nSegmentLength) == MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                     {
-                        nNextRegAddr = 0x00; 		
+                        nNextRegAddr = 0x00;
                         nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                        PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
+                        PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
 
                         nLength = nSegmentLength;
                         nLeft -= nSegmentLength;
@@ -1651,13 +1651,13 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                         nNextRegAddr = 0x00;
                         nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                        PRINTF_INFO("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
-                    
+                        PRINTF_INFO("nNextRegBank = 0x%x\n", nNextRegBank); // add for debug
+
                         nOver = (nRegAddr + nSegmentLength) - MAX_TOUCH_IC_REGISTER_BANK_SIZE;
 
-                        PRINTF_ERR("nOver = 0x%x\n", nOver);	// add for debug
+                        PRINTF_ERR("nOver = 0x%x\n", nOver);    // add for debug
 
-                        nLength = nSegmentLength - nOver; 		
+                        nLength = nSegmentLength - nOver;
                         nLeft -= nLength;
                     }
                 }
@@ -1665,19 +1665,19 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                 {
                     if ((nRegAddr + nLeft) < MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                     {
-                        nNextRegAddr = nRegAddr + nLeft; 
-                    
-                        PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);	// add for debug
+                        nNextRegAddr = nRegAddr + nLeft;
+
+                        PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);  // add for debug
 
                         nLength = nLeft;
                         nLeft = 0;
                     }
                     else if ((nRegAddr + nLeft) == MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                     {
-                        nNextRegAddr = 0x00; 		
+                        nNextRegAddr = 0x00;
                         nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                        PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
+                        PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
 
                         nLength = nLeft;
                         nLeft = 0;
@@ -1687,13 +1687,13 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                         nNextRegAddr = 0x00;
                         nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                        PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
-                    
+                        PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
+
                         nOver = (nRegAddr + nLeft) - MAX_TOUCH_IC_REGISTER_BANK_SIZE;
 
-                        PRINTF_ERR("nOver = 0x%x\n", nOver);	// add for debug
+                        PRINTF_ERR("nOver = 0x%x\n", nOver);    // add for debug
 
-                        nLength = nLeft - nOver; 		
+                        nLength = nLeft - nOver;
                         nLeft -= nLength;
                     }
                 }
@@ -1712,7 +1712,7 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                 if (rc < 0)
                 {
                     PRINTF_ERR("IicSegmentReadDataByDbBus() -> i2c_master_recv() error %d\n", rc);
-                    
+
                     return rc;
                 }
                 else
@@ -1740,8 +1740,8 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
             nRegAddr = nNextRegAddr;
             szWriteBuf[2] = nRegAddr;
 
-            PRINTF_ERR("nRegBank = 0x%x\n", nRegBank);	// add for debug
-            PRINTF_ERR("nRegAddr = 0x%x\n", nRegAddr);	// add for debug
+            PRINTF_ERR("nRegBank = 0x%x\n", nRegBank);  // add for debug
+            PRINTF_ERR("nRegAddr = 0x%x\n", nRegAddr);  // add for debug
 
             pReadBuf = &pBuf[nOffset];
 
@@ -1749,9 +1749,9 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
             {
                 if ((nRegAddr + nSegmentLength) < MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                 {
-                    nNextRegAddr = nRegAddr + nSegmentLength; 
-                    
-                    PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);	// add for debug
+                    nNextRegAddr = nRegAddr + nSegmentLength;
+
+                    PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);  // add for debug
 
                     nLength = nSegmentLength;
                     nLeft -= nSegmentLength;
@@ -1759,10 +1759,10 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                 }
                 else if ((nRegAddr + nSegmentLength) == MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                 {
-                    nNextRegAddr = 0x00; 		
+                    nNextRegAddr = 0x00;
                     nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
+                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
 
                     nLength = nSegmentLength;
                     nLeft -= nSegmentLength;
@@ -1773,13 +1773,13 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                     nNextRegAddr = 0x00;
                     nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                    PRINTF_INFO("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
-                    
+                    PRINTF_INFO("nNextRegBank = 0x%x\n", nNextRegBank); // add for debug
+
                     nOver = (nRegAddr + nSegmentLength) - MAX_TOUCH_IC_REGISTER_BANK_SIZE;
 
-                    PRINTF_ERR("nOver = 0x%x\n", nOver);	// add for debug
+                    PRINTF_ERR("nOver = 0x%x\n", nOver);    // add for debug
 
-                    nLength = nSegmentLength - nOver; 		
+                    nLength = nSegmentLength - nOver;
                     nLeft -= nLength;
                     nOffset += nLength;
                 }
@@ -1788,9 +1788,9 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
             {
                 if ((nRegAddr + nLeft) < MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                 {
-                    nNextRegAddr = nRegAddr + nLeft; 
-                    
-                    PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);	// add for debug
+                    nNextRegAddr = nRegAddr + nLeft;
+
+                    PRINTF_ERR("nNextRegAddr = 0x%x\n", nNextRegAddr);  // add for debug
 
                     nLength = nLeft;
                     nLeft = 0;
@@ -1798,10 +1798,10 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                 }
                 else if ((nRegAddr + nLeft) == MAX_TOUCH_IC_REGISTER_BANK_SIZE)
                 {
-                    nNextRegAddr = 0x00; 		
+                    nNextRegAddr = 0x00;
                     nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
+                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
 
                     nLength = nLeft;
                     nLeft = 0;
@@ -1812,13 +1812,13 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
                     nNextRegAddr = 0x00;
                     nNextRegBank = nRegBank + 1; // shift to read data from next register bank
 
-                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);	// add for debug
-                    
+                    PRINTF_ERR("nNextRegBank = 0x%x\n", nNextRegBank);  // add for debug
+
                     nOver = (nRegAddr + nLeft) - MAX_TOUCH_IC_REGISTER_BANK_SIZE;
 
-                    PRINTF_ERR("nOver = 0x%x\n", nOver);	// add for debug
+                    PRINTF_ERR("nOver = 0x%x\n", nOver);    // add for debug
 
-                    nLength = nLeft - nOver; 		
+                    nLength = nLeft - nOver;
                     nLeft -= nLength;
                     nOffset += nLength;
                 }
@@ -1852,7 +1852,7 @@ s32 IicSegmentReadDataByDbBus(u8 nRegBank, u8 nRegAddr, u8* pBuf, u16 nSize, u16
         PRINTF_ERR("i2c client is NULL\n");
     }
 #endif
-    
+
     return nReadSize;
 }
 
@@ -1882,7 +1882,7 @@ s32 IicSegmentReadDataBySmBus(u16 nAddr, u8* pBuf, u16 nSize, u16 nMaxI2cLengthL
     msgs[0].scl_rate = 400000;
     msgs[1].scl_rate = 400000;
 #endif //ROCKCHIP_PLATFORM
-    // If everything went ok (i.e. 1 msg transmitted), return #bytes transmitted, else error code. 
+    // If everything went ok (i.e. 1 msg transmitted), return #bytes transmitted, else error code.
     if (g_I2cClient != NULL)
     {
         while (nLeft > 0)
@@ -1918,7 +1918,7 @@ s32 IicSegmentReadDataBySmBus(u16 nAddr, u8* pBuf, u16 nSize, u16 nMaxI2cLengthL
             else // rc < 0
             {
                 PRINTF_ERR("IicSegmentReadDataBySmBus() -> i2c_transfer() error %d\n", rc);
-                
+
                 return rc;
             }
         }
@@ -1935,7 +1935,7 @@ s32 IicSegmentReadDataBySmBus(u16 nAddr, u8* pBuf, u16 nSize, u16 nMaxI2cLengthL
 #endif //CONFIG_ENABLE_DMA_IIC
         u16 nLength = 0;
         u8 nAddrBefore = g_I2cClient->addr;
-        
+
         g_I2cClient->addr = SLAVE_I2C_ID_DWI2C;
 
 #ifdef CONFIG_ENABLE_DMA_IIC
@@ -1957,7 +1957,7 @@ s32 IicSegmentReadDataBySmBus(u16 nAddr, u8* pBuf, u16 nSize, u16 nMaxI2cLengthL
                 nLength = nLeft;
                 nLeft = 0;
             }
-            
+
             g_I2cClient->ext_flag = g_I2cClient->ext_flag & (~I2C_DMA_FLAG);
             rc = i2c_master_send(g_I2cClient, &szWriteBuf[0], 3);
             if (rc < 0)
@@ -2007,7 +2007,7 @@ s32 IicSegmentReadDataBySmBus(u16 nAddr, u8* pBuf, u16 nSize, u16 nMaxI2cLengthL
                 nLeft = 0;
 //                nOffset += nLength;
             }
-            
+
             rc = i2c_master_send(g_I2cClient, &szWriteBuf[0], 3);
             if (rc < 0)
             {
@@ -2036,7 +2036,7 @@ s32 IicSegmentReadDataBySmBus(u16 nAddr, u8* pBuf, u16 nSize, u16 nMaxI2cLengthL
        PRINTF_ERR("i2c client is NULL\n");
    }
 #endif
-	
+
    return nReadSize;
 }
 
@@ -2059,7 +2059,7 @@ static u32 _DrvConvertCharToHexDigit(char *pCh, u32 nLength)
 {
     u32 nRetVal = 0;
     u32 i;
-    
+
     DBG(&g_I2cClient->dev, "nLength = %d\n", nLength);
 
     for (i = 0; i < nLength; i ++)
@@ -2067,12 +2067,12 @@ static u32 _DrvConvertCharToHexDigit(char *pCh, u32 nLength)
         char ch = *pCh++;
         u32 n = 0;
         u8  nIsValidDigit = 0;
-        
+
         if ((i == 0 && ch == '0') || (i == 1 && ch == 'x'))
         {
-            continue;		
+            continue;
         }
-        
+
         if ('0' <= ch && ch <= '9')
         {
             n = ch-'0';
@@ -2088,13 +2088,13 @@ static u32 _DrvConvertCharToHexDigit(char *pCh, u32 nLength)
             n = 10 + ch-'A';
             nIsValidDigit = 1;
         }
-        
+
         if (1 == nIsValidDigit)
         {
             nRetVal = n + nRetVal*16;
         }
     }
-    
+
     return nRetVal;
 }
 
@@ -2102,7 +2102,7 @@ void DrvReadFile(char *pFilePath, u8 *pBuf, u16 nLength)
 {
     struct file *pFile = NULL;
     mm_segment_t old_fs;
-    ssize_t nReadBytes = 0;    
+    ssize_t nReadBytes = 0;
 
     old_fs = get_fs();
     set_fs(get_ds());
@@ -2117,8 +2117,8 @@ void DrvReadFile(char *pFilePath, u8 *pBuf, u16 nLength)
     nReadBytes = pFile->f_op->read(pFile, pBuf, nLength, &pFile->f_pos);
     DBG(&g_I2cClient->dev, "Read %d bytes!\n", (int)nReadBytes);
 
-    set_fs(old_fs);        
-    filp_close(pFile, NULL);    
+    set_fs(old_fs);
+    filp_close(pFile, NULL);
 }
 
 //------------------------------------------------------------------------------//
@@ -2131,26 +2131,26 @@ static void _DebugJniShowArray(u8 *pBuf, u16 nLen)
 
     for (i = 0; i < nLen; i ++)
     {
-        DBG(&g_I2cClient->dev, "%02X ", pBuf[i]);       
+        DBG(&g_I2cClient->dev, "%02X ", pBuf[i]);
 
         if (i%16==15)
-        {  
+        {
             DBG(&g_I2cClient->dev, "\n");
         }
     }
-    DBG(&g_I2cClient->dev, "\n");    
+    DBG(&g_I2cClient->dev, "\n");
 }
 */
 u64 PtrToU64(u8 * pValue)
 {
-	uintptr_t nValue = (uintptr_t)pValue;
+    uintptr_t nValue = (uintptr_t)pValue;
     return (u64)(0xFFFFFFFFFFFFFFFF&nValue);
 }
 
 u8 * U64ToPtr(u64 nValue)
 {
-	uintptr_t pValue = (uintptr_t)nValue;
-	return (u8 *)pValue;
+    uintptr_t pValue = (uintptr_t)nValue;
+    return (u8 *)pValue;
 }
 
 static ssize_t _DrvJniMsgToolRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
@@ -2159,67 +2159,67 @@ static ssize_t _DrvJniMsgToolRead(struct file *pFile, char __user *pBuffer, size
     u8 nBusType = 0;
     u16 nReadLen = 0;
     u8 szCmdData[20] = {0};
-    
+
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-    //DBG(&g_I2cClient->dev, "*** nCount = %d ***\n", (int)nCount);       
+    //DBG(&g_I2cClient->dev, "*** nCount = %d ***\n", (int)nCount);
     nBusType = nCount&0xFF;
     nReadLen = (nCount >> 8)&0xFFFF;
     if (nBusType == SLAVE_I2C_ID_DBBUS || nBusType == SLAVE_I2C_ID_DWI2C)
-    {    
+    {
         IicReadData(nBusType, &szCmdData[0], nReadLen);
     }
-    
-	nRet = copy_to_user(pBuffer, &szCmdData[0], nReadLen); 
-    return nRet;
-}			  
 
-static ssize_t _DrvJniMsgToolWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
+    nRet = copy_to_user(pBuffer, &szCmdData[0], nReadLen);
+    return nRet;
+}
+
+static ssize_t _DrvJniMsgToolWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
-    long nRet = 0;	                       
-    u8 nBusType = 0;  
-    u16 nWriteLen = 0;    
-    u8 szCmdData[20] = {0};    
-	u8 *Tempbuffer;
+    long nRet = 0;
+    u8 nBusType = 0;
+    u16 nWriteLen = 0;
+    u8 szCmdData[20] = {0};
+    u8 *Tempbuffer;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
     DBG(&g_I2cClient->dev, "*** nCount = %d ***\n", (int)nCount);
-	// copy data from user space
-	nBusType = nCount&0xFF;
-	Tempbuffer = (u8*)kmalloc(1024, GFP_KERNEL);	
-	DBG(&g_I2cClient->dev, "*** nCount = 0x%x ***\n", nBusType);
-	if (nBusType == SLAVE_I2C_ID_DBBUS || nBusType == SLAVE_I2C_ID_DWI2C)
-	{
-		nWriteLen = (nCount >> 8)&0xFFFF;    
-		nRet = copy_from_user(szCmdData, &pBuffer[0], nWriteLen);         
-		if(nRet < 0){
-			printk("%s, copy data from user space, failed", __func__);
-			return -1;
-		}	      
-		IicWriteData(nBusType, &szCmdData[0], nWriteLen);  	
-	}
-	else{
-		nRet = copy_from_user(Tempbuffer, pBuffer, nCount-1);
-		printk("Write driver command:%s\n", Tempbuffer);
-		if(nRet < 0){
-			printk("%s, copy data from user space, failed", __func__);
-			return -1;
-		}	
-		if (strcmp(Tempbuffer, "erase_flash") == 0) {
-			DBG(&g_I2cClient->dev, "start Erase Flash\n");
-			_DrvMsg28xxEraseEmem(EMEM_MAIN);
-			DBG(&g_I2cClient->dev, "end Erase Flash\n");
-		}
-		kfree(Tempbuffer);
-	}
+    // copy data from user space
+    nBusType = nCount&0xFF;
+    Tempbuffer = (u8*)kmalloc(1024, GFP_KERNEL);
+    DBG(&g_I2cClient->dev, "*** nCount = 0x%x ***\n", nBusType);
+    if (nBusType == SLAVE_I2C_ID_DBBUS || nBusType == SLAVE_I2C_ID_DWI2C)
+    {
+        nWriteLen = (nCount >> 8)&0xFFFF;
+        nRet = copy_from_user(szCmdData, &pBuffer[0], nWriteLen);
+        if(nRet < 0){
+            printk("%s, copy data from user space, failed", __func__);
+            return -1;
+        }
+        IicWriteData(nBusType, &szCmdData[0], nWriteLen);
+    }
+    else{
+        nRet = copy_from_user(Tempbuffer, pBuffer, nCount-1);
+        printk("Write driver command:%s\n", Tempbuffer);
+        if(nRet < 0){
+            printk("%s, copy data from user space, failed", __func__);
+            return -1;
+        }
+        if (strcmp(Tempbuffer, "erase_flash") == 0) {
+            DBG(&g_I2cClient->dev, "start Erase Flash\n");
+            _DrvMsg28xxEraseEmem(EMEM_MAIN);
+            DBG(&g_I2cClient->dev, "end Erase Flash\n");
+        }
+        kfree(Tempbuffer);
+    }
     return nCount;
 }
 
 static void _DrvJniRegGetXByteData(MsgToolDrvCmd_t *pCmd)
-{    
+{
     u16 nAddr = 0;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);   
-     
-    nAddr = (_gSndCmdData[1]<<8)|_gSndCmdData[0];    
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
+    nAddr = (_gSndCmdData[1]<<8)|_gSndCmdData[0];
     RegGetXBitValue(nAddr, _gRtnCmdData, pCmd->nRtnCmdLen, MAX_I2C_TRANSACTION_LENGTH_LIMIT);
     //_DebugJniShowArray(_gRtnCmdData, pCmd->nRtnCmdLen);
 }
@@ -2227,7 +2227,7 @@ static void _DrvJniRegGetXByteData(MsgToolDrvCmd_t *pCmd)
 static void _DrvJniClearMsgToolMem(void)
 {
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-  
+
     memset(_gMsgToolCmdIn, 0, sizeof(MsgToolDrvCmd_t));
     memset(_gSndCmdData, 0, 1024);
     memset(_gRtnCmdData, 0, 1024);
@@ -2235,15 +2235,15 @@ static void _DrvJniClearMsgToolMem(void)
 
 static MsgToolDrvCmd_t* _DrvJniTransCmdFromUser(unsigned long nArg)
 {
-    long nRet; 
-    MsgToolDrvCmd_t tCmdIn;    
+    long nRet;
+    MsgToolDrvCmd_t tCmdIn;
     MsgToolDrvCmd_t *pTransCmd;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);  
-    
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
     _DrvJniClearMsgToolMem();
-    
-    pTransCmd = (MsgToolDrvCmd_t *)_gMsgToolCmdIn;    
+
+    pTransCmd = (MsgToolDrvCmd_t *)_gMsgToolCmdIn;
     nRet = copy_from_user(&tCmdIn, (void*)nArg, sizeof(MsgToolDrvCmd_t));
     pTransCmd->nCmdId = tCmdIn.nCmdId;
 
@@ -2251,15 +2251,15 @@ static MsgToolDrvCmd_t* _DrvJniTransCmdFromUser(unsigned long nArg)
     if (tCmdIn.nSndCmdLen > 0)
     {
         pTransCmd->nSndCmdLen = tCmdIn.nSndCmdLen;
-        nRet = copy_from_user(_gSndCmdData, U64ToPtr(tCmdIn.nSndCmdDataPtr), pTransCmd->nSndCmdLen);    	
+        nRet = copy_from_user(_gSndCmdData, U64ToPtr(tCmdIn.nSndCmdDataPtr), pTransCmd->nSndCmdLen);
     }
 
     if (tCmdIn.nRtnCmdLen > 0)
     {
-	    pTransCmd->nRtnCmdLen = tCmdIn.nRtnCmdLen;
-        nRet = copy_from_user(_gRtnCmdData, U64ToPtr(tCmdIn.nRtnCmdDataPtr), pTransCmd->nRtnCmdLen);    	        
+        pTransCmd->nRtnCmdLen = tCmdIn.nRtnCmdLen;
+        nRet = copy_from_user(_gRtnCmdData, U64ToPtr(tCmdIn.nRtnCmdDataPtr), pTransCmd->nRtnCmdLen);
     }
-  
+
     return pTransCmd;
 }
 
@@ -2268,11 +2268,11 @@ static void _DrvJniTransCmdToUser(MsgToolDrvCmd_t *pTransCmd, unsigned long nArg
     MsgToolDrvCmd_t tCmdOut;
     long nRet;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);      
-    
-    nRet = copy_from_user(&tCmdOut, (void*)nArg, sizeof(MsgToolDrvCmd_t));   
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    //_DebugJniShowArray(&tCmdOut, sizeof( MsgToolDrvCmd_t));    
+    nRet = copy_from_user(&tCmdOut, (void*)nArg, sizeof(MsgToolDrvCmd_t));
+
+    //_DebugJniShowArray(&tCmdOut, sizeof( MsgToolDrvCmd_t));
     nRet = copy_to_user( U64ToPtr(tCmdOut.nRtnCmdDataPtr), _gRtnCmdData, tCmdOut.nRtnCmdLen);
 }
 
@@ -2280,57 +2280,57 @@ static long _DrvJniMsgToolIoctl(struct file *pFile, unsigned int nCmd, unsigned 
 {
     long nRet = 0;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);    
-    
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
     switch (nCmd)
     {
         case MSGTOOL_IOCTL_RUN_CMD:
-            {      
-                MsgToolDrvCmd_t *pTransCmd;			
-                pTransCmd = _DrvJniTransCmdFromUser(nArg);  
-                
+            {
+                MsgToolDrvCmd_t *pTransCmd;
+                pTransCmd = _DrvJniTransCmdFromUser(nArg);
+
                 switch (pTransCmd->nCmdId)
                 {
                     case MSGTOOL_RESETHW:
                         DrvTouchDeviceHwReset();
                         break;
                     case MSGTOOL_REGGETXBYTEVALUE:
-                        _DrvJniRegGetXByteData(pTransCmd);                       
-	                    _DrvJniTransCmdToUser(pTransCmd, nArg);                                                 
+                        _DrvJniRegGetXByteData(pTransCmd);
+                        _DrvJniTransCmdToUser(pTransCmd, nArg);
                         break;
                     case MSGTOOL_HOTKNOTSTATUS:
-                        _gRtnCmdData[0] = g_IsHotknotEnabled;                       
-                        _DrvJniTransCmdToUser(pTransCmd, nArg);                                                 
+                        _gRtnCmdData[0] = g_IsHotknotEnabled;
+                        _DrvJniTransCmdToUser(pTransCmd, nArg);
                         break;
                     case MSGTOOL_FINGERTOUCH:
                         if (pTransCmd->nSndCmdLen == 1)
                         {
-                            DBG(&g_I2cClient->dev, "*** JNI enable touch ***\n");                        
+                            DBG(&g_I2cClient->dev, "*** JNI enable touch ***\n");
                             DrvEnableFingerTouchReport();
-                            g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after MTPTool APK have sent i2c command to firmware. 
+                            g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after MTPTool APK have sent i2c command to firmware.
                         }
                         else if (pTransCmd->nSndCmdLen == 0)
                         {
-                            DBG(&g_I2cClient->dev, "*** JNI disable touch ***\n");                                                
+                            DBG(&g_I2cClient->dev, "*** JNI disable touch ***\n");
                             DrvDisableFingerTouchReport();
-                            g_IsDisableFingerTouch = 1; // Skip finger touch ISR handling temporarily for MTPTool APK can send i2c command to firmware. 
+                            g_IsDisableFingerTouch = 1; // Skip finger touch ISR handling temporarily for MTPTool APK can send i2c command to firmware.
                         }
                         break;
                     case MSGTOOL_BYPASSHOTKNOT:
                         if (pTransCmd->nSndCmdLen == 1)
                         {
-                            DBG(&g_I2cClient->dev, "*** JNI enable bypass hotknot ***\n");                                                
-                            g_IsBypassHotknot = 1;                                                      
+                            DBG(&g_I2cClient->dev, "*** JNI enable bypass hotknot ***\n");
+                            g_IsBypassHotknot = 1;
                         }
                         else if (pTransCmd->nSndCmdLen == 0)
                         {
-                            DBG(&g_I2cClient->dev, "*** JNI disable bypass hotknot ***\n");                                                
+                            DBG(&g_I2cClient->dev, "*** JNI disable bypass hotknot ***\n");
                             g_IsBypassHotknot = 0;
                         }
                         break;
                     case MSGTOOL_DEVICEPOWEROFF:
                         DrvTouchDevicePowerOff();
-                        break;                        
+                        break;
                     case MSGTOOL_GETSMDBBUS:
                         DBG(&g_I2cClient->dev, "*** MSGTOOL_GETSMDBBUS ***\n");
                         _gRtnCmdData[0] = SLAVE_I2C_ID_DBBUS&0xFF;
@@ -2338,28 +2338,28 @@ static long _DrvJniMsgToolIoctl(struct file *pFile, unsigned int nCmd, unsigned 
                         _DrvJniTransCmdToUser(pTransCmd, nArg);
                         break;
                     case MSGTOOL_SETIICDATARATE:
-                        DBG(&g_I2cClient->dev, "*** MSGTOOL_SETIICDATARATE ***\n");                        
+                        DBG(&g_I2cClient->dev, "*** MSGTOOL_SETIICDATARATE ***\n");
                         DrvSetIicDataRate(g_I2cClient, ((_gSndCmdData[1]<<8)|_gSndCmdData[0])*1000);
-                        break; 
+                        break;
                     case MSGTOOL_ERASE_FLASH:
-                        DBG(&g_I2cClient->dev, "*** MSGTOOL_ERASE_FLASH ***\n");    
-						if(pTransCmd->nSndCmdDataPtr == 0)
-						{
-							DBG(&g_I2cClient->dev, "*** erase Main block ***\n");  
-							_DrvMsg28xxEraseEmem(EMEM_MAIN);
-						}
-						else if(pTransCmd->nSndCmdDataPtr == 1)
-						{
-							DBG(&g_I2cClient->dev, "*** no support erase INFO block ***\n");  
-							//_DrvMsg28xxEraseEmem(EMEM_INFO);
-						}
-                        break;                                
-                    default:  
+                        DBG(&g_I2cClient->dev, "*** MSGTOOL_ERASE_FLASH ***\n");
+                        if(pTransCmd->nSndCmdDataPtr == 0)
+                        {
+                            DBG(&g_I2cClient->dev, "*** erase Main block ***\n");
+                            _DrvMsg28xxEraseEmem(EMEM_MAIN);
+                        }
+                        else if(pTransCmd->nSndCmdDataPtr == 1)
+                        {
+                            DBG(&g_I2cClient->dev, "*** no support erase INFO block ***\n");
+                            //_DrvMsg28xxEraseEmem(EMEM_INFO);
+                        }
+                        break;
+                    default:
                         break;
                 }
             }
-		    break;
-		
+            break;
+
         default:
             nRet = -EINVAL;
             break;
@@ -2373,26 +2373,26 @@ static void _DrvJniCreateMsgToolMem(void)
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     _gMsgToolCmdIn = (MsgToolDrvCmd_t*)kmalloc(sizeof(MsgToolDrvCmd_t), GFP_KERNEL);
-    _gSndCmdData = (u8*)kmalloc(1024, GFP_KERNEL);	
-    _gRtnCmdData = (u8*)kmalloc(1024, GFP_KERNEL);           
+    _gSndCmdData = (u8*)kmalloc(1024, GFP_KERNEL);
+    _gRtnCmdData = (u8*)kmalloc(1024, GFP_KERNEL);
 }
 
 static void _DrvJniDeleteMsgToolMem(void)
 {
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
- 
+
     if (_gMsgToolCmdIn)
     {
         kfree(_gMsgToolCmdIn);
         _gMsgToolCmdIn = NULL;
     }
-    
+
     if (_gSndCmdData)
     {
         kfree(_gSndCmdData);
         _gSndCmdData = NULL;
     }
-    
+
     if (_gRtnCmdData)
     {
         kfree(_gRtnCmdData);
@@ -2409,7 +2409,7 @@ void DrvTouchDeviceRegulatorPowerOn(bool nFlag)
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
     s32 nRetVal = 0;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     if (g_ReguVdd != NULL && g_ReguVcc_i2c != NULL)
     {
@@ -2418,14 +2418,14 @@ void DrvTouchDeviceRegulatorPowerOn(bool nFlag)
             nRetVal = regulator_enable(g_ReguVdd);
             if (nRetVal)
             {
-                DBG(&g_I2cClient->dev, "regulator_enable(g_ReguVdd) failed. nRetVal=%d\n", nRetVal); 
+                DBG(&g_I2cClient->dev, "regulator_enable(g_ReguVdd) failed. nRetVal=%d\n", nRetVal);
             }
             mdelay(20);
-    
+
             nRetVal = regulator_enable(g_ReguVcc_i2c);
             if (nRetVal)
             {
-                DBG(&g_I2cClient->dev, "regulator_enable(g_ReguVcc_i2c) failed. nRetVal=%d\n", nRetVal); 
+                DBG(&g_I2cClient->dev, "regulator_enable(g_ReguVcc_i2c) failed. nRetVal=%d\n", nRetVal);
             }
             mdelay(20);
         }
@@ -2434,14 +2434,14 @@ void DrvTouchDeviceRegulatorPowerOn(bool nFlag)
             nRetVal = regulator_disable(g_ReguVdd);
             if (nRetVal)
             {
-                DBG(&g_I2cClient->dev, "regulator_disable(g_ReguVdd) failed. nRetVal=%d\n", nRetVal); 
+                DBG(&g_I2cClient->dev, "regulator_disable(g_ReguVdd) failed. nRetVal=%d\n", nRetVal);
             }
             mdelay(20);
-    
+
             nRetVal = regulator_disable(g_ReguVcc_i2c);
             if (nRetVal)
             {
-                DBG(&g_I2cClient->dev, "regulator_disable(g_ReguVcc_i2c) failed. nRetVal=%d\n", nRetVal); 
+                DBG(&g_I2cClient->dev, "regulator_disable(g_ReguVcc_i2c) failed. nRetVal=%d\n", nRetVal);
             }
             mdelay(20);
         }
@@ -2487,31 +2487,31 @@ void DrvTouchDeviceRegulatorPowerOn(bool nFlag)
 
 void DrvTouchDevicePowerOn(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
 #ifdef ALLWINNER_PLATFORM
 
-	input_set_power_enable(&(config_info.input_type), 1);
+    input_set_power_enable(&(config_info.input_type), 1);
 
-	gpio_direction_output(config_info.wakeup_gpio.gpio, 1);
-	mdelay(10); 
-	__gpio_set_value(config_info.wakeup_gpio.gpio, 0);
-	mdelay(10);
-	__gpio_set_value(config_info.wakeup_gpio.gpio, 1);
-	mdelay(25);
+    gpio_direction_output(config_info.wakeup_gpio.gpio, 1);
+    mdelay(10);
+    __gpio_set_value(config_info.wakeup_gpio.gpio, 0);
+    mdelay(10);
+    __gpio_set_value(config_info.wakeup_gpio.gpio, 1);
+    mdelay(25);
 
-	
+
 #else
     if (MS_TS_MSG_IC_GPIO_RST > 0)
     {
         gpio_direction_output(MS_TS_MSG_IC_GPIO_RST, 1);
-//        gpio_set_value(MS_TS_MSG_IC_GPIO_RST, 1); 
-        mdelay(10); 
+//        gpio_set_value(MS_TS_MSG_IC_GPIO_RST, 1);
+        mdelay(10);
         gpio_set_value(MS_TS_MSG_IC_GPIO_RST, 0);
         mdelay(10);
         gpio_set_value(MS_TS_MSG_IC_GPIO_RST, 1);
-        mdelay(25); 
+        mdelay(25);
     }
 #endif //ALLWINNER_PLATFORM
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
@@ -2519,38 +2519,38 @@ void DrvTouchDevicePowerOn(void)
     if (MS_TS_MSG_IC_GPIO_RST >= 0 && MS_TS_MSG_IC_GPIO_RST != 1) // MS_TS_MSG_IC_GPIO_RST must be a value other than 1
     {
         tpd_gpio_output(MS_TS_MSG_IC_GPIO_RST, 1);
-        mdelay(10); 
+        mdelay(10);
         tpd_gpio_output(MS_TS_MSG_IC_GPIO_RST, 0);
         mdelay(10);
         tpd_gpio_output(MS_TS_MSG_IC_GPIO_RST, 1);
-        mdelay(25); 
+        mdelay(25);
     }
 #else
     if (MS_TS_MSG_IC_GPIO_RST > 0)
     {
         mt_set_gpio_mode(MS_TS_MSG_IC_GPIO_RST, GPIO_CTP_RST_PIN_M_GPIO);
         mt_set_gpio_dir(MS_TS_MSG_IC_GPIO_RST, GPIO_DIR_OUT);
-        mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ONE);  
-        mdelay(10); 
+        mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ONE);
+        mdelay(10);
 
         mt_set_gpio_mode(MS_TS_MSG_IC_GPIO_RST, GPIO_CTP_RST_PIN_M_GPIO);
         mt_set_gpio_dir(MS_TS_MSG_IC_GPIO_RST, GPIO_DIR_OUT);
-        mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ZERO);  
+        mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ZERO);
         mdelay(10);
 
 #ifdef TPD_CLOSE_POWER_IN_SLEEP
-        hwPowerDown(TPD_POWER_SOURCE, "TP"); 
+        hwPowerDown(TPD_POWER_SOURCE, "TP");
         mdelay(10);
-        hwPowerOn(TPD_POWER_SOURCE, VOL_2800, "TP"); 
+        hwPowerOn(TPD_POWER_SOURCE, VOL_2800, "TP");
         mdelay(10);  // reset pulse
 #endif //TPD_CLOSE_POWER_IN_SLEEP
 
         mt_set_gpio_mode(MS_TS_MSG_IC_GPIO_RST, GPIO_CTP_RST_PIN_M_GPIO);
         mt_set_gpio_dir(MS_TS_MSG_IC_GPIO_RST, GPIO_DIR_OUT);
         mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ONE);
-        mdelay(25); 
+        mdelay(25);
     }
-#endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD    
+#endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 #endif
 
 #ifdef CONFIG_ENABLE_CHARGER_DETECTION
@@ -2565,14 +2565,14 @@ void DrvTouchDevicePowerOn(void)
 
 void DrvTouchDevicePowerOff(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
     DrvOptimizeCurrentConsumption();
 
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
 #ifdef ALLWINNER_PLATFORM
-	input_set_power_enable(&(config_info.input_type), 0);
-	__gpio_set_value(config_info.wakeup_gpio.gpio, 0);
+    input_set_power_enable(&(config_info.input_type), 0);
+    __gpio_set_value(config_info.wakeup_gpio.gpio, 0);
 #else
     if (MS_TS_MSG_IC_GPIO_RST > 0)
     {
@@ -2591,14 +2591,14 @@ void DrvTouchDevicePowerOff(void)
     {
         mt_set_gpio_mode(MS_TS_MSG_IC_GPIO_RST, GPIO_CTP_RST_PIN_M_GPIO);
         mt_set_gpio_dir(MS_TS_MSG_IC_GPIO_RST, GPIO_DIR_OUT);
-        mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ZERO);  
+        mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ZERO);
 
 #ifdef TPD_CLOSE_POWER_IN_SLEEP
         hwPowerDown(TPD_POWER_SOURCE, "TP");
 #endif //TPD_CLOSE_POWER_IN_SLEEP
     }
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
-#endif    
+#endif
 
 #ifdef CONFIG_ENABLE_CHARGER_DETECTION
     g_IsEnableChargerPlugInOutCheck = 0;
@@ -2611,28 +2611,28 @@ void DrvTouchDevicePowerOff(void)
 
 void DrvTouchDeviceHwReset(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
 #ifdef ALLWINNER_PLATFORM
 
-	gpio_direction_output(config_info.wakeup_gpio.gpio, 1);
-	mdelay(10); 
-	__gpio_set_value(config_info.wakeup_gpio.gpio, 0);
-	mdelay(10);
-	__gpio_set_value(config_info.wakeup_gpio.gpio, 1);
+    gpio_direction_output(config_info.wakeup_gpio.gpio, 1);
+    mdelay(10);
+    __gpio_set_value(config_info.wakeup_gpio.gpio, 0);
+    mdelay(10);
+    __gpio_set_value(config_info.wakeup_gpio.gpio, 1);
 
-	mdelay(25);
+    mdelay(25);
 #else
     if (MS_TS_MSG_IC_GPIO_RST > 0)
     {
         gpio_direction_output(MS_TS_MSG_IC_GPIO_RST, 1);
-//        gpio_set_value(MS_TS_MSG_IC_GPIO_RST, 1); 
-        mdelay(10); 
+//        gpio_set_value(MS_TS_MSG_IC_GPIO_RST, 1);
+        mdelay(10);
         gpio_set_value(MS_TS_MSG_IC_GPIO_RST, 0);
         mdelay(10);
         gpio_set_value(MS_TS_MSG_IC_GPIO_RST, 1);
-        mdelay(25); 
+        mdelay(25);
     }
 #endif //ALLWINNER_PLATFORM
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
@@ -2640,27 +2640,27 @@ void DrvTouchDeviceHwReset(void)
     if (MS_TS_MSG_IC_GPIO_RST >= 0 && MS_TS_MSG_IC_GPIO_RST != 1) // MS_TS_MSG_IC_GPIO_RST must be a value other than 1
     {
         tpd_gpio_output(MS_TS_MSG_IC_GPIO_RST, 1);
-        mdelay(10); 
+        mdelay(10);
         tpd_gpio_output(MS_TS_MSG_IC_GPIO_RST, 0);
         mdelay(10);
         tpd_gpio_output(MS_TS_MSG_IC_GPIO_RST, 1);
-        mdelay(25); 
-    }   
+        mdelay(25);
+    }
 #else
     if (MS_TS_MSG_IC_GPIO_RST > 0)
     {
         mt_set_gpio_mode(MS_TS_MSG_IC_GPIO_RST, GPIO_CTP_RST_PIN_M_GPIO);
         mt_set_gpio_dir(MS_TS_MSG_IC_GPIO_RST, GPIO_DIR_OUT);
         mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ONE);
-        mdelay(10); 
+        mdelay(10);
         mt_set_gpio_mode(MS_TS_MSG_IC_GPIO_RST, GPIO_CTP_RST_PIN_M_GPIO);
         mt_set_gpio_dir(MS_TS_MSG_IC_GPIO_RST, GPIO_DIR_OUT);
-        mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ZERO);  
+        mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ZERO);
         mdelay(10);
         mt_set_gpio_mode(MS_TS_MSG_IC_GPIO_RST, GPIO_CTP_RST_PIN_M_GPIO);
         mt_set_gpio_dir(MS_TS_MSG_IC_GPIO_RST, GPIO_DIR_OUT);
         mt_set_gpio_out(MS_TS_MSG_IC_GPIO_RST, GPIO_OUT_ONE);
-        mdelay(25); 
+        mdelay(25);
     }
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 #endif
@@ -2679,30 +2679,30 @@ void DrvDisableFingerTouchReport(void)
 {
     unsigned long nIrqFlag;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+    DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag);
 
     spin_lock_irqsave(&_gIrqLock, nIrqFlag);
 
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
 
     {
-        if (_gInterruptFlag == 1)  
+        if (_gInterruptFlag == 1)
         {
             disable_irq_nosync(_gIrq);
 
             _gInterruptFlag = 0;
         }
     }
-#elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)         
+#elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
     {
-        if (_gInterruptFlag == 1) 
+        if (_gInterruptFlag == 1)
         {
 #ifdef CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
             disable_irq_nosync(_gIrq);
 #else
             mt_eint_mask(CUST_EINT_TOUCH_PANEL_NUM);
-#endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD            
+#endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 
             _gInterruptFlag = 0;
         }
@@ -2716,23 +2716,23 @@ void DrvEnableFingerTouchReport(void)
 {
     unsigned long nIrqFlag;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+    DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag);
 
     spin_lock_irqsave(&_gIrqLock, nIrqFlag);
 
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
 
-    if (_gInterruptFlag == 0) 
+    if (_gInterruptFlag == 0)
     {
         enable_irq(_gIrq);
 
-        _gInterruptFlag = 1;        
+        _gInterruptFlag = 1;
     }
 
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
 
-    if (_gInterruptFlag == 0) 
+    if (_gInterruptFlag == 0)
     {
 #ifdef CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
         enable_irq(_gIrq);
@@ -2740,7 +2740,7 @@ void DrvEnableFingerTouchReport(void)
         mt_eint_unmask(CUST_EINT_TOUCH_PANEL_NUM);
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 
-        _gInterruptFlag = 1;        
+        _gInterruptFlag = 1;
     }
 
 #endif
@@ -2750,8 +2750,8 @@ void DrvEnableFingerTouchReport(void)
 
 void DrvFingerTouchPressed(s32 nX, s32 nY, s32 nPressure, s32 nId)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    DBG(&g_I2cClient->dev, "point touch pressed\n"); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+    DBG(&g_I2cClient->dev, "point touch pressed\n");
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL // TYPE B PROTOCOL
     input_mt_slot(g_InputDevice, nId);
     input_mt_report_slot_state(g_InputDevice, MT_TOOL_FINGER, true);
@@ -2782,17 +2782,17 @@ void DrvFingerTouchPressed(s32 nX, s32 nY, s32 nPressure, s32 nId)
     if (tpd_dts_data.use_tpd_button)
     {
         if (FACTORY_BOOT == get_boot_mode() || RECOVERY_BOOT == get_boot_mode())
-        {   
-            tpd_button(nX, nY, 1);  
+        {
+            tpd_button(nX, nY, 1);
             DBG(&g_I2cClient->dev, "tpd_button(nX, nY, 1) = tpd_button(%d, %d, 1)\n", nX, nY); // TODO : add for debug
         }
     }
 #endif //CONFIG_MTK_BOOT
 #else
-#ifdef CONFIG_TP_HAVE_KEY    
+#ifdef CONFIG_TP_HAVE_KEY
     if (FACTORY_BOOT == get_boot_mode() || RECOVERY_BOOT == get_boot_mode())
-    {   
-        tpd_button(nX, nY, 1);  
+    {
+        tpd_button(nX, nY, 1);
         DBG(&g_I2cClient->dev, "tpd_button(nX, nY, 1) = tpd_button(%d, %d, 1)\n", nX, nY); // TODO : add for debug
     }
 #endif //CONFIG_TP_HAVE_KEY
@@ -2804,8 +2804,8 @@ void DrvFingerTouchPressed(s32 nX, s32 nY, s32 nPressure, s32 nId)
 
 void DrvFingerTouchReleased(s32 nX, s32 nY, s32 nId)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    DBG(&g_I2cClient->dev, "point touch released\n"); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+    DBG(&g_I2cClient->dev, "point touch released\n");
 
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL // TYPE B PROTOCOL
     input_mt_slot(g_InputDevice, nId);
@@ -2824,20 +2824,20 @@ void DrvFingerTouchReleased(s32 nX, s32 nY, s32 nId)
     if (tpd_dts_data.use_tpd_button)
     {
         if (FACTORY_BOOT == get_boot_mode() || RECOVERY_BOOT == get_boot_mode())
-        {   
-            tpd_button(nX, nY, 0); 
+        {
+            tpd_button(nX, nY, 0);
             DBG(&g_I2cClient->dev, "tpd_button(nX, nY, 0) = tpd_button(%d, %d, 0)\n", nX, nY); // TODO : add for debug
-        }            
+        }
     }
-#endif //CONFIG_MTK_BOOT  
+#endif //CONFIG_MTK_BOOT
 #else
-#ifdef CONFIG_TP_HAVE_KEY 
+#ifdef CONFIG_TP_HAVE_KEY
     if (FACTORY_BOOT == get_boot_mode() || RECOVERY_BOOT == get_boot_mode())
-    {   
-        tpd_button(nX, nY, 0); 
+    {
+        tpd_button(nX, nY, 0);
         DBG(&g_I2cClient->dev, "tpd_button(nX, nY, 0) = tpd_button(%d, %d, 0)\n", nX, nY); // TODO : add for debug
-    }            
-#endif //CONFIG_TP_HAVE_KEY    
+    }
+#endif //CONFIG_TP_HAVE_KEY
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 
     TPD_EM_PRINT(nX, nY, nX, nY, 0, 0);
@@ -2846,11 +2846,11 @@ void DrvFingerTouchReleased(s32 nX, s32 nY, s32 nId)
 
 void DrvSetIicDataRate(struct i2c_client *pClient, u32 nIicDataRate)
 {
-    DBG(&g_I2cClient->dev, "*** %s() nIicDataRate = %d ***\n", __func__, nIicDataRate); 
+    DBG(&g_I2cClient->dev, "*** %s() nIicDataRate = %d ***\n", __func__, nIicDataRate);
 
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM)
     // TODO : Please FAE colleague to confirm with customer device driver engineer for how to set i2c data rate on SPRD platform
-    sprd_i2c_ctl_chg_clk(pClient->adapter->nr, nIicDataRate); 
+    sprd_i2c_ctl_chg_clk(pClient->adapter->nr, nIicDataRate);
     mdelay(100);
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
     // TODO : Please FAE colleague to confirm with customer device driver engineer for how to set i2c data rate on QCOM platform
@@ -2876,17 +2876,17 @@ s32 DrvEnableProximity(void)
 
     szTxData[0] = 0x52;
     szTxData[1] = 0x00;
-    
+
     if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
-        szTxData[2] = 0x47; 
+        szTxData[2] = 0x47;
     }
     else
     {
         DBG(&g_I2cClient->dev, "*** Un-recognized chip type = 0x%x ***\n", g_ChipType);
         return -1;
     }
-    
+
     szTxData[3] = 0xa0;
 
     while (i < 5)
@@ -2907,7 +2907,7 @@ s32 DrvEnableProximity(void)
     {
         DBG(&g_I2cClient->dev, "Enable proximity detection failed, rc = %d\n", rc);
     }
-    	
+
     return rc;
 }
 
@@ -2924,7 +2924,7 @@ s32 DrvDisableProximity(void)
 
     if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
-        szTxData[2] = 0x47; 
+        szTxData[2] = 0x47;
     }
     else
     {
@@ -2933,7 +2933,7 @@ s32 DrvDisableProximity(void)
     }
 
     szTxData[3] = 0xa1;
-    
+
     while (i < 5)
     {
         mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
@@ -2962,15 +2962,15 @@ s32 DrvDisableProximity(void)
 
 int DrvGetTpPsData(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() g_FaceClosingTp = %d ***\n", __func__, g_FaceClosingTp); 
-	
+    DBG(&g_I2cClient->dev, "*** %s() g_FaceClosingTp = %d ***\n", __func__, g_FaceClosingTp);
+
     return g_FaceClosingTp;
 }
 
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM)
 void DrvTpPsEnable(int nEnable)
 {
-    DBG(&g_I2cClient->dev, "*** %s() nEnable = %d ***\n", __func__, nEnable); 
+    DBG(&g_I2cClient->dev, "*** %s() nEnable = %d ***\n", __func__, nEnable);
 
     if (nEnable)
     {
@@ -2986,7 +2986,7 @@ static int _DrvProximityOpen(struct inode *inode, struct file *file)
 {
     int nRetVal = 0;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     nRetVal = nonseekable_open(inode, file);
     if (nRetVal < 0)
@@ -2995,13 +2995,13 @@ static int _DrvProximityOpen(struct inode *inode, struct file *file)
     }
 
     file->private_data = i2c_get_clientdata(g_I2cClient);
-    
+
     return 0;
 }
 
 static int _DrvProximityRelease(struct inode *inode, struct file *file)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     return 0;
 }
@@ -3011,7 +3011,7 @@ static atomic_t _gPsFlag;
 static long _DrvProximityIoctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 #if 0
-    DBG(&g_I2cClient->dev, "*** %s() *** cmd = %d\n", __func__, _IOC_NR(cmd)); 
+    DBG(&g_I2cClient->dev, "*** %s() *** cmd = %d\n", __func__, _IOC_NR(cmd));
 
     switch (cmd)
     {
@@ -3028,9 +3028,9 @@ static long _DrvProximityIoctl(struct file *file, unsigned int cmd, unsigned lon
     void __user *argp = (void __user *)arg;
     int flag;
     unsigned char data;
-    
-    DBG(&g_I2cClient->dev, "*** %s() *** cmd = %d\n", __func__, _IOC_NR(cmd)); 
-    
+
+    DBG(&g_I2cClient->dev, "*** %s() *** cmd = %d\n", __func__, _IOC_NR(cmd));
+
     switch (cmd)
     {
         case LTR_IOCTL_SET_PFLAG:
@@ -3038,15 +3038,15 @@ static long _DrvProximityIoctl(struct file *file, unsigned int cmd, unsigned lon
             {
                 return -EFAULT;
             }
-		
+
             if (flag < 0 || flag > 1)
             {
                 return -EINVAL;
             }
-            DBG(&g_I2cClient->dev, "flag = %d", flag); 
-                
-            atomic_set(&_gPsFlag, flag);	
-            
+            DBG(&g_I2cClient->dev, "flag = %d", flag);
+
+            atomic_set(&_gPsFlag, flag);
+
             if (flag == 1)
             {
                 DrvTpPsEnable(1);
@@ -3054,17 +3054,17 @@ static long _DrvProximityIoctl(struct file *file, unsigned int cmd, unsigned lon
             else if (flag == 0)
             {
                 DrvTpPsEnable(0);
-            }		
+            }
             break;
-		
+
         case LTR_IOCTL_GET_PFLAG:
             flag = atomic_read(&_gPsFlag);
-            
-            if (copy_to_user(argp, &flag, sizeof(flag))) 
+
+            if (copy_to_user(argp, &flag, sizeof(flag)))
             {
                 return -EFAULT;
             }
-            DBG(&g_I2cClient->dev, "flag = %d", flag); 
+            DBG(&g_I2cClient->dev, "flag = %d", flag);
             break;
 
         case LTR_IOCTL_GET_DATA:
@@ -3072,21 +3072,21 @@ static long _DrvProximityIoctl(struct file *file, unsigned int cmd, unsigned lon
             {
                 return -EFAULT;
             }
-            DBG(&g_I2cClient->dev, "flag = %d", flag); 
+            DBG(&g_I2cClient->dev, "flag = %d", flag);
             break;
 
         case GTP_IOCTL_PROX_ON:
             DrvTpPsEnable(1);
             break;
-        
+
         case GTP_IOCTL_PROX_OFF:
             DrvTpPsEnable(0);
             break;
 
         default:
-            DBG(&g_I2cClient->dev, "*** %s() *** Invalid cmd = %d\n", __func__, _IOC_NR(cmd)); 
+            DBG(&g_I2cClient->dev, "*** %s() *** Invalid cmd = %d\n", __func__, _IOC_NR(cmd));
             return -EINVAL;
-        } 
+        }
 #endif
 
     return 0;
@@ -3108,20 +3108,20 @@ static struct miscdevice ProximityMisc = {
 static int _DrvProximityInputDeviceInit(struct i2c_client *pClient)
 {
     int nRetVal = 0;
-    
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     nRetVal = misc_register(&ProximityMisc);
     if (nRetVal)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to misc_register() for proximity *** nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Failed to misc_register() for proximity *** nRetVal=%d\n", nRetVal);
         goto ERROR_MISC_REGISTER_FAILED;
     }
 
     g_ProximityInputDevice = input_allocate_device();
     if (g_ProximityInputDevice == NULL)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to allocate proximity input device ***\n"); 
+        DBG(&g_I2cClient->dev, "*** Failed to allocate proximity input device ***\n");
         nRetVal = -ENOMEM;
         goto ERROR_INPUT_DEVICE_ALLOCATE_FAILED;
     }
@@ -3135,15 +3135,15 @@ static int _DrvProximityInputDeviceInit(struct i2c_client *pClient)
     g_ProximityInputDevice->id.version = 0x0010;
 
     set_bit(EV_ABS, g_ProximityInputDevice->evbit);
-	
+
     input_set_abs_params(g_ProximityInputDevice, ABS_DISTANCE, 0, 1, 0, 0);
 
     nRetVal = input_register_device(g_ProximityInputDevice);
     if (nRetVal < 0) {
-        DBG(&g_I2cClient->dev, "*** Unable to register proximity input device *** nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Unable to register proximity input device *** nRetVal=%d\n", nRetVal);
         goto ERROR_INPUT_DEVICE_REGISTER_FAILED;
     }
-    
+
     return 0;
 
 ERROR_INPUT_DEVICE_REGISTER_FAILED:
@@ -3161,7 +3161,7 @@ ERROR_MISC_REGISTER_FAILED:
 
 static int _DrvProximityInputDeviceUnInit(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     misc_deregister(&ProximityMisc);
 
@@ -3170,7 +3170,7 @@ static int _DrvProximityInputDeviceUnInit(void)
         input_unregister_device(g_ProximityInputDevice);
         g_ProximityInputDevice = NULL;
     }
-    
+
     return 0;
 }
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
@@ -3196,7 +3196,7 @@ static struct sensors_classdev sensors_proximity_cdev = {
 
 int DrvTpPsEnable(struct sensors_classdev* pProximityCdev, unsigned int nEnable)
 {
-    DBG(&g_I2cClient->dev, "*** %s() nEnable = %d ***\n", __func__, nEnable); 
+    DBG(&g_I2cClient->dev, "*** %s() nEnable = %d ***\n", __func__, nEnable);
 
     if (nEnable)
     {
@@ -3206,22 +3206,22 @@ int DrvTpPsEnable(struct sensors_classdev* pProximityCdev, unsigned int nEnable)
     {
         DrvDisableProximity();
     }
-    
+
     return 0;
 }
 
 static ssize_t _DrvProximityDetectionShow(struct device *dev, struct device_attribute *attr, char *buf)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    DBG(&g_I2cClient->dev, "*** Tp Proximity State = %s ***\n", g_EnableTpProximity ? "open" : "close"); 
-    
+    DBG(&g_I2cClient->dev, "*** Tp Proximity State = %s ***\n", g_EnableTpProximity ? "open" : "close");
+
     return sprintf(buf, "%s\n", g_EnableTpProximity ? "open" : "close");
 }
 
 static ssize_t _DrvProximityDetectionStore(struct device *dev, struct device_attribute *attr, const char *buf, size_t size)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     if (buf != NULL)
     {
@@ -3254,13 +3254,13 @@ static struct attribute_group proximity_detection_attribute_group = {
 static int _DrvProximityInputDeviceInit(struct i2c_client *pClient)
 {
     int nRetVal = 0;
-    
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     g_ProximityInputDevice = input_allocate_device();
     if (g_ProximityInputDevice == NULL)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to allocate proximity input device ***\n"); 
+        DBG(&g_I2cClient->dev, "*** Failed to allocate proximity input device ***\n");
         nRetVal = -ENOMEM;
         goto ERROR_INPUT_DEVICE_ALLOCATE_FAILED;
     }
@@ -3273,10 +3273,10 @@ static int _DrvProximityInputDeviceInit(struct i2c_client *pClient)
     set_bit(EV_ABS, g_ProximityInputDevice->evbit);
 
     input_set_abs_params(g_ProximityInputDevice, ABS_DISTANCE, 0, 1, 0, 0);
-    
+
     nRetVal = input_register_device(g_ProximityInputDevice);
     if (nRetVal < 0) {
-        DBG(&g_I2cClient->dev, "*** Unable to register proximity input device *** nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Unable to register proximity input device *** nRetVal=%d\n", nRetVal);
         goto ERROR_INPUT_DEVICE_REGISTER_FAILED;
     }
 
@@ -3285,7 +3285,7 @@ static int _DrvProximityInputDeviceInit(struct i2c_client *pClient)
     nRetVal = sysfs_create_group(&g_ProximityInputDevice->dev.kobj, &proximity_detection_attribute_group);
     if (nRetVal < 0)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to sysfs_create_group() for proximity *** nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Failed to sysfs_create_group() for proximity *** nRetVal=%d\n", nRetVal);
         goto ERROR_SYSFS_CREATE_GROUP_FAILED;
     }
 
@@ -3294,7 +3294,7 @@ static int _DrvProximityInputDeviceInit(struct i2c_client *pClient)
     sensors_proximity_cdev.sensors_enable = DrvTpPsEnable;
     nRetVal = sensors_classdev_register(&pClient->dev, &sensors_proximity_cdev);
     if (nRetVal < 0) {
-        DBG(&g_I2cClient->dev, "*** Failed to sensors_classdev_register() for proximity *** nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Failed to sensors_classdev_register() for proximity *** nRetVal=%d\n", nRetVal);
         goto ERROR_SENSORS_CLASSDEV_REGISTER_FAILED;
     }
 
@@ -3320,7 +3320,7 @@ ERROR_INPUT_DEVICE_ALLOCATE_FAILED:
 
 static int _DrvProximityInputDeviceUnInit(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     if (g_ProximityInputDevice)
     {
@@ -3329,12 +3329,12 @@ static int _DrvProximityInputDeviceUnInit(void)
     }
 
     sensors_classdev_unregister(&sensors_proximity_cdev);
-    
+
     return 0;
 }
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
 int DrvTpPsOperate(void* pSelf, u32 nCommand, void* pBuffIn, int nSizeIn,
-				   void* pBuffOut, int nSizeOut, int* pActualOut)
+                   void* pBuffOut, int nSizeOut, int* pActualOut)
 {
     int nErr = 0;
     int nValue;
@@ -3345,7 +3345,7 @@ int DrvTpPsOperate(void* pSelf, u32 nCommand, void* pBuffIn, int nSizeIn,
         case SENSOR_DELAY:
             if ((pBuffIn == NULL) || (nSizeIn < sizeof(int)))
             {
-                DBG(&g_I2cClient->dev, "Set delay parameter error!\n"); 
+                DBG(&g_I2cClient->dev, "Set delay parameter error!\n");
                 nErr = -EINVAL;
             }
             // Do nothing
@@ -3354,7 +3354,7 @@ int DrvTpPsOperate(void* pSelf, u32 nCommand, void* pBuffIn, int nSizeIn,
         case SENSOR_ENABLE:
             if ((pBuffIn == NULL) || (nSizeIn < sizeof(int)))
             {
-                DBG(&g_I2cClient->dev, "Enable sensor parameter error!\n"); 
+                DBG(&g_I2cClient->dev, "Enable sensor parameter error!\n");
                 nErr = -EINVAL;
             }
             else
@@ -3364,7 +3364,7 @@ int DrvTpPsOperate(void* pSelf, u32 nCommand, void* pBuffIn, int nSizeIn,
                 {
                     if (DrvEnableProximity() < 0)
                     {
-                        DBG(&g_I2cClient->dev, "Enable ps fail: %d\n", nErr); 
+                        DBG(&g_I2cClient->dev, "Enable ps fail: %d\n", nErr);
                         return -1;
                     }
                 }
@@ -3372,7 +3372,7 @@ int DrvTpPsOperate(void* pSelf, u32 nCommand, void* pBuffIn, int nSizeIn,
                 {
                     if (DrvDisableProximity() < 0)
                     {
-                        DBG(&g_I2cClient->dev, "Disable ps fail: %d\n", nErr); 
+                        DBG(&g_I2cClient->dev, "Disable ps fail: %d\n", nErr);
                         return -1;
                     }
                 }
@@ -3382,7 +3382,7 @@ int DrvTpPsOperate(void* pSelf, u32 nCommand, void* pBuffIn, int nSizeIn,
         case SENSOR_GET_DATA:
             if ((pBuffOut == NULL) || (nSizeOut < sizeof(hwm_sensor_data)))
             {
-                DBG(&g_I2cClient->dev, "Get sensor data parameter error!\n"); 
+                DBG(&g_I2cClient->dev, "Get sensor data parameter error!\n");
                 nErr = -EINVAL;
             }
             else
@@ -3396,7 +3396,7 @@ int DrvTpPsOperate(void* pSelf, u32 nCommand, void* pBuffIn, int nSizeIn,
             break;
 
        default:
-           DBG(&g_I2cClient->dev, "Un-recognized parameter %d!\n", nCommand); 
+           DBG(&g_I2cClient->dev, "Un-recognized parameter %d!\n", nCommand);
            nErr = -1;
            break;
     }
@@ -3410,47 +3410,47 @@ void DrvSetFilmMode(u8 nFilmtype){
     s32 rc;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-	mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
-	rc = IicWriteData(SLAVE_I2C_ID_DWI2C, &szTxData[0], 2);
-	if (rc > 0)
-	{
-		DBG(&g_I2cClient->dev, "Set Film Mode success,\n");
-	}
+    mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
+    rc = IicWriteData(SLAVE_I2C_ID_DWI2C, &szTxData[0], 2);
+    if (rc > 0)
+    {
+        DBG(&g_I2cClient->dev, "Set Film Mode success,\n");
+    }
 }
 
 int DrvGetFilmMode(void){
     u8 szTxData[1] = {0x12};
-	u8 szRxData[3] = {0};
+    u8 szRxData[3] = {0};
     s32 rc;
 
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
-	rc = IicWriteData(SLAVE_I2C_ID_DWI2C, &szTxData[0], 1);
-	if (rc > 0)
-	{
-		DBG(&g_I2cClient->dev, "Get firmware info IicWriteData() success\n");
-	}
-	mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
-	rc = IicReadData(SLAVE_I2C_ID_DWI2C, &szRxData[0], 3);
-	if (rc > 0)
-	{
-		if(szRxData[1] == FEATURE_FILM_MODE_LOW_STRENGTH)
-		{
-			DBG(&g_I2cClient->dev, "Film mode: Low strength\n");
-			return FEATURE_FILM_MODE_LOW_STRENGTH;
-		}
-		else if(szRxData[1] == FEATURE_FILM_MODE_HIGH_STRENGTH)
-		{
-			DBG(&g_I2cClient->dev, "Film mode: High strength\n");
-			return	FEATURE_FILM_MODE_HIGH_STRENGTH;
-		}
-		else if(szRxData[1] == FEATURE_FILM_MODE_DEFAULT)
-		{
-			DBG(&g_I2cClient->dev, "Film mode: Default\n");	
-			return FEATURE_FILM_MODE_DEFAULT;
-		}
-	}
-	return -1;
+    mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
+    rc = IicWriteData(SLAVE_I2C_ID_DWI2C, &szTxData[0], 1);
+    if (rc > 0)
+    {
+        DBG(&g_I2cClient->dev, "Get firmware info IicWriteData() success\n");
+    }
+    mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
+    rc = IicReadData(SLAVE_I2C_ID_DWI2C, &szRxData[0], 3);
+    if (rc > 0)
+    {
+        if(szRxData[1] == FEATURE_FILM_MODE_LOW_STRENGTH)
+        {
+            DBG(&g_I2cClient->dev, "Film mode: Low strength\n");
+            return FEATURE_FILM_MODE_LOW_STRENGTH;
+        }
+        else if(szRxData[1] == FEATURE_FILM_MODE_HIGH_STRENGTH)
+        {
+            DBG(&g_I2cClient->dev, "Film mode: High strength\n");
+            return  FEATURE_FILM_MODE_HIGH_STRENGTH;
+        }
+        else if(szRxData[1] == FEATURE_FILM_MODE_DEFAULT)
+        {
+            DBG(&g_I2cClient->dev, "Film mode: Default\n");
+            return FEATURE_FILM_MODE_DEFAULT;
+        }
+    }
+    return -1;
 }
 //------------------------------------------------------------------------------//
 
@@ -3461,7 +3461,7 @@ void DrvEsdCheck(struct work_struct *pWork)
     u32 i = 0;
     s32 rc = 0;
 
-    DBG(&g_I2cClient->dev, "*** %s() g_IsEnableEsdCheck = %d ***\n", __func__, g_IsEnableEsdCheck); 
+    DBG(&g_I2cClient->dev, "*** %s() g_IsEnableEsdCheck = %d ***\n", __func__, g_IsEnableEsdCheck);
 
     if (g_IsEnableEsdCheck == 0)
     {
@@ -3473,7 +3473,7 @@ void DrvEsdCheck(struct work_struct *pWork)
         DBG(&g_I2cClient->dev, "Not allow to do ESD check while finger touch.\n");
         goto EsdCheckEnd;
     }
-    	
+
     if (g_IsUpdateFirmware != 0) // Check whether update frimware is finished
     {
         DBG(&g_I2cClient->dev, "Not allow to do ESD check while update firmware is proceeding.\n");
@@ -3505,7 +3505,7 @@ void DrvEsdCheck(struct work_struct *pWork)
     szData[0] = 0x00; // Dummy command for ESD check
 
     mutex_lock(&g_Mutex);
-    
+
     while (i < 3)
     {
         mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
@@ -3518,13 +3518,13 @@ void DrvEsdCheck(struct work_struct *pWork)
             DBG(&g_I2cClient->dev, "Un-recognized chip type = 0x%x\n", g_ChipType);
             break;
         }
-        	
+
         if (rc > 0)
         {
             DBG(&g_I2cClient->dev, "ESD check success\n");
             break;
         }
-     
+
         i++;
     }
     if (i == 3)
@@ -3565,14 +3565,14 @@ static void _DrvVariableInitialize(void)
         DEMO_MODE_PACKET_LENGTH = MUTUAL_DEMO_MODE_PACKET_LENGTH;
         DEBUG_MODE_PACKET_LENGTH = MUTUAL_DEBUG_MODE_PACKET_LENGTH;
         MAX_TOUCH_NUM = MUTUAL_MAX_TOUCH_NUM;
-    }	
-}	
+    }
+}
 
 void DrvGetCustomerFirmwareVersion(u16 *pMajor, u16 *pMinor, u8 **ppVersion)
 {
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)   
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         u8 szTxData[3] = {0};
         u8 szRxData[4] = {0};
@@ -3580,7 +3580,7 @@ void DrvGetCustomerFirmwareVersion(u16 *pMajor, u16 *pMinor, u8 **ppVersion)
         szTxData[0] = 0x03;
 
         mutex_lock(&g_Mutex);
-    
+
         //DrvTouchDeviceHwReset();
 
         IicWriteData(SLAVE_I2C_ID_DWI2C, &szTxData[0], 1);
@@ -3602,15 +3602,15 @@ void DrvGetCustomerFirmwareVersion(u16 *pMajor, u16 *pMinor, u8 **ppVersion)
         *ppVersion = kzalloc(sizeof(u8)*11, GFP_KERNEL);
     }
     DBG(&g_I2cClient->dev, "*** Major = %d ***\n", *pMajor);
-	if(g_FwVersionFlag)
-	{
-		DBG(&g_I2cClient->dev, "*** Minor = %d.%d ***\n", (*pMinor & 0xFF), ((*pMinor >> 8) & 0xFF));
-	}
-	else
-	{	
-		DBG(&g_I2cClient->dev, "*** Minor = %d ***\n", *pMinor);
-	}  
-	sprintf(*ppVersion, "%05d.%05d", *pMajor, *pMinor);
+    if(g_FwVersionFlag)
+    {
+        DBG(&g_I2cClient->dev, "*** Minor = %d.%d ***\n", (*pMinor & 0xFF), ((*pMinor >> 8) & 0xFF));
+    }
+    else
+    {
+        DBG(&g_I2cClient->dev, "*** Minor = %d ***\n", *pMinor);
+    }
+    sprintf(*ppVersion, "%05d.%05d", *pMajor, *pMinor);
 }
 void DrvCheckFWSupportDriver(void)
 {
@@ -3620,7 +3620,7 @@ void DrvCheckFWSupportDriver(void)
     szTxData[0] = 0x14;
     IicWriteData(SLAVE_I2C_ID_DWI2C, &szTxData[0], 1);
     mdelay(I2C_SMBUS_READ_COMMAND_DELAY_FOR_PLATFORM);
-    IicReadData(SLAVE_I2C_ID_DWI2C, &szRxData[0], 4); 
+    IicReadData(SLAVE_I2C_ID_DWI2C, &szRxData[0], 4);
     sscanf(DEVICE_DRIVER_RELEASE_VERSION,"%x.%x.%x.%x", &szDriverVer[0], &szDriverVer[1], &szDriverVer[2], &szDriverVer[3]);
     printk("Read FW support Driver Version: %d.%d.%d.%d\n", szRxData[0], szRxData[1], szRxData[2], szRxData[3]);
     if(((szDriverVer[0] + szDriverVer[1] +szDriverVer[2]  + szDriverVer[3]) & 0xff) >
@@ -3633,15 +3633,15 @@ void DrvGetPlatformFirmwareVersion(u8 **ppVersion)
 {
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)   
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         u8 szTxData[1] = {0};
         u8 szRxData[10] = {0};
-    
+
         szTxData[0] = 0x0C;
 
         mutex_lock(&g_Mutex);
-    
+
         //DrvTouchDeviceHwReset();
 
 #ifdef CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM
@@ -3655,7 +3655,7 @@ void DrvGetPlatformFirmwareVersion(u8 **ppVersion)
         IicReadData(SLAVE_I2C_ID_DWI2C, &szRxData[0], 10);
 
         mutex_unlock(&g_Mutex);
-           
+
         DBG(&g_I2cClient->dev, "szRxData[0] = 0x%x , %c \n", szRxData[0], szRxData[0]); // add for debug
         DBG(&g_I2cClient->dev, "szRxData[1] = 0x%x , %c \n", szRxData[1], szRxData[1]); // add for debug
         DBG(&g_I2cClient->dev, "szRxData[2] = 0x%x , %c \n", szRxData[2], szRxData[2]); // add for debug
@@ -3673,13 +3673,13 @@ void DrvGetPlatformFirmwareVersion(u8 **ppVersion)
         }
 
         sprintf(*ppVersion, "%.10s", szRxData);
-		sscanf(*ppVersion, "V%02u.%03u.%02u\n", &g_PlatformFwVersion[0], &g_PlatformFwVersion[1], &g_PlatformFwVersion[2]);
-		printk("*** %d, ILITEK %s() Platform FW version = %02u.%03u.%02u ***\n", __LINE__, __func__, g_PlatformFwVersion[0], g_PlatformFwVersion[1], g_PlatformFwVersion[2]);
-		//platform FW version V01.010.03 is FW format check point
-		if(g_PlatformFwVersion[0]*100000 + (g_PlatformFwVersion[1])*100 + g_PlatformFwVersion[2] >= 101003)
-		{
-			g_FwVersionFlag = 1;
-		}
+        sscanf(*ppVersion, "V%02u.%03u.%02u\n", &g_PlatformFwVersion[0], &g_PlatformFwVersion[1], &g_PlatformFwVersion[2]);
+        printk("*** %d, ILITEK %s() Platform FW version = %02u.%03u.%02u ***\n", __LINE__, __func__, g_PlatformFwVersion[0], g_PlatformFwVersion[1], g_PlatformFwVersion[2]);
+        //platform FW version V01.010.03 is FW format check point
+        if(g_PlatformFwVersion[0]*100000 + (g_PlatformFwVersion[1])*100 + g_PlatformFwVersion[2] >= 101003)
+        {
+            g_FwVersionFlag = 1;
+        }
     }
     else
     {
@@ -3687,7 +3687,7 @@ void DrvGetPlatformFirmwareVersion(u8 **ppVersion)
         {
             *ppVersion = kzalloc(sizeof(u8)*10, GFP_KERNEL);
         }
-    
+
         sprintf(*ppVersion, "%s", "N/A");
     }
 
@@ -3699,15 +3699,15 @@ static s32 _DrvUpdateFirmware(u8 szFwData[][1024], EmemType_e eEmemType)
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     return DrvUpdateFirmwareCash(szFwData, eEmemType);
-}	
+}
 
 s32 DrvCheckUpdateFirmwareBySdCard(const char *pFilePath)
 {
     s32 nRetVal = -1;
-    
+
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)    
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         nRetVal = DrvUpdateFirmwareBySdCard(pFilePath);
     }
@@ -3715,9 +3715,9 @@ s32 DrvCheckUpdateFirmwareBySdCard(const char *pFilePath)
     {
         DBG(&g_I2cClient->dev, "This chip type (0x%x) does not support update firmware by sd card\n", g_ChipType);
     }
-    
+
     return nRetVal;
-}	
+}
 
 //------------------------------------------------------------------------------//
 
@@ -3725,14 +3725,14 @@ static u16 _DrvChangeFirmwareMode(u16 nMode)
 {
     DBG(&g_I2cClient->dev, "*** %s() *** nMode = 0x%x\n", __func__, nMode);
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)  
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         u8 szTxData[2] = {0};
         u32 i = 0;
         s32 rc;
 
-        g_IsDisableFingerTouch = 1; // Skip finger touch ISR handling temporarily for device driver can send change firmware mode i2c command to firmware. 
-        szTxData[0] = 0x02;        
+        g_IsDisableFingerTouch = 1; // Skip finger touch ISR handling temporarily for device driver can send change firmware mode i2c command to firmware.
+        szTxData[0] = 0x02;
         szTxData[1] = (u8)nMode;
 
         mutex_lock(&g_Mutex);
@@ -3758,7 +3758,7 @@ static u16 _DrvChangeFirmwareMode(u16 nMode)
         DBG(&g_I2cClient->dev, "*** %s() *** mutex_unlock(&g_Mutex)\n", __func__);  // add for debug
         mutex_unlock(&g_Mutex);
 
-        g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware. 
+        g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware.
     }
 
     return nMode;
@@ -3768,18 +3768,18 @@ static void _DrvMutualGetFirmwareInfo(MutualFirmwareInfo_t *pInfo) // for MSG28x
 {
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)   
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         u8 szTxData[1] = {0};
         u8 szRxData[10] = {0};
         u32 i = 0;
         s32 rc;
-    
-        g_IsDisableFingerTouch = 1; // Skip finger touch ISR handling temporarily for device driver can send get firmware info i2c command to firmware.       
+
+        g_IsDisableFingerTouch = 1; // Skip finger touch ISR handling temporarily for device driver can send get firmware info i2c command to firmware.
         szTxData[0] = 0x01;
         mutex_lock(&g_Mutex);
         DBG(&g_I2cClient->dev, "*** %s() *** mutex_lock(&g_Mutex)\n", __func__);  // add for debug
-    
+
 #ifdef CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM
 #ifdef CONFIG_ENABLE_DMA_IIC
         DmaReset();
@@ -3794,7 +3794,7 @@ static void _DrvMutualGetFirmwareInfo(MutualFirmwareInfo_t *pInfo) // for MSG28x
             {
                 DBG(&g_I2cClient->dev, "Get firmware info IicWriteData() success\n");
             }
-            
+
             mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
             rc = IicReadData(SLAVE_I2C_ID_DWI2C, &szRxData[0], 10);
             if (rc > 0)
@@ -3820,16 +3820,16 @@ static void _DrvMutualGetFirmwareInfo(MutualFirmwareInfo_t *pInfo) // for MSG28x
 
         DBG(&g_I2cClient->dev, "*** %s() *** mutex_unlock(&g_Mutex)\n", __func__);  // add for debug
         mutex_unlock(&g_Mutex);
-    
+
         // Add protection for incorrect firmware info check
-        if ((szRxData[1] == FIRMWARE_MODE_DEBUG_MODE && szRxData[2] == 0xA7 && (szRxData[5] == PACKET_TYPE_TOOTH_PATTERN || szRxData[5] == PACKET_TYPE_CSUB_PATTERN || 
+        if ((szRxData[1] == FIRMWARE_MODE_DEBUG_MODE && szRxData[2] == 0xA7 && (szRxData[5] == PACKET_TYPE_TOOTH_PATTERN || szRxData[5] == PACKET_TYPE_CSUB_PATTERN ||
         szRxData[5] == PACKET_TYPE_FOUT_PATTERN || szRxData[5] == PACKET_TYPE_FREQ_PATTERN)) || (szRxData[1] == FIRMWARE_MODE_DEMO_MODE && szRxData[2] == 0x5A))
         {
             pInfo->nFirmwareMode = szRxData[1];
             DBG(&g_I2cClient->dev, "pInfo->nFirmwareMode = 0x%x\n", pInfo->nFirmwareMode);
 
-            pInfo->nLogModePacketHeader = szRxData[2]; 
-            pInfo->nLogModePacketLength = (szRxData[3]<<8) + szRxData[4]; 
+            pInfo->nLogModePacketHeader = szRxData[2];
+            pInfo->nLogModePacketLength = (szRxData[3]<<8) + szRxData[4];
             pInfo->nType = szRxData[5];
             pInfo->nMy = szRxData[6];
             pInfo->nMx = szRxData[7];
@@ -3847,7 +3847,7 @@ static void _DrvMutualGetFirmwareInfo(MutualFirmwareInfo_t *pInfo) // for MSG28x
         else
         {
             DBG(&g_I2cClient->dev, "Firmware info before correcting :\n");
-            
+
             DBG(&g_I2cClient->dev, "FirmwareMode = 0x%x\n", szRxData[1]);
             DBG(&g_I2cClient->dev, "LogModePacketHeader = 0x%x\n", szRxData[2]);
             DBG(&g_I2cClient->dev, "LogModePacketLength = %d\n", (szRxData[3]<<8) + szRxData[4]);
@@ -3859,8 +3859,8 @@ static void _DrvMutualGetFirmwareInfo(MutualFirmwareInfo_t *pInfo) // for MSG28x
 
             // Set firmware mode to demo mode(default)
             pInfo->nFirmwareMode = FIRMWARE_MODE_DEMO_MODE;
-            pInfo->nLogModePacketHeader = 0x5A; 
-            pInfo->nLogModePacketLength = DEMO_MODE_PACKET_LENGTH; 
+            pInfo->nLogModePacketHeader = 0x5A;
+            pInfo->nLogModePacketLength = DEMO_MODE_PACKET_LENGTH;
             pInfo->nType = 0;
             pInfo->nMy = 0;
             pInfo->nMx = 0;
@@ -3878,8 +3878,8 @@ static void _DrvMutualGetFirmwareInfo(MutualFirmwareInfo_t *pInfo) // for MSG28x
             DBG(&g_I2cClient->dev, "pInfo->nSd = %d\n", pInfo->nSd);
             DBG(&g_I2cClient->dev, "pInfo->nSs = %d\n", pInfo->nSs);
         }
-        
-        g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware. 
+
+        g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware.
     }
 }
 
@@ -3906,8 +3906,8 @@ void DrvRestoreFirmwareModeToLogDataMode(void)
         {
             DBG(&g_I2cClient->dev, "firmware mode is not restored\n");
         }
-    } 
-}	
+    }
+}
 
 //------------------------------------------------------------------------------//
 
@@ -3916,7 +3916,7 @@ static void _DrvGetTouchPacketAddress(u16* pDataAddress, u16* pFlagAddress)
 {
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)   
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         s32 rc = 0;
         u32 i = 0;
@@ -4046,12 +4046,12 @@ static void _DrvOpenGloveMode(void) // used for MSG28xx only
     }
     if (i == 5)
     {
-      	DBG(&g_I2cClient->dev, "Open glove mode failed, rc = %d\n", rc);
+        DBG(&g_I2cClient->dev, "Open glove mode failed, rc = %d\n", rc);
     }
 
     mutex_unlock(&g_Mutex);
 
-    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware. 
+    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware.
 }
 
 static void _DrvCloseGloveMode(void) // used for MSG28xx only
@@ -4086,12 +4086,12 @@ static void _DrvCloseGloveMode(void) // used for MSG28xx only
     }
     if (i == 5)
     {
-      	DBG(&g_I2cClient->dev, "Close glove mode failed, rc = %d\n", rc);
+        DBG(&g_I2cClient->dev, "Close glove mode failed, rc = %d\n", rc);
     }
 
     mutex_unlock(&g_Mutex);
 
-    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware. 
+    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware.
 }
 
 static void _DrvGetGloveInfo(u8 *pGloveMode) // used for MSG28xx only
@@ -4117,7 +4117,7 @@ static void _DrvGetGloveInfo(u8 *pGloveMode) // used for MSG28xx only
         {
             DBG(&g_I2cClient->dev, "Get glove info IicWriteData() success\n");
         }
-        
+
         mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
         rc = IicReadData(SLAVE_I2C_ID_DWI2C, &szRxData[0], 1);
         if (rc > 0)
@@ -4144,10 +4144,10 @@ static void _DrvGetGloveInfo(u8 *pGloveMode) // used for MSG28xx only
     mutex_unlock(&g_Mutex);
 
     *pGloveMode = szRxData[0];
-    
+
     DBG(&g_I2cClient->dev, "*pGloveMode = 0x%x\n", *pGloveMode);
 
-    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware. 
+    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware.
 }
 
 //------------------------------------------------------------------------------//
@@ -4184,12 +4184,12 @@ static void _DrvOpenLeatherSheathMode(void) // used for MSG28xx only
     }
     if (i == 5)
     {
-      	DBG(&g_I2cClient->dev, "Open leather sheath mode failed, rc = %d\n", rc);
+        DBG(&g_I2cClient->dev, "Open leather sheath mode failed, rc = %d\n", rc);
     }
 
     mutex_unlock(&g_Mutex);
 
-    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware. 
+    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware.
 }
 
 static void _DrvCloseLeatherSheathMode(void) // used for MSG28xx only
@@ -4224,12 +4224,12 @@ static void _DrvCloseLeatherSheathMode(void) // used for MSG28xx only
     }
     if (i == 5)
     {
-      	DBG(&g_I2cClient->dev, "Close leather sheath mode failed, rc = %d\n", rc);
+        DBG(&g_I2cClient->dev, "Close leather sheath mode failed, rc = %d\n", rc);
     }
 
     mutex_unlock(&g_Mutex);
 
-    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware. 
+    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware.
 }
 
 static void _DrvGetLeatherSheathInfo(u8 *pLeatherSheathMode) // used for MSG28xx only
@@ -4255,7 +4255,7 @@ static void _DrvGetLeatherSheathInfo(u8 *pLeatherSheathMode) // used for MSG28xx
         {
             DBG(&g_I2cClient->dev, "Get leather sheath info IicWriteData() success\n");
         }
-        
+
         mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
         rc = IicReadData(SLAVE_I2C_ID_DWI2C, &szRxData[0], 1);
         if (rc > 0)
@@ -4282,10 +4282,10 @@ static void _DrvGetLeatherSheathInfo(u8 *pLeatherSheathMode) // used for MSG28xx
     mutex_unlock(&g_Mutex);
 
     *pLeatherSheathMode = szRxData[0];
-    
+
     DBG(&g_I2cClient->dev, "*pLeatherSheathMode = 0x%x\n", *pLeatherSheathMode);
 
-    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware. 
+    g_IsDisableFingerTouch = 0; // Resume finger touch ISR handling after device driver have sent i2c command to firmware.
 }
 
 //------------------------------------------------------------------------------//
@@ -4301,17 +4301,17 @@ void DrvChargerDetection(u8 nChargerStatus)
 
     DBG(&g_I2cClient->dev, "_gChargerPlugIn = %d, nChargerStatus = %d, g_ForceUpdate = %d\n", _gChargerPlugIn, nChargerStatus, g_ForceUpdate);
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)   
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
-        szTxData[0] = 0x09;      
+        szTxData[0] = 0x09;
     }
 
     if (nChargerStatus) // charger plug in
     {
         if (_gChargerPlugIn == 0 || g_ForceUpdate == 1)
         {
-          	szTxData[1] = 0xA5;
-            
+            szTxData[1] = 0xA5;
+
             while (i < 5)
             {
                 mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
@@ -4340,8 +4340,8 @@ void DrvChargerDetection(u8 nChargerStatus)
     {
         if (_gChargerPlugIn == 1 || g_ForceUpdate == 1)
         {
-          	szTxData[1] = 0x5A;
-            
+            szTxData[1] = 0x5A;
+
             while (i < 5)
             {
                 mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
@@ -4355,7 +4355,7 @@ void DrvChargerDetection(u8 nChargerStatus)
                     DBG(&g_I2cClient->dev, "Update status for charger plug out success.\n");
                     break;
                 }
-                
+
                 i ++;
             }
             if (i == 5)
@@ -4365,14 +4365,14 @@ void DrvChargerDetection(u8 nChargerStatus)
 
             g_ForceUpdate = 0; // Clear flag after force update charger status
         }
-    }	
-}	
+    }
+}
 
 static void _DrvChargerPlugInOutCheck(struct work_struct *pWork)
 {
     u8 szChargerStatus[20] = {0};
     s32 i = 0;
-    DBG(&g_I2cClient->dev, "*** %s() g_IsEnableChargerPlugInOutCheck = %d ***\n", __func__, g_IsEnableChargerPlugInOutCheck); 
+    DBG(&g_I2cClient->dev, "*** %s() g_IsEnableChargerPlugInOutCheck = %d ***\n", __func__, g_IsEnableChargerPlugInOutCheck);
 
     if (g_IsEnableChargerPlugInOutCheck == 0)
     {
@@ -4384,7 +4384,7 @@ static void _DrvChargerPlugInOutCheck(struct work_struct *pWork)
         DBG(&g_I2cClient->dev, "Not allow to do charger plug in/out check while finger touch.\n");
         goto ChargerPlugInOutCheckEnd;
     }
-*/    	
+*/
     if (g_IsUpdateFirmware != 0) // Check whether update frimware is finished
     {
         DBG(&g_I2cClient->dev, "Not allow to do charger plug in/out check while update firmware is proceeding.\n");
@@ -4398,7 +4398,7 @@ static void _DrvChargerPlugInOutCheck(struct work_struct *pWork)
         goto ChargerPlugInOutCheckEnd;
     }
 #endif //CONFIG_ENABLE_ITO_MP_TEST
-     
+
     DrvReadFile(POWER_SUPPLY_BATTERY_STATUS_PATCH, szChargerStatus, 20);
 
     DBG(&g_I2cClient->dev, "*** Battery Status : %s ***\n", szChargerStatus);
@@ -4428,7 +4428,7 @@ static s32 _DrvMutualReadFingerTouchData(u8 *pPacket, u16 nReportPacketLength)
     s32 rc;
 
     if (IS_FIRMWARE_DATA_LOG_ENABLED)
-    {	
+    {
         if (g_FirmwareMode == FIRMWARE_MODE_DEMO_MODE)
         {
             rc = IicReadData(SLAVE_I2C_ID_DWI2C, &pPacket[0], nReportPacketLength);
@@ -4483,7 +4483,7 @@ static s32 _DrvMutualReadFingerTouchData(u8 *pPacket, u16 nReportPacketLength)
                 DBG(&g_I2cClient->dev, "I2C read packet data failed, rc = %d\n", rc);
                 return -1;
             }
-#endif //CONFIG_ENABLE_SEGMENT_READ_FINGER_TOUCH_DATA    		
+#endif //CONFIG_ENABLE_SEGMENT_READ_FINGER_TOUCH_DATA
         }
         else
         {
@@ -4492,14 +4492,14 @@ static s32 _DrvMutualReadFingerTouchData(u8 *pPacket, u16 nReportPacketLength)
         }
     }
     else
-    {	
+    {
         rc = IicReadData(SLAVE_I2C_ID_DWI2C, &pPacket[0], nReportPacketLength);
         if (rc < 0)
         {
             DBG(&g_I2cClient->dev, "I2C read packet data failed, rc = %d\n", rc);
             return -1;
         }
-    } //IS_FIRMWARE_DATA_LOG_ENABLED	
+    } //IS_FIRMWARE_DATA_LOG_ENABLED
 
     return 0;
 }
@@ -4516,20 +4516,20 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
     u16 nReportPacketLength = 0;
 
 //    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);  // add for debug
-    
+
     if (g_IsDisableFingerTouch == 1)
     {
         DBG(&g_I2cClient->dev, "Skip finger touch for handling get firmware info or change firmware mode\n");
         return;
     }
 
-    mutex_lock(&g_Mutex); 
+    mutex_lock(&g_Mutex);
 //    DBG(&g_I2cClient->dev, "*** %s() *** mutex_lock(&g_Mutex)\n", __func__);  // add for debug
 
     memset(&tInfo, 0x0, sizeof(MutualTouchInfo_t));
 
     if (IS_FIRMWARE_DATA_LOG_ENABLED)
-    {	
+    {
         if (g_FirmwareMode == FIRMWARE_MODE_DEMO_MODE)
         {
             {
@@ -4546,8 +4546,8 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
             if (g_MutualFirmwareInfo.nLogModePacketHeader != 0xA7)
             {
                 DBG(&g_I2cClient->dev, "WRONG DEBUG MODE HEADER : 0x%x\n", g_MutualFirmwareInfo.nLogModePacketHeader);
-                goto TouchHandleEnd;		
-            }            
+                goto TouchHandleEnd;
+            }
             {
                 nReportPacketLength = g_MutualFirmwareInfo.nLogModePacketLength;
                 pPacket = g_DebugModePacket;
@@ -4556,11 +4556,11 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
         else
         {
             DBG(&g_I2cClient->dev, "WRONG FIRMWARE MODE : 0x%x\n", g_FirmwareMode);
-            goto TouchHandleEnd;		
+            goto TouchHandleEnd;
         }
     }
     else
-    {    
+    {
         {
             DBG(&g_I2cClient->dev, "FIRMWARE_MODE_DEMO_MODE\n");
 
@@ -4575,7 +4575,7 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
     {
         DBG(&g_I2cClient->dev, "Set gesture debug mode packet length, g_ChipType=0x%x\n", g_ChipType);
 
-        if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A) 
+        if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
         {
             nReportPacketLength = GESTURE_DEBUG_MODE_PACKET_LENGTH;
             pPacket = _gGestureWakeupPacket;
@@ -4583,7 +4583,7 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
         else
         {
             DBG(&g_I2cClient->dev, "This chip type does not support gesture debug mode.\n");
-            goto TouchHandleEnd;		
+            goto TouchHandleEnd;
         }
     }
     else if (g_GestureWakeupFlag == 1)
@@ -4611,7 +4611,7 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
     if (g_GestureWakeupFlag == 1)
     {
         s32 rc;
-        
+
         while (i < 5)
         {
             mdelay(50);
@@ -4621,42 +4621,42 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
             {
                 break;
             }
-            
+
             i ++;
         }
         if (i == 5)
         {
             DBG(&g_I2cClient->dev, "I2C read packet data failed, rc = %d\n", rc);
-            goto TouchHandleEnd;		
+            goto TouchHandleEnd;
         }
     }
     else
     {
         if (0 != _DrvMutualReadFingerTouchData(&pPacket[0], nReportPacketLength))
         {
-            goto TouchHandleEnd;		
+            goto TouchHandleEnd;
         }
     }
 #else
     if (0 != _DrvMutualReadFingerTouchData(&pPacket[0], nReportPacketLength))
     {
-         goto TouchHandleEnd;		
+         goto TouchHandleEnd;
     }
-#endif //CONFIG_ENABLE_GESTURE_WAKEUP   
+#endif //CONFIG_ENABLE_GESTURE_WAKEUP
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
     if (0 != _DrvMutualReadFingerTouchData(&pPacket[0], nReportPacketLength))
     {
-        goto TouchHandleEnd;		
+        goto TouchHandleEnd;
     }
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
     {
 #ifdef CONFIG_ENABLE_DMA_IIC
         DmaReset();
 #endif //CONFIG_ENABLE_DMA_IIC
-        
+
         if (0 != _DrvMutualReadFingerTouchData(&pPacket[0], nReportPacketLength))
         {
-            goto TouchHandleEnd;		
+            goto TouchHandleEnd;
         }
     }
 #endif
@@ -4677,8 +4677,8 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
 #else
             DBG(&g_I2cClient->dev, "tInfo.nKeyCode=%x, nLastKeyCode=%x, g_TpVirtualKey[%d]=%d\n", tInfo.nKeyCode, nLastKeyCode, tInfo.nKeyCode, g_TpVirtualKey[tInfo.nKeyCode]);
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
-#endif   
-         
+#endif
+
             if (tInfo.nKeyCode < MAX_KEY_NUM)
             {
                 if (tInfo.nKeyCode != nLastKeyCode)
@@ -4697,7 +4697,7 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
 #else
                     input_report_key(g_InputDevice, g_TpVirtualKey[tInfo.nKeyCode], 1);
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
-#endif   
+#endif
                     input_sync(g_InputDevice);
 
                     nLastKeyCode = tInfo.nKeyCode;
@@ -4731,9 +4731,9 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
 #else
                 input_report_key(g_InputDevice, g_TpVirtualKey[nLastKeyCode], 0);
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
-#endif   
+#endif
                 input_sync(g_InputDevice);
-                
+
                 nLastKeyCode = 0xFF;
             }
         }
@@ -4746,9 +4746,9 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL
             for (i = 0; i < tInfo.nCount; i ++)
             {
-                input_report_key(g_InputDevice, BTN_TOUCH, 1); 
+                input_report_key(g_InputDevice, BTN_TOUCH, 1);
                 DrvFingerTouchPressed(tInfo.tPoint[i].nX, tInfo.tPoint[i].nY, tInfo.tPoint[i].nP, tInfo.tPoint[i].nId);
-                input_report_key(g_InputDevice, BTN_TOOL_FINGER, 1); 	
+                input_report_key(g_InputDevice, BTN_TOOL_FINGER, 1);
             }
 
             for (i = 0; i < MAX_TOUCH_NUM; i ++)
@@ -4777,7 +4777,7 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
             if (nLastCount > 0)
             {
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL // TYPE B PROTOCOL
-                input_report_key(g_InputDevice, BTN_TOUCH, 0);                      
+                input_report_key(g_InputDevice, BTN_TOUCH, 0);
 
                 for (i = 0; i < MAX_TOUCH_NUM; i ++)
                 {
@@ -4790,11 +4790,11 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
                     _gPreviousTouch[i] = _gCurrentTouch[i];
                 }
 
-                input_report_key(g_InputDevice, BTN_TOOL_FINGER, 0); 	
+                input_report_key(g_InputDevice, BTN_TOOL_FINGER, 0);
 #else // TYPE A PROTOCOL
                 DrvFingerTouchReleased(0, 0, 0);
 #endif //CONFIG_ENABLE_TYPE_B_PROTOCOL
-    
+
                 input_sync(g_InputDevice);
 
                 nLastCount = 0;
@@ -4808,7 +4808,7 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
             {
                 g_ValidTouchCount = 0; // Reset count if overflow
                 DBG(&g_I2cClient->dev, "g_ValidTouchCount reset to 0\n");
-            } 	
+            }
 
             g_ValidTouchCount ++;
 
@@ -4817,14 +4817,14 @@ static void _DrvMutualHandleFingerTouch(void) // for MSG28xx/MSG58xxA
 #endif //CONFIG_ENABLE_COUNT_REPORT_RATE
     }
 
-    TouchHandleEnd: 
-    	
+    TouchHandleEnd:
+
 //    DBG(&g_I2cClient->dev, "*** %s() *** mutex_unlock(&g_Mutex)\n", __func__);  // add for debug
     mutex_unlock(&g_Mutex);
 }
 
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
-static ssize_t DrvMainProcfsMpTestCustomisedWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
+static ssize_t DrvMainProcfsMpTestCustomisedWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     memset(_gDebugBuf, 0, 1);
     if (copy_from_user(_gDebugBuf, pBuffer, 1))
@@ -4834,7 +4834,7 @@ static ssize_t DrvMainProcfsMpTestCustomisedWrite(struct file *pFile, const char
         return -EFAULT;
     }
     printk("%s,_gDebugBuf:%s\n", __func__, _gDebugBuf);
-    g_MpTestMode = ms_atoi(_gDebugBuf);  	
+    g_MpTestMode = ms_atoi(_gDebugBuf);
     printk("%s,g_MpTestMode:%d\n", __func__, g_MpTestMode);
     return nCount;
 }
@@ -4842,7 +4842,7 @@ static ssize_t DrvMainProcfsMpTestCustomisedWrite(struct file *pFile, const char
 static ssize_t DrvMainProcfsMpTestCustomisedRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 result[16]; 
+    u8 result[16];
     int res = 0;
     char *ini_path = INI_PATH;
 
@@ -4851,20 +4851,20 @@ static ssize_t DrvMainProcfsMpTestCustomisedRead(struct file *pFile, char __user
 
     res = startMPTest(g_ChipType, ini_path);
     pr_info("MP Test Result = %d \n", res);
- 
+
     nLength = sprintf(result, "%d", res);
 
     *pPos += nLength;
     DBG(&g_I2cClient->dev,"end\n");
     return nLength;
 }
-#endif	
+#endif
 //------------------------------------------------------------------------------//
 
 static ssize_t _DrvProcfsChipTypeRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -4872,23 +4872,23 @@ static ssize_t _DrvProcfsChipTypeRead(struct file *pFile, char __user *pBuffer, 
     {
         return 0;
     }
-	g_ChipType = DrvGetChipType(); 
+    g_ChipType = DrvGetChipType();
     nLength = sprintf(nUserTempBuffer, "%d", g_OriginalChipType);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
         return -EFAULT;
-	
+
     DBG(&g_I2cClient->dev, "g_ChipType = 0x%x, g_OriginalChipType = 0x%x\n", g_ChipType, g_OriginalChipType);
 
     *pPos += nLength;
 
     return nLength;
-}			  
-		  
-static ssize_t _DrvProcfsChipTypeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
+}
+
+static ssize_t _DrvProcfsChipTypeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    //g_ChipType = DrvGetChipType(); 
+    //g_ChipType = DrvGetChipType();
 
     return nCount;
 }
@@ -4906,9 +4906,9 @@ static ssize_t _DrvProcfsFirmwareDataRead(struct file *pFile, char __user *pBuff
     *pPos += g_FwDataCount;
 
     return g_FwDataCount;
-}			  
-			  
-static ssize_t _DrvProcfsFirmwareDataWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
+}
+
+static ssize_t _DrvProcfsFirmwareDataWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nNum = nCount / 1024;
     u32 nRemainder = nCount % 1024;
@@ -4916,19 +4916,19 @@ static ssize_t _DrvProcfsFirmwareDataWrite(struct file *pFile, const char __user
 
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)    
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         if (nNum > 0) // nCount >= 1024
         {
             for (i = 0; i < nNum; i ++)
             {
-				memset(_gDebugBuf, 0, 1024);
-				if (copy_from_user(_gDebugBuf, pBuffer+(i*1024), 1024))
-				{
-					DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+                memset(_gDebugBuf, 0, 1024);
+                if (copy_from_user(_gDebugBuf, pBuffer+(i*1024), 1024))
+                {
+                    DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-					return -EFAULT;
-				}  			
+                    return -EFAULT;
+                }
                 memcpy(g_FwData[g_FwDataCount], _gDebugBuf, 1024);
 
                 g_FwDataCount ++;
@@ -4937,13 +4937,13 @@ static ssize_t _DrvProcfsFirmwareDataWrite(struct file *pFile, const char __user
             if (nRemainder > 0) // Handle special firmware size like MSG22XX(48.5KB)
             {
                 DBG(&g_I2cClient->dev, "nRemainder = %d\n", nRemainder);
-				memset(_gDebugBuf, 0, 1024);
-				if (copy_from_user(_gDebugBuf, pBuffer+(i*1024), nRemainder))
-				{
-					DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+                memset(_gDebugBuf, 0, 1024);
+                if (copy_from_user(_gDebugBuf, pBuffer+(i*1024), nRemainder))
+                {
+                    DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-					return -EFAULT;
-				}  
+                    return -EFAULT;
+                }
                 memcpy(g_FwData[g_FwDataCount], _gDebugBuf, nRemainder);
 
                 g_FwDataCount ++;
@@ -4953,13 +4953,13 @@ static ssize_t _DrvProcfsFirmwareDataWrite(struct file *pFile, const char __user
         {
             if (nCount > 0)
             {
-				memset(_gDebugBuf, 0, 1024);
-				if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-				{
-					DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+                memset(_gDebugBuf, 0, 1024);
+                if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+                {
+                    DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-					return -EFAULT;
-				}  			
+                    return -EFAULT;
+                }
                 memcpy(g_FwData[g_FwDataCount], _gDebugBuf, nCount);
 
                 g_FwDataCount ++;
@@ -4992,7 +4992,7 @@ static ssize_t _DrvProcfsFirmwareUpdateRead(struct file *pFile, char __user *pBu
     {
         return 0;
     }
-    
+
     nLength = sprintf(nUserTempBuffer, "%d", _gIsUpdateComplete);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
         return -EFAULT;
@@ -5004,15 +5004,15 @@ static ssize_t _DrvProcfsFirmwareUpdateRead(struct file *pFile, char __user *pBu
     return nLength;
 }
 
-static ssize_t _DrvProcfsFirmwareUpdateWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsFirmwareUpdateWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     s32 nRetVal = 0;
-    
+
     DBG(&g_I2cClient->dev, "*** %s() g_FwDataCount = %d ***\n", __func__, g_FwDataCount);
 
     DrvDisableFingerTouchReport();
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)    
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         nRetVal = _DrvUpdateFirmware(g_FwData, EMEM_ALL);
     }
@@ -5032,7 +5032,7 @@ static ssize_t _DrvProcfsFirmwareUpdateWrite(struct file *pFile, const char __us
         _gIsUpdateComplete = 1;
         DBG(&g_I2cClient->dev, "Update SUCCESS\n");
     }
-    
+
     DrvEnableFingerTouchReport();
 
     return nCount;
@@ -5041,7 +5041,7 @@ static ssize_t _DrvProcfsFirmwareUpdateWrite(struct file *pFile, const char __us
 static ssize_t _DrvProcfsCustomerFirmwareVersionRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() _gFwVersion = %s ***\n", __func__, _gFwVersion);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5051,17 +5051,17 @@ static ssize_t _DrvProcfsCustomerFirmwareVersionRead(struct file *pFile, char __
     }
     nLength = sprintf(nUserTempBuffer, "%s", _gFwVersion);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}	
+    }
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsCustomerFirmwareVersionWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsCustomerFirmwareVersionWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u16 nMajor = 0, nMinor = 0;
 
     DrvGetCustomerFirmwareVersion(&nMajor, &nMinor, &_gFwVersion);
@@ -5074,7 +5074,7 @@ static ssize_t _DrvProcfsCustomerFirmwareVersionWrite(struct file *pFile, const 
 static ssize_t _DrvProcfsPlatformFirmwareVersionRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() _gPlatformFwVersion = %s ***\n", __func__, _gPlatformFwVersion);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5084,18 +5084,18 @@ static ssize_t _DrvProcfsPlatformFirmwareVersionRead(struct file *pFile, char __
     }
     nLength = sprintf(nUserTempBuffer, "%s", _gPlatformFwVersion);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}	
+    }
 
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsPlatformFirmwareVersionWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsPlatformFirmwareVersionWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     DrvGetPlatformFirmwareVersion(&_gPlatformFwVersion);
 
     DBG(&g_I2cClient->dev, "*** %s() _gPlatformFwVersion = %s ***\n", __func__, _gPlatformFwVersion);
@@ -5106,7 +5106,7 @@ static ssize_t _DrvProcfsPlatformFirmwareVersionWrite(struct file *pFile, const 
 static ssize_t _DrvProcfsDeviceDriverVersionRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5116,18 +5116,18 @@ static ssize_t _DrvProcfsDeviceDriverVersionRead(struct file *pFile, char __user
     }
     nLength = sprintf(nUserTempBuffer, "%s", DEVICE_DRIVER_RELEASE_VERSION);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}	
+    }
 
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsDeviceDriverVersionWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsDeviceDriverVersionWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     return nCount;
@@ -5137,7 +5137,7 @@ static ssize_t _DrvProcfsSdCardFirmwareUpdateRead(struct file *pFile, char __use
 {
     u16 nMajor = 0, nMinor = 0;
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5152,48 +5152,48 @@ static ssize_t _DrvProcfsSdCardFirmwareUpdateRead(struct file *pFile, char __use
 
     nLength = sprintf(nUserTempBuffer, "%s\n", _gFwVersion);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}	
+    }
 
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsSdCardFirmwareUpdateWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsSdCardFirmwareUpdateWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     char *pValid = NULL;
     char *pTmpFilePath = NULL;
     char szFilePath[100] = {0};
     char *pStr = NULL;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
     DBG(&g_I2cClient->dev, "pBuffer = %s\n", pBuffer);
-	memset(_gDebugBuf, 0, 1024);
+    memset(_gDebugBuf, 0, 1024);
 
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	} 
-	pStr = _gDebugBuf;
+        return -EFAULT;
+    }
+    pStr = _gDebugBuf;
     if (pStr != NULL)
     {
         pValid = strstr(pStr, ".bin");
-        
+
         if (pValid)
         {
             pTmpFilePath = strsep((char **)&pStr, ".");
-            
+
             DBG(&g_I2cClient->dev, "pTmpFilePath = %s\n", pTmpFilePath);
 
             strcat(szFilePath, pTmpFilePath);
             strcat(szFilePath, ".bin");
 
             DBG(&g_I2cClient->dev, "szFilePath = %s\n", szFilePath);
-            
+
             if (0 != DrvCheckUpdateFirmwareBySdCard(szFilePath))
             {
                 DBG(&g_I2cClient->dev, "Update FAILED\n");
@@ -5220,7 +5220,7 @@ static ssize_t _DrvProcfsSeLinuxLimitFirmwareUpdateRead(struct file *pFile, char
 {
     u32 nLength = 0;
     s32 nRetVal = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5229,7 +5229,7 @@ static ssize_t _DrvProcfsSeLinuxLimitFirmwareUpdateRead(struct file *pFile, char
         return 0;
     }
 
-    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)    
+    if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
     {
         DBG(&g_I2cClient->dev, "FIRMWARE_FILE_PATH_ON_SD_CARD = %s\n", FIRMWARE_FILE_PATH_ON_SD_CARD);
         nRetVal = DrvUpdateFirmwareBySdCard(FIRMWARE_FILE_PATH_ON_SD_CARD);
@@ -5253,10 +5253,10 @@ static ssize_t _DrvProcfsSeLinuxLimitFirmwareUpdateRead(struct file *pFile, char
 
     nLength = sprintf(nUserTempBuffer, "%d", _gIsUpdateComplete);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}
+    }
 
     DBG(&g_I2cClient->dev, "*** _gIsUpdateComplete = %d ***\n", _gIsUpdateComplete);
 
@@ -5268,7 +5268,7 @@ static ssize_t _DrvProcfsSeLinuxLimitFirmwareUpdateRead(struct file *pFile, char
 static ssize_t _DrvProcfsForceFirmwareUpdateRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5284,10 +5284,10 @@ static ssize_t _DrvProcfsForceFirmwareUpdateRead(struct file *pFile, char __user
 
     nLength = sprintf(nUserTempBuffer, "%d", _gFeatureSupportStatus);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}
+    }
 
     DBG(&g_I2cClient->dev, "*** _gFeatureSupportStatus = %d ***\n", _gFeatureSupportStatus);
 
@@ -5310,12 +5310,12 @@ static ssize_t _DrvProcfsFirmwareDebugRead(struct file *pFile, char __user *pBuf
     {
         return 0;
     }
-                
+
     DbBusEnterSerialDebugMode();
     DbBusStopMCU();
     DbBusIICUseBus();
     DbBusIICReshape();
-    
+
     for (i = 0; i < _gDebugRegCount; i ++)
     {
         szRegData[i] = RegGet16BitValue(_gDebugReg[i]);
@@ -5329,7 +5329,7 @@ static ssize_t _DrvProcfsFirmwareDebugRead(struct file *pFile, char __user *pBuf
     {
         nBank = (_gDebugReg[i] >> 8) & 0xFF;
         nAddr = _gDebugReg[i] & 0xFF;
-    	  
+
         DBG(&g_I2cClient->dev, "reg(0x%02X,0x%02X)=0x%04X\n", nBank, nAddr, szRegData[i]);
 
         strcat(szOut, "reg(");
@@ -5346,30 +5346,30 @@ static ssize_t _DrvProcfsFirmwareDebugRead(struct file *pFile, char __user *pBuf
 
     nLength = strlen(szOut);
     if(copy_to_user(pBuffer, szOut, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}
+    }
 
     *pPos += nLength;
-    
+
     return nLength;
 }
 
-static ssize_t _DrvProcfsFirmwareDebugWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsFirmwareDebugWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u32 i;
     char *pCh = NULL;
     char *pStr = NULL;
 
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 1024);
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    memset(_gDebugBuf, 0, 1024);
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}  
+        return -EFAULT;
+    }
     if (_gDebugBuf != NULL)
     {
         DBG(&g_I2cClient->dev, "*** pBuffer[0] = %c ***\n", _gDebugBuf[0]);
@@ -5380,24 +5380,24 @@ static ssize_t _DrvProcfsFirmwareDebugWrite(struct file *pFile, const char __use
         DBG(&g_I2cClient->dev, "*** pBuffer[5] = %c ***\n", _gDebugBuf[5]);
 
         DBG(&g_I2cClient->dev, "nCount = %d\n", (int)nCount);
-       
+
 
         _gDebugBuf[nCount] = '\0';
         pStr = _gDebugBuf;
-        
+
         i = 0;
 
         while ((pCh = strsep((char **)&pStr, " ,")) && (i < MAX_DEBUG_REGISTER_NUM))
         {
             DBG(&g_I2cClient->dev, "pCh = %s\n", pCh);
-            
+
             _gDebugReg[i] = _DrvConvertCharToHexDigit(pCh, strlen(pCh));
 
             DBG(&g_I2cClient->dev, "_gDebugReg[%d] = 0x%04X\n", i, _gDebugReg[i]);
             i ++;
         }
         _gDebugRegCount = i;
-        
+
         DBG(&g_I2cClient->dev, "_gDebugRegCount = %d\n", _gDebugRegCount);
     }
 
@@ -5418,12 +5418,12 @@ static ssize_t _DrvProcfsFirmwareSetDebugValueRead(struct file *pFile, char __us
     {
         return 0;
     }
-    
+
     DbBusEnterSerialDebugMode();
     DbBusStopMCU();
     DbBusIICUseBus();
     DbBusIICReshape();
-    
+
     for (i = 0; i < _gDebugRegCount; i ++)
     {
         szRegData[i] = RegGet16BitValue(_gDebugReg[i]);
@@ -5437,7 +5437,7 @@ static ssize_t _DrvProcfsFirmwareSetDebugValueRead(struct file *pFile, char __us
     {
         nBank = (_gDebugReg[i] >> 8) & 0xFF;
         nAddr = _gDebugReg[i] & 0xFF;
-    	  
+
         DBG(&g_I2cClient->dev, "reg(0x%02X,0x%02X)=0x%04X\n", nBank, nAddr, szRegData[i]);
 
         strcat(szOut, "reg(");
@@ -5451,51 +5451,51 @@ static ssize_t _DrvProcfsFirmwareSetDebugValueRead(struct file *pFile, char __us
         strcat(szOut, szValue);
         strcat(szOut, "\n");
     }
-	
+
     nLength = strlen(szOut);
     if(copy_to_user(pBuffer, szOut, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}
+    }
 
     *pPos += nLength;
-    
+
     return nLength;
 }
 
-static ssize_t _DrvProcfsFirmwareSetDebugValueWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsFirmwareSetDebugValueWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u32 i, j, k;
     char *pCh = NULL;
-    char *pStr = NULL;  
+    char *pStr = NULL;
 
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 1024);
+    memset(_gDebugBuf, 0, 1024);
 
     if(nCount > sizeof(_gDebugBuf))
     {
         return -ENOMEM;
     }
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}
+        return -EFAULT;
+    }
     if (_gDebugBuf != NULL)
     {
         DBG(&g_I2cClient->dev, "*** pBuffer[0] = %c ***\n", _gDebugBuf[0]);
         DBG(&g_I2cClient->dev, "*** pBuffer[1] = %c ***\n", _gDebugBuf[1]);
 
-        DBG(&g_I2cClient->dev, "nCount = %d\n", (int)nCount);      
+        DBG(&g_I2cClient->dev, "nCount = %d\n", (int)nCount);
         _gDebugBuf[nCount] = '\0';
         pStr = _gDebugBuf;
 
         i = 0;
         j = 0;
         k = 0;
-        
+
         while ((pCh = strsep((char **)&pStr, " ,")) && (i < 2))
         {
             DBG(&g_I2cClient->dev, "pCh = %s\n", pCh);
@@ -5507,7 +5507,7 @@ static ssize_t _DrvProcfsFirmwareSetDebugValueWrite(struct file *pFile, const ch
                 j ++;
             }
             else // (i%2) == 1
-            {	
+            {
                 _gDebugRegValue[k] = _DrvConvertCharToHexDigit(pCh, strlen(pCh));
                 DBG(&g_I2cClient->dev, "_gDebugRegValue[%d] = 0x%04X\n", k, _gDebugRegValue[k]);
                 k ++;
@@ -5516,14 +5516,14 @@ static ssize_t _DrvProcfsFirmwareSetDebugValueWrite(struct file *pFile, const ch
             i ++;
         }
         _gDebugRegCount = j;
-        
+
         DBG(&g_I2cClient->dev, "_gDebugRegCount = %d\n", _gDebugRegCount);
 
         DbBusEnterSerialDebugMode();
         DbBusStopMCU();
         DbBusIICUseBus();
         DbBusIICReshape();
-    
+
         for (i = 0; i < _gDebugRegCount; i ++)
         {
             RegSet16BitValue(_gDebugReg[i], _gDebugRegValue[i]);
@@ -5534,7 +5534,7 @@ static ssize_t _DrvProcfsFirmwareSetDebugValueWrite(struct file *pFile, const ch
         DbBusNotStopMCU();
         DbBusExitSerialDebugMode();
     }
-    
+
     return nCount;
 }
 
@@ -5567,14 +5567,14 @@ static ssize_t _DrvProcfsFirmwareSmBusDebugRead(struct file *pFile, char __user 
     {
         if (_gDebugCmdArguCount > 0) // Send write command
         {
-            DBG(&g_I2cClient->dev, "Execute I2C SMBUS write command\n"); 
+            DBG(&g_I2cClient->dev, "Execute I2C SMBUS write command\n");
 
             mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
             rc = IicWriteData(SLAVE_I2C_ID_DWI2C, &_gDebugCmdArgu[0], _gDebugCmdArguCount);
             if (rc > 0)
             {
                 DBG(&g_I2cClient->dev, "IicWriteData(0x%X, 0x%X, %d) success\n", SLAVE_I2C_ID_DWI2C, _gDebugCmdArgu[0], _gDebugCmdArguCount);
-                
+
                 if (_gDebugReadDataSize == 0)
                 {
                     break; // No need to execute I2C SMBUS read command later. So, break here.
@@ -5584,7 +5584,7 @@ static ssize_t _DrvProcfsFirmwareSmBusDebugRead(struct file *pFile, char __user 
 
         if (_gDebugReadDataSize > 0) // Send read command
         {
-            DBG(&g_I2cClient->dev, "Execute I2C SMBUS read command\n"); 
+            DBG(&g_I2cClient->dev, "Execute I2C SMBUS read command\n");
 
             mdelay(I2C_WRITE_COMMAND_DELAY_FOR_FIRMWARE);
             rc = IicReadData(SLAVE_I2C_ID_DWI2C, &szSmBusRxData[0], _gDebugReadDataSize);
@@ -5604,11 +5604,11 @@ static ssize_t _DrvProcfsFirmwareSmBusDebugRead(struct file *pFile, char __user 
 
     for (i = 0; i < _gDebugReadDataSize; i ++) // Output format 2.
     {
-        DBG(&g_I2cClient->dev, "szSmBusRxData[%d] = 0x%x\n", i, szSmBusRxData[i]); 
+        DBG(&g_I2cClient->dev, "szSmBusRxData[%d] = 0x%x\n", i, szSmBusRxData[i]);
 
         sprintf(szValue, "%02x", szSmBusRxData[i]);
         strcat(szOut, szValue);
-        
+
         if (i < (_gDebugReadDataSize - 1))
         {
             strcat(szOut, ",");
@@ -5619,32 +5619,32 @@ static ssize_t _DrvProcfsFirmwareSmBusDebugRead(struct file *pFile, char __user 
     mutex_unlock(&g_Mutex);
     nLength = strlen(szOut);
     if(copy_to_user(pBuffer, szOut, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}
+    }
 
     *pPos += nLength;
-    
+
     return nLength;
 }
 
-static ssize_t _DrvProcfsFirmwareSmBusDebugWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsFirmwareSmBusDebugWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u32 i, j;
     char szCmdType[5] = {0};
     char *pCh = NULL;
-    char *pStr = NULL;  
+    char *pStr = NULL;
 
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 1024);
+    memset(_gDebugBuf, 0, 1024);
 
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}
+        return -EFAULT;
+    }
     if (_gDebugBuf != NULL)
     {
         DBG(&g_I2cClient->dev, "*** pBuffer[0] = %c ***\n", _gDebugBuf[0]);
@@ -5659,7 +5659,7 @@ static ssize_t _DrvProcfsFirmwareSmBusDebugWrite(struct file *pFile, const char 
         // Reset to 0 before parsing the adb command
         _gDebugCmdArguCount = 0;
         _gDebugReadDataSize = 0;
-        
+
         _gDebugBuf[nCount] = '\0';
         pStr = _gDebugBuf;
 
@@ -5669,7 +5669,7 @@ static ssize_t _DrvProcfsFirmwareSmBusDebugWrite(struct file *pFile, const char 
         while ((pCh = strsep((char **)&pStr, " ,")) && (j < MAX_DEBUG_COMMAND_ARGUMENT_NUM))
         {
             DBG(&g_I2cClient->dev, "pCh = %s\n", pCh);
-            
+
             if (strcmp(pCh, "w") == 0 || strcmp(pCh, "r") == 0)
             {
                 memcpy(szCmdType, pCh, strlen(pCh));
@@ -5678,15 +5678,15 @@ static ssize_t _DrvProcfsFirmwareSmBusDebugWrite(struct file *pFile, const char 
             {
                 _gDebugCmdArgu[j] = _DrvConvertCharToHexDigit(pCh, strlen(pCh));
                 DBG(&g_I2cClient->dev, "_gDebugCmdArgu[%d] = 0x%02X\n", j, _gDebugCmdArgu[j]);
-                
+
                 j ++;
-       
+
                 _gDebugCmdArguCount = j;
                 DBG(&g_I2cClient->dev, "_gDebugCmdArguCount = %d\n", _gDebugCmdArguCount);
             }
             else if (strcmp(szCmdType, "r") == 0)
             {
-                sscanf(pCh, "%d", &_gDebugReadDataSize);   
+                sscanf(pCh, "%d", &_gDebugReadDataSize);
                 DBG(&g_I2cClient->dev, "_gDebugReadDataSize = %d\n", _gDebugReadDataSize);
             }
             else
@@ -5741,10 +5741,10 @@ static ssize_t _DrvProcfsFirmwareSetDQMemValueRead(struct file *pFile, char __us
     }
     nLength = strlen(szOut);
     if(copy_to_user(pBuffer, szOut, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}
+    }
 
     *pPos += nLength;
 
@@ -5760,14 +5760,14 @@ static ssize_t _DrvProcfsFirmwareSetDQMemValueWrite(struct file *pFile, const ch
     u32 nRealDQMemValue = 0;
 
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 1024);
+    memset(_gDebugBuf, 0, 1024);
 
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}
+        return -EFAULT;
+    }
     if (_gDebugBuf != NULL)
     {
         DBG(&g_I2cClient->dev, "*** pBuffer[0] = %c ***\n", _gDebugBuf[0]);
@@ -5840,7 +5840,7 @@ static void _DrvHandleFingerTouch(void)
 static ssize_t _DrvProcfsFirmwareModeRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-	u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5858,32 +5858,32 @@ static ssize_t _DrvProcfsFirmwareModeRead(struct file *pFile, char __user *pBuff
 
         nLength = sprintf(nUserTempBuffer, "%x", g_MutualFirmwareInfo.nFirmwareMode);
     }
-	if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
-		return -EFAULT;
-	}	
+    if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
+        return -EFAULT;
+    }
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsFirmwareModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsFirmwareModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u32 nMode;
-	memset(_gDebugBuf, 0, 16);
+    memset(_gDebugBuf, 0, 16);
 
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}    
+        return -EFAULT;
+    }
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-    
+
     if (_gDebugBuf != NULL)
     {
-        sscanf(_gDebugBuf, "%x", &nMode);   
+        sscanf(_gDebugBuf, "%x", &nMode);
         DBG(&g_I2cClient->dev, "firmware mode = 0x%x\n", nMode);
 
         g_IsSwitchModeByAPK = 0;
@@ -5905,14 +5905,14 @@ static ssize_t _DrvProcfsFirmwareModeWrite(struct file *pFile, const char __user
     }
 
     DBG(&g_I2cClient->dev, "*** g_FirmwareMode = 0x%x ***\n", g_FirmwareMode);
-    
+
     return nCount;
 }
 
 static ssize_t _DrvProcfsFirmwareSensorRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5929,18 +5929,18 @@ static ssize_t _DrvProcfsFirmwareSensorRead(struct file *pFile, char __user *pBu
         DBG(&g_I2cClient->dev, "Undefined debug mode packet format : 0x%x\n", g_MutualFirmwareInfo.nLogModePacketHeader);
         nLength = 0;
     }
-	if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
-		return -EFAULT;
-	}    
+    if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
+        return -EFAULT;
+    }
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsFirmwareSensorWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsFirmwareSensorWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     return nCount;
@@ -5949,7 +5949,7 @@ static ssize_t _DrvProcfsFirmwareSensorWrite(struct file *pFile, const char __us
 static ssize_t _DrvProcfsFirmwarePacketHeaderRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -5958,19 +5958,19 @@ static ssize_t _DrvProcfsFirmwarePacketHeaderRead(struct file *pFile, char __use
         return 0;
     }
 
-    nLength = sprintf(nUserTempBuffer, "%d", g_MutualFirmwareInfo.nLogModePacketHeader);   
-	if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
-		return -EFAULT;
-	}	
+    nLength = sprintf(nUserTempBuffer, "%d", g_MutualFirmwareInfo.nLogModePacketHeader);
+    if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
+        return -EFAULT;
+    }
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsFirmwarePacketHeaderWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsFirmwarePacketHeaderWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     return nCount;
@@ -5991,7 +5991,7 @@ static ssize_t _DrvKObjectPacketShow(struct kobject *pKObj, struct kobj_attribut
                 DBG(&g_I2cClient->dev, "g_FirmwareMode=%x, g_DemoModePacket[0]=%x, g_DemoModePacket[1]=%x\n", g_FirmwareMode, g_DemoModePacket[0], g_DemoModePacket[1]);
                 DBG(&g_I2cClient->dev, "g_DemoModePacket[2]=%x, g_DemoModePacket[3]=%x\n", g_DemoModePacket[2], g_DemoModePacket[3]);
                 DBG(&g_I2cClient->dev, "g_DemoModePacket[4]=%x, g_DemoModePacket[5]=%x\n", g_DemoModePacket[4], g_DemoModePacket[5]);
-                
+
                 memcpy(pBuf, g_DemoModePacket, DEMO_MODE_PACKET_LENGTH);
 
                 nLength = DEMO_MODE_PACKET_LENGTH;
@@ -6014,15 +6014,15 @@ static ssize_t _DrvKObjectPacketShow(struct kobject *pKObj, struct kobj_attribut
                 {
                     memcpy(pBuf, g_LogModePacket, g_MutualFirmwareInfo.nLogModePacketLength);
 
-                    if (_gnDebugLogTimesStamp >= 255) 
+                    if (_gnDebugLogTimesStamp >= 255)
                     {
                         _gnDebugLogTimesStamp = 0;
                     }
                     else
                     {
-                        _gnDebugLogTimesStamp ++;    
+                        _gnDebugLogTimesStamp ++;
                     }
-                    
+
                     pBuf[g_MutualFirmwareInfo.nLogModePacketLength] = _gnDebugLogTimesStamp;
                     DBG(&g_I2cClient->dev, "_gnDebugLogTimesStamp=%d\n", pBuf[g_MutualFirmwareInfo.nLogModePacketLength]); // TODO : add for debug
 
@@ -6056,7 +6056,7 @@ static ssize_t _DrvKObjectPacketStore(struct kobject *pKObj, struct kobj_attribu
     {
 
     }
-*/    	
+*/
     return nCount;
 }
 
@@ -6065,7 +6065,7 @@ static struct kobj_attribute packet_attr = __ATTR(packet, 0664, _DrvKObjectPacke
 /* Create a group of attributes so that we can create and destroy them all at once. */
 static struct attribute *attrs[] = {
     &packet_attr.attr,
-    NULL,	/* need to NULL terminate the list of attributes */
+    NULL,   /* need to NULL terminate the list of attributes */
 };
 
 /*
@@ -6084,7 +6084,7 @@ static struct attribute_group attr_group = {
 static ssize_t _DrvProcfsQueryFeatureSupportStatusRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -6095,10 +6095,10 @@ static ssize_t _DrvProcfsQueryFeatureSupportStatusRead(struct file *pFile, char 
 
     nLength = sprintf(nUserTempBuffer, "%d", _gFeatureSupportStatus);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}
+    }
 
     DBG(&g_I2cClient->dev, "*** _gFeatureSupportStatus = %d ***\n", _gFeatureSupportStatus);
 
@@ -6107,32 +6107,32 @@ static ssize_t _DrvProcfsQueryFeatureSupportStatusRead(struct file *pFile, char 
     return nLength;
 }
 
-static ssize_t _DrvProcfsQueryFeatureSupportStatusWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsQueryFeatureSupportStatusWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u32 nFeature;
-    
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 1024);
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}      
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+    memset(_gDebugBuf, 0, 1024);
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+
+        return -EFAULT;
+    }
     if (_gDebugBuf != NULL)
     {
-        sscanf(_gDebugBuf, "%x", &nFeature);   
+        sscanf(_gDebugBuf, "%x", &nFeature);
         DBG(&g_I2cClient->dev, "nFeature = 0x%x\n", nFeature);
 
-        if (nFeature == FEATURE_GESTURE_WAKEUP_MODE) 
+        if (nFeature == FEATURE_GESTURE_WAKEUP_MODE)
         {
             _gFeatureSupportStatus = IS_GESTURE_WAKEUP_ENABLED;
         }
-        else if (nFeature == FEATURE_GESTURE_DEBUG_MODE) 
+        else if (nFeature == FEATURE_GESTURE_DEBUG_MODE)
         {
             _gFeatureSupportStatus = IS_GESTURE_DEBUG_MODE_ENABLED;
         }
-        else if (nFeature == FEATURE_GESTURE_INFORMATION_MODE) 
+        else if (nFeature == FEATURE_GESTURE_INFORMATION_MODE)
         {
             _gFeatureSupportStatus = IS_GESTURE_INFORMATION_MODE_ENABLED;
         }
@@ -6143,7 +6143,7 @@ static ssize_t _DrvProcfsQueryFeatureSupportStatusWrite(struct file *pFile, cons
         else if (nFeature == FEATURE_FIRMWARE_DATA_LOG)
         {
             _gFeatureSupportStatus = IS_FIRMWARE_DATA_LOG_ENABLED;
-            
+
 #ifdef CONFIG_ENABLE_SEGMENT_READ_FINGER_TOUCH_DATA
             if (g_ChipType == CHIP_TYPE_MSG28XX || g_ChipType == CHIP_TYPE_MSG58XXA || g_ChipType == CHIP_TYPE_ILI2118A || g_ChipType == CHIP_TYPE_ILI2117A)
             {
@@ -6168,7 +6168,7 @@ static ssize_t _DrvProcfsQueryFeatureSupportStatusWrite(struct file *pFile, cons
         }
         else if (nFeature == FEATURE_SELF_FREQ_SCAN)
         {
-			DBG(&g_I2cClient->dev, "*** change to  FEATURE_SELF_FREQ_SCAN ***\n");
+            DBG(&g_I2cClient->dev, "*** change to  FEATURE_SELF_FREQ_SCAN ***\n");
             _gFeatureSupportStatus = IS_SELF_FREQ_SCAN_ENABLED;
         }
         else
@@ -6178,14 +6178,14 @@ static ssize_t _DrvProcfsQueryFeatureSupportStatusWrite(struct file *pFile, cons
     }
 
     DBG(&g_I2cClient->dev, "*** _gFeatureSupportStatus = %d ***\n", _gFeatureSupportStatus);
-    
+
     return nCount;
 }
 
 static ssize_t _DrvProcfsChangeFeatureSupportStatusRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -6196,10 +6196,10 @@ static ssize_t _DrvProcfsChangeFeatureSupportStatusRead(struct file *pFile, char
 
     nLength = sprintf(nUserTempBuffer, "%d", _gFeatureSupportStatus);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}	
+    }
 
     DBG(&g_I2cClient->dev, "*** _gFeatureSupportStatus = %d ***\n", _gFeatureSupportStatus);
 
@@ -6208,30 +6208,30 @@ static ssize_t _DrvProcfsChangeFeatureSupportStatusRead(struct file *pFile, char
     return nLength;
 }
 
-static ssize_t _DrvProcfsChangeFeatureSupportStatusWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsChangeFeatureSupportStatusWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u32 i;
     u32 nFeature = 0, nNewValue = 0;
     char *pCh = NULL;
-    char *pStr = NULL;  
+    char *pStr = NULL;
 
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 1024);
+    memset(_gDebugBuf, 0, 1024);
 
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}
+        return -EFAULT;
+    }
     if (_gDebugBuf != NULL)
     {
-        DBG(&g_I2cClient->dev, "nCount = %d\n", (int)nCount);       
+        DBG(&g_I2cClient->dev, "nCount = %d\n", (int)nCount);
         _gDebugBuf[nCount] = '\0';
         pStr = _gDebugBuf;
-        
+
         i = 0;
-        
+
         while ((pCh = strsep((char **)&pStr, " ,")) && (i < 3))
         {
             DBG(&g_I2cClient->dev, "pCh = %s\n", pCh);
@@ -6242,7 +6242,7 @@ static ssize_t _DrvProcfsChangeFeatureSupportStatusWrite(struct file *pFile, con
                 DBG(&g_I2cClient->dev, "nFeature = 0x%04X\n", nFeature);
             }
             else if (i == 1)
-            {	
+            {
                 nNewValue = _DrvConvertCharToHexDigit(pCh, strlen(pCh));
                 DBG(&g_I2cClient->dev, "nNewValue = %d\n", nNewValue);
             }
@@ -6253,17 +6253,17 @@ static ssize_t _DrvProcfsChangeFeatureSupportStatusWrite(struct file *pFile, con
 
             i ++;
         }
-        if (nFeature == FEATURE_GESTURE_WAKEUP_MODE) 
+        if (nFeature == FEATURE_GESTURE_WAKEUP_MODE)
         {
             IS_GESTURE_WAKEUP_ENABLED = nNewValue;
             _gFeatureSupportStatus = IS_GESTURE_WAKEUP_ENABLED;
         }
-        else if (nFeature == FEATURE_GESTURE_DEBUG_MODE) 
+        else if (nFeature == FEATURE_GESTURE_DEBUG_MODE)
         {
             IS_GESTURE_DEBUG_MODE_ENABLED = nNewValue;
             _gFeatureSupportStatus = IS_GESTURE_DEBUG_MODE_ENABLED;
         }
-        else if (nFeature == FEATURE_GESTURE_INFORMATION_MODE) 
+        else if (nFeature == FEATURE_GESTURE_INFORMATION_MODE)
         {
             IS_GESTURE_INFORMATION_MODE_ENABLED = nNewValue;
             _gFeatureSupportStatus = IS_GESTURE_INFORMATION_MODE_ENABLED;
@@ -6305,7 +6305,7 @@ static ssize_t _DrvProcfsChangeFeatureSupportStatusWrite(struct file *pFile, con
 
         DBG(&g_I2cClient->dev, "*** _gFeatureSupportStatus = %d ***\n", _gFeatureSupportStatus);
     }
-    
+
     return nCount;
 }
 
@@ -6315,7 +6315,7 @@ static ssize_t _DrvProcfsChangeFeatureSupportStatusWrite(struct file *pFile, con
 static ssize_t _DrvProcfsGestureWakeupModeRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -6329,30 +6329,30 @@ static ssize_t _DrvProcfsGestureWakeupModeRead(struct file *pFile, char __user *
     nLength = sprintf(nUserTempBuffer, "%x", g_GestureWakeupMode[0]);
 
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}	
+    }
 
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsGestureWakeupModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsGestureWakeupModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u32 nLength;
     u32 nWakeupMode[2] = {0};
-	char *pStr = NULL;
+    char *pStr = NULL;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 1024);
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    memset(_gDebugBuf, 0, 1024);
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}  
-	pStr = _gDebugBuf;
+        return -EFAULT;
+    }
+    pStr = _gDebugBuf;
     if (pStr != NULL)
     {
         sscanf(_gDebugBuf, "%x", &nWakeupMode[0]);
@@ -6380,7 +6380,7 @@ static ssize_t _DrvProcfsGestureWakeupModeWrite(struct file *pFile, const char _
 
         DBG(&g_I2cClient->dev, "g_GestureWakeupMode = 0x%x,  0x%x\n", g_GestureWakeupMode[0], g_GestureWakeupMode[1]);
     }
-       
+
     return nCount;
 }
 
@@ -6388,7 +6388,7 @@ static ssize_t _DrvProcfsGestureWakeupModeWrite(struct file *pFile, const char _
 static ssize_t _DrvProcfsGestureDebugModeRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
     u32 nLength = 0;
-    u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -6396,35 +6396,35 @@ static ssize_t _DrvProcfsGestureDebugModeRead(struct file *pFile, char __user *p
     {
         return 0;
     }
-    
+
     DBG(&g_I2cClient->dev, "g_GestureDebugMode = 0x%x\n", g_GestureDebugMode); // add for debug
 
     nLength = sprintf(nUserTempBuffer, "%d", g_GestureDebugMode);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}
+    }
 
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsGestureDebugModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsGestureDebugModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     u8 ucGestureMode[2];
     u8 i;
     char *pCh;
-	char *pStr = NULL;
-	memset(_gDebugBuf, 0, 1024);
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    char *pStr = NULL;
+    memset(_gDebugBuf, 0, 1024);
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	} 
-	pStr = _gDebugBuf;
+        return -EFAULT;
+    }
+    pStr = _gDebugBuf;
     if (pStr != NULL)
     {
         i = 0;
@@ -6527,7 +6527,7 @@ static struct kobj_attribute gesture_attr = __ATTR(gesture_debug, 0664, _DrvKObj
 /* Create a group of attributes so that we can create and destroy them all at once. */
 static struct attribute *gestureattrs[] = {
     &gesture_attr.attr,
-    NULL,	/* need to NULL terminate the list of attributes */
+    NULL,   /* need to NULL terminate the list of attributes */
 };
 
 /*
@@ -6550,12 +6550,12 @@ static ssize_t _DrvProcfsReportRateRead(struct file *pFile, char __user *pBuffer
     struct timeval tEndTime;
     suseconds_t nStartTime, nEndTime, nElapsedTime;
     u32 nLength = 0;
-	u8 nUserTempBuffer[16]; 
-	
+    u8 nUserTempBuffer[16];
+
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     DBG(&g_I2cClient->dev, "g_InterruptCount = %d, g_ValidTouchCount = %d\n", g_InterruptCount, g_ValidTouchCount);
-    
+
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
     if (*pPos != 0)
     {
@@ -6564,17 +6564,17 @@ static ssize_t _DrvProcfsReportRateRead(struct file *pFile, char __user *pBuffer
 
     // Get end time
     do_gettimeofday(&tEndTime);
-    
+
     nStartTime = g_StartTime.tv_sec + g_StartTime.tv_usec/1000000;
     nEndTime = tEndTime.tv_sec + tEndTime.tv_usec/1000000;
 
     nElapsedTime = nEndTime - nStartTime;
 
-    DBG(&g_I2cClient->dev, "Start time : %lu sec, %lu msec\n", g_StartTime.tv_sec,  g_StartTime.tv_usec); 
-    DBG(&g_I2cClient->dev, "End time : %lu sec, %lu msec\n", tEndTime.tv_sec, tEndTime.tv_usec); 
+    DBG(&g_I2cClient->dev, "Start time : %lu sec, %lu msec\n", g_StartTime.tv_sec,  g_StartTime.tv_usec);
+    DBG(&g_I2cClient->dev, "End time : %lu sec, %lu msec\n", tEndTime.tv_sec, tEndTime.tv_usec);
 
-    DBG(&g_I2cClient->dev, "Elapsed time : %lu sec\n", nElapsedTime); 
-    
+    DBG(&g_I2cClient->dev, "Elapsed time : %lu sec\n", nElapsedTime);
+
     // Calculate report rate
     if (nElapsedTime != 0)
     {
@@ -6583,8 +6583,8 @@ static ssize_t _DrvProcfsReportRateRead(struct file *pFile, char __user *pBuffer
     }
     else
     {
-        g_InterruptReportRate = 0;		
-        g_ValidTouchReportRate = 0;		
+        g_InterruptReportRate = 0;
+        g_ValidTouchReportRate = 0;
     }
 
     DBG(&g_I2cClient->dev, "g_InterruptReportRate = %d, g_ValidTouchReportRate = %d\n", g_InterruptReportRate, g_ValidTouchReportRate);
@@ -6594,37 +6594,37 @@ static ssize_t _DrvProcfsReportRateRead(struct file *pFile, char __user *pBuffer
 
     nLength = sprintf(nUserTempBuffer, "%d,%d", g_InterruptReportRate, g_ValidTouchReportRate);
     if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-	{
-		DBG(&g_I2cClient->dev,"copy to user error\n");
+    {
+        DBG(&g_I2cClient->dev,"copy to user error\n");
         return -EFAULT;
-	}	
+    }
 
     *pPos += nLength;
 
     return nLength;
 }
 
-static ssize_t _DrvProcfsReportRateWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
-{    
+static ssize_t _DrvProcfsReportRateWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
+{
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 16);
+    memset(_gDebugBuf, 0, 16);
 
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}    
+        return -EFAULT;
+    }
     if (_gDebugBuf != NULL)
     {
-        sscanf(_gDebugBuf, "%d", &g_IsEnableReportRate);   
+        sscanf(_gDebugBuf, "%d", &g_IsEnableReportRate);
 
         DBG(&g_I2cClient->dev, "g_IsEnableReportRate = %d\n", g_IsEnableReportRate); // 1 : enable report rate calculation, 0 : disable report rate calculation, 2 : reset count
 
         g_InterruptCount = 0; // Reset count
         g_ValidTouchCount = 0;
     }
-    
+
     return nCount;
 }
 #endif //CONFIG_ENABLE_COUNT_REPORT_RATE
@@ -6635,8 +6635,8 @@ static ssize_t _DrvProcfsGloveModeRead(struct file *pFile, char __user *pBuffer,
 {
     u32 nLength = 0;
     u8 nGloveMode = 0;
-	u8 nUserTempBuffer[16]; 
-	
+    u8 nUserTempBuffer[16];
+
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -6656,11 +6656,11 @@ static ssize_t _DrvProcfsGloveModeRead(struct file *pFile, char __user *pBuffer,
         DBG(&g_I2cClient->dev, "Glove Mode = 0x%x\n", nGloveMode);
 
         nLength = sprintf(nUserTempBuffer, "%x", nGloveMode);
-		if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-		{
-			DBG(&g_I2cClient->dev,"copy to user error\n");
-			return -EFAULT;
-		}	
+        if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
+        {
+            DBG(&g_I2cClient->dev,"copy to user error\n");
+            return -EFAULT;
+        }
 
     }
 
@@ -6674,16 +6674,16 @@ static ssize_t _DrvProcfsGloveModeWrite(struct file *pFile, const char __user *p
     u32 nGloveMode = 0;
     u32 i = 0;
     char *pCh = NULL;
-	char *pStr = NULL;
+    char *pStr = NULL;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 16);
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    memset(_gDebugBuf, 0, 16);
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	} 
-	pStr = _gDebugBuf;
+        return -EFAULT;
+    }
+    pStr = _gDebugBuf;
     if (_gDebugBuf != NULL)
     {
         i = 0;
@@ -6780,7 +6780,7 @@ static ssize_t _DrvProcfsLeatherSheathModeRead(struct file *pFile, char __user *
 {
     u32 nLength = 0;
     u8 nLeatherSheathMode = 0;
-	u8 nUserTempBuffer[16]; 
+    u8 nUserTempBuffer[16];
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     // If file position is non-zero, then assume the string has been read and indicate there is no more data to be read.
@@ -6800,11 +6800,11 @@ static ssize_t _DrvProcfsLeatherSheathModeRead(struct file *pFile, char __user *
         DBG(&g_I2cClient->dev, "Leather Sheath Mode = 0x%x\n", nLeatherSheathMode);
 
         nLength = sprintf(nUserTempBuffer, "%x", nLeatherSheathMode);
-		if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
-		{
-			DBG(&g_I2cClient->dev,"copy to user error\n");
-			return -EFAULT;
-		}
+        if(copy_to_user(pBuffer, nUserTempBuffer, nLength))
+        {
+            DBG(&g_I2cClient->dev,"copy to user error\n");
+            return -EFAULT;
+        }
 
     }
 
@@ -6818,16 +6818,16 @@ static ssize_t _DrvProcfsLeatherSheathModeWrite(struct file *pFile, const char _
     u32 nLeatherSheathMode = 0;
     u32 i = 0;
     char *pCh = NULL;
-	char *pStr = NULL;
+    char *pStr = NULL;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 16);
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    memset(_gDebugBuf, 0, 16);
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}    
-	pStr = _gDebugBuf;
+        return -EFAULT;
+    }
+    pStr = _gDebugBuf;
     if (pStr != NULL)
     {
         i = 0;
@@ -6865,24 +6865,24 @@ static ssize_t _DrvProcfsLeatherSheathModeWrite(struct file *pFile, const char _
 }
 static ssize_t _DrvProcfsTrimCodeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
-	
+
     return nCount;
 }
 void WriteTrimcode(u8 *uArrayData, u32 nAddr)
 {
-	u8 * nBuf;
-	nBuf = uArrayData;
+    u8 * nBuf;
+    nBuf = uArrayData;
     DrvDisableFingerTouchReport();
-	DbBusEnterSerialDebugMode();
-	DbBusStopMCU();
-	DbBusIICUseBus();
-	DbBusIICReshape();
-	nBuf[0] = ((nBuf[0] & 0x01) << 7) + ((nBuf[0] & 0x7F) >> 1);  
-	//DEBUG("*** set Write *** 0x%x 0x%x\n", nBuf[0],nBuf[1]);
-	_DrvMsg28xxSetProtectBit();
+    DbBusEnterSerialDebugMode();
+    DbBusStopMCU();
+    DbBusIICUseBus();
+    DbBusIICReshape();
+    nBuf[0] = ((nBuf[0] & 0x01) << 7) + ((nBuf[0] & 0x7F) >> 1);
+    //DEBUG("*** set Write *** 0x%x 0x%x\n", nBuf[0],nBuf[1]);
+    _DrvMsg28xxSetProtectBit();
 
 // set write done
-//RegSetLByteValue 0x1606 0x01	
+//RegSetLByteValue 0x1606 0x01
     // Set Password
     RegSetLByteValue(0x1616,0xAA);
     RegSetLByteValue(0x1617,0x55);
@@ -6895,216 +6895,216 @@ void WriteTrimcode(u8 *uArrayData, u32 nAddr)
 
     // set info block
     RegSetLByteValue(0x1606,0x40);
-	RegSetLByteValue(0x1607,0x00);
+    RegSetLByteValue(0x1607,0x00);
 
     // set info double buffer
     RegSetLByteValue(0x1610,0x00);
 
-	// data align
-	RegSetLByteValue(0x1640,0x01);
-	
-	//set info block
-	RegSetLByteValue(0x1607,0x08);
-	//set info double buffer
-	RegSetLByteValue(0x1604,0x01);
-	// eflash mode trigger
-	RegSetLByteValue(0x1606,0x41);
-	// set initial data
-	RegSetLByteValue(0x1602,0xA5);
-	RegSetLByteValue(0x1602,0x5A);
-	RegSetLByteValue(0x1602,nBuf[1]);
-	RegSetLByteValue(0x1602,nBuf[0]);
-	// set initial address (for latch SA, CA)
-	RegSetLByteValue(0x1600,0x00);
-	RegSetLByteValue(0x1601,0x00);
+    // data align
+    RegSetLByteValue(0x1640,0x01);
 
-	// set initial address (for latch PA)
-	RegSetLByteValue(0x1600,0x00);
-	RegSetLByteValue(0x1601,0x00);
-	// set write done
-	RegSetLByteValue(0x1606,0x84);
-	DbBusIICNotUseBus();
-	DbBusNotStopMCU();
-	DbBusExitSerialDebugMode();
+    //set info block
+    RegSetLByteValue(0x1607,0x08);
+    //set info double buffer
+    RegSetLByteValue(0x1604,0x01);
+    // eflash mode trigger
+    RegSetLByteValue(0x1606,0x41);
+    // set initial data
+    RegSetLByteValue(0x1602,0xA5);
+    RegSetLByteValue(0x1602,0x5A);
+    RegSetLByteValue(0x1602,nBuf[1]);
+    RegSetLByteValue(0x1602,nBuf[0]);
+    // set initial address (for latch SA, CA)
+    RegSetLByteValue(0x1600,0x00);
+    RegSetLByteValue(0x1601,0x00);
+
+    // set initial address (for latch PA)
+    RegSetLByteValue(0x1600,0x00);
+    RegSetLByteValue(0x1601,0x00);
+    // set write done
+    RegSetLByteValue(0x1606,0x84);
+    DbBusIICNotUseBus();
+    DbBusNotStopMCU();
+    DbBusExitSerialDebugMode();
     mdelay(100);
     DrvEnableFingerTouchReport();
-	DrvTouchDeviceHwReset();
+    DrvTouchDeviceHwReset();
     //DisableBypassHotknot();
-	kfree(nBuf);
+    kfree(nBuf);
 }
 static int ReadTrimcode(u16 nAddr, u16 nLength)
 {
-	u8 tx_data[4] = {0};
-	u8 rx_data[20] = {0};
-	u8 * pBuf;
-	u8 result;
+    u8 tx_data[4] = {0};
+    u8 rx_data[20] = {0};
+    u8 * pBuf;
+    u8 result;
     DBG(&g_I2cClient->dev,"*** %s() ***\n", __func__);
-	pBuf = (u8*)kmalloc(nLength, GFP_KERNEL);  
+    pBuf = (u8*)kmalloc(nLength, GFP_KERNEL);
     DrvDisableFingerTouchReport();
-	DbBusEnterSerialDebugMode();
-	DbBusStopMCU();
-	DbBusIICUseBus();
-	DbBusIICReshape();
-	DBG(&g_I2cClient->dev,"*** set read ***0x%x 0x%x, 0x%x\n",  nAddr, nAddr >> 8, nAddr&(0x00FF));
+    DbBusEnterSerialDebugMode();
+    DbBusStopMCU();
+    DbBusIICUseBus();
+    DbBusIICReshape();
+    DBG(&g_I2cClient->dev,"*** set read ***0x%x 0x%x, 0x%x\n",  nAddr, nAddr >> 8, nAddr&(0x00FF));
     tx_data[0] = 0x10;
     tx_data[1] = nAddr >> 8;
-	tx_data[2] = (nAddr&(0x00FF))*2;
+    tx_data[2] = (nAddr&(0x00FF))*2;
     result = IicWriteData(SLAVE_I2C_ID_DBBUS, &tx_data[0], 3);
-	mdelay(50);
-	result = IicReadData(SLAVE_I2C_ID_DBBUS, &rx_data[0], 2);
-	DBG(&g_I2cClient->dev,"0x%x, (rx_data[0]&0x3F) << 1 = 0x%x, (rx_data[0] >> 7 = 0x%x\n", rx_data[1], (rx_data[1]&0x7F) << 1,(rx_data[1] >> 7));
-	pBuf[0] = rx_data[1];
-	pBuf[1] = ((rx_data[1]&0x7F) << 1 )+ (rx_data[1] >> 7);
-	pBuf[2] = rx_data[0];
-	DBG(&g_I2cClient->dev,"0x%x,0x%x,0x%x\n", pBuf[0], pBuf[1],pBuf[2]);
-	_gReadTrimData[0] = pBuf[0];
-	_gReadTrimData[1] = pBuf[1];
-	_gReadTrimData[2] = pBuf[2];
-	DbBusIICNotUseBus();
-	DbBusNotStopMCU();
-	DbBusExitSerialDebugMode();
+    mdelay(50);
+    result = IicReadData(SLAVE_I2C_ID_DBBUS, &rx_data[0], 2);
+    DBG(&g_I2cClient->dev,"0x%x, (rx_data[0]&0x3F) << 1 = 0x%x, (rx_data[0] >> 7 = 0x%x\n", rx_data[1], (rx_data[1]&0x7F) << 1,(rx_data[1] >> 7));
+    pBuf[0] = rx_data[1];
+    pBuf[1] = ((rx_data[1]&0x7F) << 1 )+ (rx_data[1] >> 7);
+    pBuf[2] = rx_data[0];
+    DBG(&g_I2cClient->dev,"0x%x,0x%x,0x%x\n", pBuf[0], pBuf[1],pBuf[2]);
+    _gReadTrimData[0] = pBuf[0];
+    _gReadTrimData[1] = pBuf[1];
+    _gReadTrimData[2] = pBuf[2];
+    DbBusIICNotUseBus();
+    DbBusNotStopMCU();
+    DbBusExitSerialDebugMode();
     mdelay(100);
     DrvEnableFingerTouchReport();
     //TouchDeviceResetHw();
-	kfree(pBuf);
+    kfree(pBuf);
     return result;
 }
 
 static ssize_t _DrvProcfsTrimCodeRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
-	struct file *pfile = NULL, *ffile = NULL;
-	mm_segment_t fs;
-	s32 i32Temp = 0;
-	u8 nTrimCodeMin = 0,nTrimCodeMax = 0,nInitTrimCode = 0, nTempBuf[3] = {0},nSetData = 0, i = 0;
-	fs = get_fs();
-	set_fs(KERNEL_DS);
-	pfile = filp_open(ILITEK_TRIMCODE_INITIAL_PATH_ON_SD_CARD, O_RDONLY, 0);
-	ReadTrimcode(0x143D, 3);
+    struct file *pfile = NULL, *ffile = NULL;
+    mm_segment_t fs;
+    s32 i32Temp = 0;
+    u8 nTrimCodeMin = 0,nTrimCodeMax = 0,nInitTrimCode = 0, nTempBuf[3] = {0},nSetData = 0, i = 0;
+    fs = get_fs();
+    set_fs(KERNEL_DS);
+    pfile = filp_open(ILITEK_TRIMCODE_INITIAL_PATH_ON_SD_CARD, O_RDONLY, 0);
+    ReadTrimcode(0x143D, 3);
     if (IS_ERR(pfile))
     {
 
         DBG(&g_I2cClient->dev, "Error occurred while opening file %s.\n", ILITEK_TRIMCODE_INITIAL_PATH_ON_SD_CARD);
-		mdelay(100);
-		ffile = filp_open(ILITEK_TRIMCODE_INITIAL_PATH_ON_SD_CARD, O_CREAT | O_RDWR, 0);
-		sprintf(_gDebugBuf,"trim code initial data:0x%x\n",_gReadTrimData[1]);
-		nInitTrimCode = _gReadTrimData[1];
-		ffile->f_op->write(ffile, _gDebugBuf, strlen(_gDebugBuf) * sizeof(char), &ffile->f_pos);
-		set_fs(fs);
-		filp_close(ffile, NULL);
+        mdelay(100);
+        ffile = filp_open(ILITEK_TRIMCODE_INITIAL_PATH_ON_SD_CARD, O_CREAT | O_RDWR, 0);
+        sprintf(_gDebugBuf,"trim code initial data:0x%x\n",_gReadTrimData[1]);
+        nInitTrimCode = _gReadTrimData[1];
+        ffile->f_op->write(ffile, _gDebugBuf, strlen(_gDebugBuf) * sizeof(char), &ffile->f_pos);
+        set_fs(fs);
+        filp_close(ffile, NULL);
     }
-	else
-	{
-		pfile->f_op->read(pfile, _gDebugBuf, 1024, &pfile->f_pos);
-		sscanf(_gDebugBuf, "trim code initial data:0x%x", &i32Temp);
-		nInitTrimCode  = (u8)i32Temp;
-		printk("%s\n,nInitTrimCode=0x%x\n", _gDebugBuf, nInitTrimCode);
-	}
-		nTrimCodeMax = nInitTrimCode + 2;
-	if(nInitTrimCode - 2 < 0)
-	{
-		nTrimCodeMin = 0;
-	}
-	else
-	{
-		nTrimCodeMin = nInitTrimCode - 2;
-	}
-	DBG(&g_I2cClient->dev,"max:%d,min:%d,read trim:%d\n", nTrimCodeMax, nTrimCodeMin, _gReadTrimData[1]);
-	{
-		switch(_gReadTrimData[1]) 
-		
-		{
-			case 0:
-			case 64:
-			case 128:
-			case 192:
-				nTempBuf[0] = _gReadTrimData[1] + 1;
-				nTempBuf[1] = _gReadTrimData[2];
-				DBG(&g_I2cClient->dev,"Read trim code: %d, modify level: 1\n", _gReadTrimData[1]);
-				if(nTempBuf[0] < nTrimCodeMin && nTempBuf[0] < nTrimCodeMax)
-				{
-					DBG(&g_I2cClient->dev,"modify value overflow\n");
-					return -1;
-				}
-				break;
-			case 255:
-			case 63:
-			case 127:
-			case 191:
-				nTempBuf[0] = _gReadTrimData[1] - 1;
-				nTempBuf[1] = _gReadTrimData[2];
-				DBG(&g_I2cClient->dev,"Read trim code: %d, modify level: -1, -2\n", _gReadTrimData[1]);
-				if(nTempBuf[0] < nTrimCodeMin && nTempBuf[0] < nTrimCodeMax)
-				{
-					DBG(&g_I2cClient->dev,"modify value overflow\n");
-					return -1;
-				}
-				break;
-			default:
-				nTempBuf[0] = _gReadTrimData[1] - 1;
-				nTempBuf[1] = _gReadTrimData[2];
-				DBG(&g_I2cClient->dev,"Read trim code: %d, modify level: 1, -1, -2\n", _gReadTrimData[1]);
-				if(nTempBuf[0] < nTrimCodeMin && nTempBuf[0] < nTrimCodeMax)
-				{
-					DBG(&g_I2cClient->dev,"modify value overflow\n");
-					return -1;
-				}
-		}
-	}
-	nSetData = nTempBuf[0];
-	for(i = 0; i < 6; i++)
-	{
-		WriteTrimcode(nTempBuf,0);
-		ReadTrimcode(0x143D, 3);
-		if(_gReadTrimData[1] == nSetData)
-		{
-			DBG(&g_I2cClient->dev,"Set Trim code: %d,status:Pass\n", _gReadTrimData[1]);
-			return 0;
-			break;
-		}
-		else
-		{
-			DBG(&g_I2cClient->dev,"Set Trim code error,Read Trim code: %d,retry count:%d\n", _gReadTrimData[1], i);
-		}
-	}
-	DBG(&g_I2cClient->dev,"Read Trim code: %d,status:error\n", _gReadTrimData[1]);
-	return -1;
+    else
+    {
+        pfile->f_op->read(pfile, _gDebugBuf, 1024, &pfile->f_pos);
+        sscanf(_gDebugBuf, "trim code initial data:0x%x", &i32Temp);
+        nInitTrimCode  = (u8)i32Temp;
+        printk("%s\n,nInitTrimCode=0x%x\n", _gDebugBuf, nInitTrimCode);
+    }
+        nTrimCodeMax = nInitTrimCode + 2;
+    if(nInitTrimCode - 2 < 0)
+    {
+        nTrimCodeMin = 0;
+    }
+    else
+    {
+        nTrimCodeMin = nInitTrimCode - 2;
+    }
+    DBG(&g_I2cClient->dev,"max:%d,min:%d,read trim:%d\n", nTrimCodeMax, nTrimCodeMin, _gReadTrimData[1]);
+    {
+        switch(_gReadTrimData[1])
+
+        {
+            case 0:
+            case 64:
+            case 128:
+            case 192:
+                nTempBuf[0] = _gReadTrimData[1] + 1;
+                nTempBuf[1] = _gReadTrimData[2];
+                DBG(&g_I2cClient->dev,"Read trim code: %d, modify level: 1\n", _gReadTrimData[1]);
+                if(nTempBuf[0] < nTrimCodeMin && nTempBuf[0] < nTrimCodeMax)
+                {
+                    DBG(&g_I2cClient->dev,"modify value overflow\n");
+                    return -1;
+                }
+                break;
+            case 255:
+            case 63:
+            case 127:
+            case 191:
+                nTempBuf[0] = _gReadTrimData[1] - 1;
+                nTempBuf[1] = _gReadTrimData[2];
+                DBG(&g_I2cClient->dev,"Read trim code: %d, modify level: -1, -2\n", _gReadTrimData[1]);
+                if(nTempBuf[0] < nTrimCodeMin && nTempBuf[0] < nTrimCodeMax)
+                {
+                    DBG(&g_I2cClient->dev,"modify value overflow\n");
+                    return -1;
+                }
+                break;
+            default:
+                nTempBuf[0] = _gReadTrimData[1] - 1;
+                nTempBuf[1] = _gReadTrimData[2];
+                DBG(&g_I2cClient->dev,"Read trim code: %d, modify level: 1, -1, -2\n", _gReadTrimData[1]);
+                if(nTempBuf[0] < nTrimCodeMin && nTempBuf[0] < nTrimCodeMax)
+                {
+                    DBG(&g_I2cClient->dev,"modify value overflow\n");
+                    return -1;
+                }
+        }
+    }
+    nSetData = nTempBuf[0];
+    for(i = 0; i < 6; i++)
+    {
+        WriteTrimcode(nTempBuf,0);
+        ReadTrimcode(0x143D, 3);
+        if(_gReadTrimData[1] == nSetData)
+        {
+            DBG(&g_I2cClient->dev,"Set Trim code: %d,status:Pass\n", _gReadTrimData[1]);
+            return 0;
+            break;
+        }
+        else
+        {
+            DBG(&g_I2cClient->dev,"Set Trim code error,Read Trim code: %d,retry count:%d\n", _gReadTrimData[1], i);
+        }
+    }
+    DBG(&g_I2cClient->dev,"Read Trim code: %d,status:error\n", _gReadTrimData[1]);
+    return -1;
 }
-static ssize_t _DrvProcfsSetFilmModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)  
+static ssize_t _DrvProcfsSetFilmModeWrite(struct file *pFile, const char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
-	u8 nFilmType = 0;
+    u8 nFilmType = 0;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	memset(_gDebugBuf, 0, 1024);
+    memset(_gDebugBuf, 0, 1024);
 
-	if (copy_from_user(_gDebugBuf, pBuffer, nCount))
-	{
-		DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
+    if (copy_from_user(_gDebugBuf, pBuffer, nCount))
+    {
+        DBG(&g_I2cClient->dev, "copy_from_user() failed\n");
 
-		return -EFAULT;
-	}
+        return -EFAULT;
+    }
     if (_gDebugBuf != NULL)
     {
-        DBG(&g_I2cClient->dev, "nCount = %d\n", (int)nCount);       
+        DBG(&g_I2cClient->dev, "nCount = %d\n", (int)nCount);
         _gDebugBuf[nCount] = '\0';
-		nFilmType = _DrvConvertCharToHexDigit(_gDebugBuf, strlen(_gDebugBuf));
-		DBG(&g_I2cClient->dev, "nFeature = 0x%02X\n", nFilmType);
-		DrvSetFilmMode(nFilmType);
-	}
-         
+        nFilmType = _DrvConvertCharToHexDigit(_gDebugBuf, strlen(_gDebugBuf));
+        DBG(&g_I2cClient->dev, "nFeature = 0x%02X\n", nFilmType);
+        DrvSetFilmMode(nFilmType);
+    }
+
     return nCount;
 }
 
 static ssize_t _DrvProcfsGetFilmModeRead(struct file *pFile, char __user *pBuffer, size_t nCount, loff_t *pPos)
 {
-	u8 nFilmType = 0;
+    u8 nFilmType = 0;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-	nFilmType = DrvGetFilmMode();
-	DBG(&g_I2cClient->dev, "*** %s() ***, nFilmType = %d\n", __func__, nFilmType);
-	if (copy_to_user(pBuffer, &nFilmType, 1))
-	{
-		return -EFAULT;
-	}	
+    nFilmType = DrvGetFilmMode();
+    DBG(&g_I2cClient->dev, "*** %s() ***, nFilmType = %d\n", __func__, nFilmType);
+    if (copy_to_user(pBuffer, &nFilmType, 1))
+    {
+        return -EFAULT;
+    }
     return 0;
-}	
+}
 
 s32 DrvTouchDeviceInitialize(void)
 {
@@ -7123,14 +7123,14 @@ s32 DrvTouchDeviceInitialize(void)
 #ifdef CONFIG_ENABLE_JNI_INTERFACE
     _DrvJniCreateMsgToolMem();
 #endif //CONFIG_ENABLE_JNI_INTERFACE
-    
+
     g_ChipType = DrvGetChipType(); // Try to get chip type by SLAVE_I2C_ID_DBBUS(0x62) firstly.
-    
+
     if (g_ChipType == 0) // If failed, try to get chip type by SLAVE_I2C_ID_DBBUS(0x59) again.
     {
         SLAVE_I2C_ID_DBBUS = (0xB2>>1); //0x59
 
-        g_ChipType = DrvGetChipType(); 
+        g_ChipType = DrvGetChipType();
     }
 
     DrvTouchDeviceHwReset();
@@ -7140,14 +7140,14 @@ s32 DrvTouchDeviceInitialize(void)
         memset(&g_MutualFirmwareInfo, 0x0, sizeof(MutualFirmwareInfo_t));
         _DrvVariableInitialize();
 
-#ifdef CONFIG_ENABLE_CHARGER_DETECTION 
+#ifdef CONFIG_ENABLE_CHARGER_DETECTION
         {
             u8 szChargerStatus[20] = {0};
-     
+
             DrvReadFile(POWER_SUPPLY_BATTERY_STATUS_PATCH, szChargerStatus, 20);
-            
+
             DBG(&g_I2cClient->dev, "*** Battery Status : %s ***\n", szChargerStatus);
-            
+
             if (strstr(szChargerStatus, "Charging") != NULL || strstr(szChargerStatus, "Full") != NULL || strstr(szChargerStatus, "Fully charged") != NULL) // Charging
             {
                 DrvChargerDetection(1); // charger plug-in
@@ -7156,7 +7156,7 @@ s32 DrvTouchDeviceInitialize(void)
             {
                 DrvChargerDetection(0); // charger plug-out
             }
-        }           
+        }
 #endif //CONFIG_ENABLE_CHARGER_DETECTION
 
 #ifdef CONFIG_ENABLE_PROXIMITY_DETECTION
@@ -7165,7 +7165,7 @@ s32 DrvTouchDeviceInitialize(void)
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
         tObjPs.polling = 0; // 0 : interrupt mode, 1 : polling mode
         tObjPs.sensor_operate = DrvTpPsOperate;
-    
+
         if ((nErr = hwmsen_attach(ID_PROXIMITY, &tObjPs)))
         {
             DBG(&g_I2cClient->dev, "call hwmsen_attach() failed = %d\n", nErr);
@@ -7187,52 +7187,52 @@ static void _DrvRemoveProcfsDirEntry(void)
 
     if (_gProcGloveModeEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_GLOVE_MODE, _gProcDeviceEntry);  
-        _gProcGloveModeEntry = NULL;  		
+        remove_proc_entry(PROC_NODE_GLOVE_MODE, _gProcDeviceEntry);
+        _gProcGloveModeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_GLOVE_MODE);
     }
 
     if (_gProcOpenGloveModeEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_OPEN_GLOVE_MODE, _gProcDeviceEntry);   
-        _gProcOpenGloveModeEntry = NULL; 		
+        remove_proc_entry(PROC_NODE_OPEN_GLOVE_MODE, _gProcDeviceEntry);
+        _gProcOpenGloveModeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_OPEN_GLOVE_MODE);
     }
 
     if (_gProcCloseGloveModeEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_CLOSE_GLOVE_MODE, _gProcDeviceEntry);   
-        _gProcCloseGloveModeEntry = NULL; 		
+        remove_proc_entry(PROC_NODE_CLOSE_GLOVE_MODE, _gProcDeviceEntry);
+        _gProcCloseGloveModeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_CLOSE_GLOVE_MODE);
     }
 
     if (_gProcLeatherSheathModeEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_LEATHER_SHEATH_MODE, _gProcDeviceEntry);  
-        _gProcLeatherSheathModeEntry = NULL;  		
+        remove_proc_entry(PROC_NODE_LEATHER_SHEATH_MODE, _gProcDeviceEntry);
+        _gProcLeatherSheathModeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_LEATHER_SHEATH_MODE);
     }
     if (_gProcFilmModeEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_LEATHER_SHEATH_MODE, _gProcDeviceEntry);  
-        _gProcFilmModeEntry = NULL;  		
+        remove_proc_entry(PROC_NODE_LEATHER_SHEATH_MODE, _gProcDeviceEntry);
+        _gProcFilmModeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_LEATHER_SHEATH_MODE);
     }
 
 #ifdef CONFIG_ENABLE_JNI_INTERFACE
     if (_gProcJniMethodEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_JNI_NODE, _gProcDeviceEntry);    		
+        remove_proc_entry(PROC_NODE_JNI_NODE, _gProcDeviceEntry);
         _gProcJniMethodEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_JNI_NODE);
     }
-#endif //CONFIG_ENABLE_JNI_INTERFACE	
+#endif //CONFIG_ENABLE_JNI_INTERFACE
 
 #ifdef CONFIG_ENABLE_COUNT_REPORT_RATE
     if (_gProcReportRateEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_REPORT_RATE, _gProcDeviceEntry);    	
-        _gProcReportRateEntry = NULL;	
+        remove_proc_entry(PROC_NODE_REPORT_RATE, _gProcDeviceEntry);
+        _gProcReportRateEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_REPORT_RATE);
     }
 #endif //CONFIG_ENABLE_COUNT_REPORT_RATE
@@ -7240,15 +7240,15 @@ static void _DrvRemoveProcfsDirEntry(void)
 #ifdef CONFIG_ENABLE_GESTURE_WAKEUP
     if (_gProcGestureWakeupModeEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_GESTURE_WAKEUP_MODE, _gProcDeviceEntry);  
-        _gProcGestureWakeupModeEntry = NULL;  		
+        remove_proc_entry(PROC_NODE_GESTURE_WAKEUP_MODE, _gProcDeviceEntry);
+        _gProcGestureWakeupModeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_GESTURE_WAKEUP_MODE);
     }
 #ifdef CONFIG_ENABLE_GESTURE_DEBUG_MODE
     if (_gProcGestureDebugModeEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_GESTURE_DEBUG_MODE, _gProcDeviceEntry);    	
-        _gProcGestureDebugModeEntry = NULL;	
+        remove_proc_entry(PROC_NODE_GESTURE_DEBUG_MODE, _gProcDeviceEntry);
+        _gProcGestureDebugModeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_GESTURE_DEBUG_MODE);
     }
 #endif //CONFIG_ENABLE_GESTURE_DEBUG_MODE
@@ -7256,155 +7256,155 @@ static void _DrvRemoveProcfsDirEntry(void)
 
     if (_gProcFirmwareModeEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_FIRMWARE_MODE, _gProcDeviceEntry);    
-        _gProcFirmwareModeEntry = NULL;		
+        remove_proc_entry(PROC_NODE_FIRMWARE_MODE, _gProcDeviceEntry);
+        _gProcFirmwareModeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_MODE);
     }
 
     if (_gProcFirmwareSensorEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_FIRMWARE_SENSOR, _gProcDeviceEntry);  
-        _gProcFirmwareSensorEntry = NULL; 		
+        remove_proc_entry(PROC_NODE_FIRMWARE_SENSOR, _gProcDeviceEntry);
+        _gProcFirmwareSensorEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_SENSOR);
     }
 
     if (_gProcFirmwarePacketHeaderEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_FIRMWARE_PACKET_HEADER, _gProcDeviceEntry);    		
+        remove_proc_entry(PROC_NODE_FIRMWARE_PACKET_HEADER, _gProcDeviceEntry);
         _gProcFirmwarePacketHeaderEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_PACKET_HEADER);
     }
 
     if (_gProcQueryFeatureSupportStatusEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_QUERY_FEATURE_SUPPORT_STATUS, _gProcDeviceEntry);   
-        _gProcQueryFeatureSupportStatusEntry = NULL; 		
+        remove_proc_entry(PROC_NODE_QUERY_FEATURE_SUPPORT_STATUS, _gProcDeviceEntry);
+        _gProcQueryFeatureSupportStatusEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_QUERY_FEATURE_SUPPORT_STATUS);
     }
 
     if (_gProcChangeFeatureSupportStatusEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_CHANGE_FEATURE_SUPPORT_STATUS, _gProcDeviceEntry);  
-        _gProcChangeFeatureSupportStatusEntry = NULL;  		
+        remove_proc_entry(PROC_NODE_CHANGE_FEATURE_SUPPORT_STATUS, _gProcDeviceEntry);
+        _gProcChangeFeatureSupportStatusEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_CHANGE_FEATURE_SUPPORT_STATUS);
     }
 
     if (_gProcFirmwareSetDQMemValueEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_FIRMWARE_SET_DQMEM_VALUE, _gProcDeviceEntry);    		
+        remove_proc_entry(PROC_NODE_FIRMWARE_SET_DQMEM_VALUE, _gProcDeviceEntry);
         _gProcFirmwareSetDQMemValueEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_SET_DQMEM_VALUE);
     }
 
     if (_gProcFirmwareSmBusDebugEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_FIRMWARE_SMBUS_DEBUG, _gProcDeviceEntry);    
-        _gProcFirmwareSmBusDebugEntry = NULL;		
+        remove_proc_entry(PROC_NODE_FIRMWARE_SMBUS_DEBUG, _gProcDeviceEntry);
+        _gProcFirmwareSmBusDebugEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_SMBUS_DEBUG);
     }
 
     if (_gProcFirmwareSetDebugValueEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_FIRMWARE_SET_DEBUG_VALUE, _gProcDeviceEntry);  
-        _gProcFirmwareSetDebugValueEntry = NULL;  		
+        remove_proc_entry(PROC_NODE_FIRMWARE_SET_DEBUG_VALUE, _gProcDeviceEntry);
+        _gProcFirmwareSetDebugValueEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_SET_DEBUG_VALUE);
     }
 
     if (_gProcFirmwareDebugEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_FIRMWARE_DEBUG, _gProcDeviceEntry);    	
-        _gProcFirmwareDebugEntry = NULL;	
+        remove_proc_entry(PROC_NODE_FIRMWARE_DEBUG, _gProcDeviceEntry);
+        _gProcFirmwareDebugEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_DEBUG);
     }
 
     if (_gProcSdCardFirmwareUpdateEntry != NULL)
     {
-        remove_proc_entry(PROC_NODE_SD_CARD_FIRMWARE_UPDATE, _gProcDeviceEntry);  
-        _gProcSdCardFirmwareUpdateEntry = NULL;  		
+        remove_proc_entry(PROC_NODE_SD_CARD_FIRMWARE_UPDATE, _gProcDeviceEntry);
+        _gProcSdCardFirmwareUpdateEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_SD_CARD_FIRMWARE_UPDATE);
     }
 
     if (_gProcSeLinuxLimitFirmwareUpdateEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_SELINUX_LIMIT_FIRMWARE_UPDATE, _gProcDeviceEntry);
-        _gProcSeLinuxLimitFirmwareUpdateEntry = NULL;    		
+        _gProcSeLinuxLimitFirmwareUpdateEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_SELINUX_LIMIT_FIRMWARE_UPDATE);
     }
 
     if (_gProcForceFirmwareUpdateEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_FORCE_FIRMWARE_UPDATE, _gProcDeviceEntry);
-        _gProcForceFirmwareUpdateEntry = NULL;    		
+        _gProcForceFirmwareUpdateEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FORCE_FIRMWARE_UPDATE);
     }
 
     if (_gProcDeviceDriverVersionEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_DEVICE_DRIVER_VERSION, _gProcDeviceEntry);
-        _gProcDeviceDriverVersionEntry = NULL;    		
+        _gProcDeviceDriverVersionEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_DEVICE_DRIVER_VERSION);
     }
 
     if (_gProcPlatformFirmwareVersionEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_PLATFORM_FIRMWARE_VERSION, _gProcDeviceEntry);
-        _gProcPlatformFirmwareVersionEntry = NULL;    		
+        _gProcPlatformFirmwareVersionEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_PLATFORM_FIRMWARE_VERSION);
     }
 
     if (_gProcCustomerFirmwareVersionEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_CUSTOMER_FIRMWARE_VERSION, _gProcDeviceEntry);
-        _gProcCustomerFirmwareVersionEntry = NULL;    		
+        _gProcCustomerFirmwareVersionEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_CUSTOMER_FIRMWARE_VERSION);
     }
 
     if (_gProcApkFirmwareUpdateEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_FIRMWARE_UPDATE, _gProcDeviceEntry);
-        _gProcApkFirmwareUpdateEntry = NULL;    		
+        _gProcApkFirmwareUpdateEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_UPDATE);
     }
 
     if (_gProcFirmwareDataEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_FIRMWARE_DATA, _gProcDeviceEntry);
-        _gProcFirmwareDataEntry = NULL;    		
+        _gProcFirmwareDataEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_DATA);
     }
 
     if (_gProcChipTypeEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_CHIP_TYPE, _gProcDeviceEntry);
-        _gProcChipTypeEntry = NULL;    		
+        _gProcChipTypeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_CHIP_TYPE);
     }
 
     if (_gProcTrimCodeEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_TRIM_CODE, _gProcDeviceEntry);
-        _gProcTrimCodeEntry = NULL;    		
+        _gProcTrimCodeEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_TRIM_CODE);
     }
-	
+
     if (_gProcDeviceEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_DEVICE, _gProcMsTouchScreenMsg20xxEntry);
-        _gProcDeviceEntry = NULL;    		
+        _gProcDeviceEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_DEVICE);
     }
 
     if (_gProcMsTouchScreenMsg20xxEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_MS_TOUCHSCREEN_MSG20XX, _gProcClassEntry);
-        _gProcMsTouchScreenMsg20xxEntry = NULL;    		
+        _gProcMsTouchScreenMsg20xxEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_MS_TOUCHSCREEN_MSG20XX);
     }
 
     if (_gProcClassEntry != NULL)
     {
         remove_proc_entry(PROC_NODE_CLASS, NULL);
-        _gProcClassEntry = NULL;    		
+        _gProcClassEntry = NULL;
         DBG(&g_I2cClient->dev, "Remove procfs file node(%s) OK!\n", PROC_NODE_CLASS);
     }
 }
@@ -7419,7 +7419,7 @@ static void _DrvRemoveProcfsDirEntry(void)
 #ifdef CONFIG_ENABLE_REPORT_KEY_WITH_COORDINATE
 static ssize_t _DrvVirtualKeysShow(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     return sprintf(buf,
         __stringify(EV_KEY) ":" __stringify(KEY_HOMEPAGE) ":90:1330:100:100"
@@ -7450,19 +7450,19 @@ static void _DrvVirtualKeysInit(void)
 {
     s32 nRetVal = 0;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     g_PropertiesKObj = kobject_create_and_add("board_properties", NULL);
     if (g_PropertiesKObj == NULL)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to kobject_create_and_add() for virtual keys *** nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Failed to kobject_create_and_add() for virtual keys *** nRetVal=%d\n", nRetVal);
         return;
     }
-    
+
     nRetVal = sysfs_create_group(g_PropertiesKObj, &properties_attr_group);
     if (nRetVal < 0)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to sysfs_create_group() for virtual keys *** nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Failed to sysfs_create_group() for virtual keys *** nRetVal=%d\n", nRetVal);
 
         kobject_put(g_PropertiesKObj);
         g_PropertiesKObj = NULL;
@@ -7471,7 +7471,7 @@ static void _DrvVirtualKeysInit(void)
 
 static void _DrvVirtualKeysUnInit(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     if (g_PropertiesKObj)
     {
@@ -7488,79 +7488,79 @@ static s32 _DrvTouchPinCtrlInit(struct i2c_client *pClient)
     s32 nRetVal = 0;
     u32 nFlag = 0;
     struct device_node *pDeviceNode = pClient->dev.of_node;
-	
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    
+
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
 //    _gGpioRst = of_get_named_gpio_flags(pDeviceNode, "chipone,reset-gpio", 0, &nFlag);
     _gGpioRst = of_get_named_gpio_flags(pDeviceNode, "touch,reset-gpio", 0, &nFlag); // generally used for ILI21XX
 //    _gGpioRst = of_get_named_gpio_flags(pDeviceNode, "mstar,rst-gpio", 0, &nFlag); // generally used for MSG28XX/MSG58XXA
-    
+
     MS_TS_MSG_IC_GPIO_RST = _gGpioRst;
-    
+
     if (_gGpioRst < 0)
     {
         return _gGpioRst;
     }
 
 //    _gGpioIrq = of_get_named_gpio_flags(pDeviceNode, "chipone,irq-gpio", 0, &nFlag);
-	_gGpioIrq = of_get_named_gpio_flags(pDeviceNode, "touch,irq-gpio", 0, &nFlag); // generally used for ILI21XX
+    _gGpioIrq = of_get_named_gpio_flags(pDeviceNode, "touch,irq-gpio", 0, &nFlag); // generally used for ILI21XX
 //    _gGpioIrq = of_get_named_gpio_flags(pDeviceNode, "mstar,irq-gpio", 0, &nFlag); // generally used for MSG28XX/MSG58XXA
-    
+
     MS_TS_MSG_IC_GPIO_INT = _gGpioIrq;
-	
-    DBG(&g_I2cClient->dev, "_gGpioRst = %d, _gGpioIrq = %d\n", _gGpioRst, _gGpioIrq); 
-    
+
+    DBG(&g_I2cClient->dev, "_gGpioRst = %d, _gGpioIrq = %d\n", _gGpioRst, _gGpioIrq);
+
     if (_gGpioIrq < 0)
     {
         return _gGpioIrq;
     }
     /* Get pinctrl if target uses pinctrl */
     _gTsPinCtrl = devm_pinctrl_get(&(pClient->dev));
-    if (IS_ERR_OR_NULL(_gTsPinCtrl)) 
+    if (IS_ERR_OR_NULL(_gTsPinCtrl))
     {
         nRetVal = PTR_ERR(_gTsPinCtrl);
-        DBG(&g_I2cClient->dev, "Target does not use pinctrl nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "Target does not use pinctrl nRetVal=%d\n", nRetVal);
         goto ERROR_PINCTRL_GET;
     }
 
     _gPinCtrlStateActive = pinctrl_lookup_state(_gTsPinCtrl, PINCTRL_STATE_ACTIVE);
-    if (IS_ERR_OR_NULL(_gPinCtrlStateActive)) 
+    if (IS_ERR_OR_NULL(_gPinCtrlStateActive))
     {
         nRetVal = PTR_ERR(_gPinCtrlStateActive);
-        DBG(&g_I2cClient->dev, "Can not lookup %s pinstate nRetVal=%d\n", PINCTRL_STATE_ACTIVE, nRetVal); 
+        DBG(&g_I2cClient->dev, "Can not lookup %s pinstate nRetVal=%d\n", PINCTRL_STATE_ACTIVE, nRetVal);
         goto ERROR_PINCTRL_LOOKUP;
     }
 
     _gPinCtrlStateSuspend = pinctrl_lookup_state(_gTsPinCtrl, PINCTRL_STATE_SUSPEND);
-    if (IS_ERR_OR_NULL(_gPinCtrlStateSuspend)) 
+    if (IS_ERR_OR_NULL(_gPinCtrlStateSuspend))
     {
         nRetVal = PTR_ERR(_gPinCtrlStateSuspend);
-        DBG(&g_I2cClient->dev, "Can not lookup %s pinstate nRetVal=%d\n", PINCTRL_STATE_SUSPEND, nRetVal); 
+        DBG(&g_I2cClient->dev, "Can not lookup %s pinstate nRetVal=%d\n", PINCTRL_STATE_SUSPEND, nRetVal);
         goto ERROR_PINCTRL_LOOKUP;
     }
 
     _gPinCtrlStateRelease = pinctrl_lookup_state(_gTsPinCtrl, PINCTRL_STATE_RELEASE);
-    if (IS_ERR_OR_NULL(_gPinCtrlStateRelease)) 
+    if (IS_ERR_OR_NULL(_gPinCtrlStateRelease))
     {
         nRetVal = PTR_ERR(_gPinCtrlStateRelease);
-        DBG(&g_I2cClient->dev, "Can not lookup %s pinstate nRetVal=%d\n", PINCTRL_STATE_RELEASE, nRetVal); 
+        DBG(&g_I2cClient->dev, "Can not lookup %s pinstate nRetVal=%d\n", PINCTRL_STATE_RELEASE, nRetVal);
     }
-    
+
     pinctrl_select_state(_gTsPinCtrl, _gPinCtrlStateActive);
-    
+
     return 0;
 
 ERROR_PINCTRL_LOOKUP:
     devm_pinctrl_put(_gTsPinCtrl);
 ERROR_PINCTRL_GET:
     _gTsPinCtrl = NULL;
-	
+
     return nRetVal;
 }
 
 static void _DrvTouchPinCtrlUnInit(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     if (_gTsPinCtrl)
     {
@@ -7582,7 +7582,7 @@ static void _DrvFingerTouchDoWork(struct work_struct *pWork)
         input_report_key(g_InputDevice, KEY_POWER, 1);
         input_sync(g_InputDevice);
         input_report_key(g_InputDevice, KEY_POWER, 0);
-        input_sync(g_InputDevice);        
+        input_sync(g_InputDevice);
         //DrvSetInputPowerEvent();
     }
     else
@@ -7597,13 +7597,13 @@ static void _DrvFingerTouchDoWork(struct work_struct *pWork)
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
         && g_IsInMpTest == 0
 #endif //CONFIG_ENABLE_ITO_MP_TEST
-    ) 
+    )
     {
         enable_irq(_gIrq);
 
         _gInterruptFlag = 1;
-    } 
-        
+    }
+
     spin_unlock_irqrestore(&_gIrqLock, nIrqFlag);
 }
 
@@ -7612,9 +7612,9 @@ static irqreturn_t _DrvFingerTouchInterruptHandler(s32 nIrq, void *pDeviceId)
 {
     unsigned long nIrqFlag;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag); 
+    DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag);
 
     spin_lock_irqsave(&_gIrqLock, nIrqFlag);
 
@@ -7622,7 +7622,7 @@ static irqreturn_t _DrvFingerTouchInterruptHandler(s32 nIrq, void *pDeviceId)
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
         && g_IsInMpTest == 0
 #endif //CONFIG_ENABLE_ITO_MP_TEST
-    ) 
+    )
     {
         disable_irq_nosync(_gIrq);
 
@@ -7632,7 +7632,7 @@ static irqreturn_t _DrvFingerTouchInterruptHandler(s32 nIrq, void *pDeviceId)
     }
 
     spin_unlock_irqrestore(&_gIrqLock, nIrqFlag);
-    
+
     return IRQ_HANDLED;
 }
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
@@ -7646,9 +7646,9 @@ static void _DrvFingerTouchInterruptHandler(void)
 {
     unsigned long nIrqFlag;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
-    DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag); 
+    DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag);
 
     spin_lock_irqsave(&_gIrqLock, nIrqFlag);
 
@@ -7658,7 +7658,7 @@ static void _DrvFingerTouchInterruptHandler(void)
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
         && g_IsInMpTest == 0
 #endif //CONFIG_ENABLE_ITO_MP_TEST
-    ) 
+    )
     {
 #ifdef CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
         disable_irq_nosync(_gIrq);
@@ -7671,14 +7671,14 @@ static void _DrvFingerTouchInterruptHandler(void)
         schedule_work(&_gFingerTouchWork);
     }
 
-#else    
+#else
 
     if (_gInterruptFlag == 1
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
         && g_IsInMpTest == 0
 #endif //CONFIG_ENABLE_ITO_MP_TEST
     )
-    {    
+    {
 #ifdef CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
         disable_irq_nosync(_gIrq);
 #else
@@ -7689,7 +7689,7 @@ static void _DrvFingerTouchInterruptHandler(void)
 
         _gTpdFlag = 1;
         wake_up_interruptible(&_gWaiter);
-    }        
+    }
 #endif //CONFIG_USE_IRQ_INTERRUPT_FOR_MTK_PLATFORM
 
     spin_unlock_irqrestore(&_gIrqLock, nIrqFlag);
@@ -7717,7 +7717,7 @@ static void _DrvFingerTouchDoWork(struct work_struct *pWork)
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
         && g_IsInMpTest == 0
 #endif //CONFIG_ENABLE_ITO_MP_TEST
-    ) 
+    )
     {
 #ifdef CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
         enable_irq(_gIrq);
@@ -7739,14 +7739,14 @@ static int _DrvFingerTouchHandler(void *pUnUsed)
     struct sched_param param = { .sched_priority = RTPM_PRIO_TPD };
     sched_setscheduler(current, SCHED_RR, &param);
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-	
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
     do
     {
         set_current_state(TASK_INTERRUPTIBLE);
         wait_event_interruptible(_gWaiter, _gTpdFlag != 0);
         _gTpdFlag = 0;
-        
+
         set_current_state(TASK_RUNNING);
 
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
@@ -7758,11 +7758,11 @@ static int _DrvFingerTouchHandler(void *pUnUsed)
         }
 #endif //CONFIG_ENABLE_ITO_MP_TEST
 
-        DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag); 
+        DBG(&g_I2cClient->dev, "*** %s() _gInterruptFlag = %d ***\n", __func__, _gInterruptFlag);
 
         spin_lock_irqsave(&_gIrqLock, nIrqFlag);
 
-        if (_gInterruptFlag == 0       
+        if (_gInterruptFlag == 0
 #ifdef CONFIG_ENABLE_ITO_MP_TEST
             && g_IsInMpTest == 0
 #endif //CONFIG_ENABLE_ITO_MP_TEST
@@ -7775,12 +7775,12 @@ static int _DrvFingerTouchHandler(void *pUnUsed)
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 
             _gInterruptFlag = 1;
-        } 
+        }
 
         spin_unlock_irqrestore(&_gIrqLock, nIrqFlag);
-		
+
     } while (!kthread_should_stop());
-	
+
     return 0;
 }
 #endif //CONFIG_USE_IRQ_INTERRUPT_FOR_MTK_PLATFORM
@@ -7788,7 +7788,7 @@ static int _DrvFingerTouchHandler(void *pUnUsed)
 
 void DrvMutexVariableInitialize(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     mutex_init(&g_Mutex);
     spin_lock_init(&_gIrqLock);
@@ -7806,7 +7806,7 @@ s32 DrvInputDeviceInitialize(struct i2c_client *pClient)
     g_InputDevice = input_allocate_device();
     if (g_InputDevice == NULL)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to allocate touch input device ***\n"); 
+        DBG(&g_I2cClient->dev, "*** Failed to allocate touch input device ***\n");
         return -ENOMEM;
     }
 
@@ -7814,7 +7814,7 @@ s32 DrvInputDeviceInitialize(struct i2c_client *pClient)
     g_InputDevice->phys = "I2C";
     g_InputDevice->dev.parent = &pClient->dev;
     g_InputDevice->id.bustype = BUS_I2C;
-    
+
     /* set the supported event type for input device */
     set_bit(EV_ABS, g_InputDevice->evbit);
     set_bit(EV_SYN, g_InputDevice->evbit);
@@ -7824,7 +7824,7 @@ s32 DrvInputDeviceInitialize(struct i2c_client *pClient)
 
 #ifdef CONFIG_TP_HAVE_KEY
     // Method 1.
-    { 
+    {
         for (i = 0; i < MAX_KEY_NUM; i ++)
         {
             input_set_capability(g_InputDevice, EV_KEY, g_TpVirtualKey[i]);
@@ -7836,7 +7836,7 @@ s32 DrvInputDeviceInitialize(struct i2c_client *pClient)
 #endif //CONFIG_ENABLE_REPORT_KEY_WITH_COORDINATE
 #endif //CONFIG_TP_HAVE_KEY
 
-/*  
+/*
 #ifdef CONFIG_TP_HAVE_KEY
     // Method 2.
     set_bit(TOUCH_KEY_MENU, g_InputDevice->keybit); //Menu
@@ -7877,14 +7877,14 @@ s32 DrvInputDeviceInitialize(struct i2c_client *pClient)
 
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL
     set_bit(BTN_TOOL_FINGER, g_InputDevice->keybit);
-    input_mt_init_slots(g_InputDevice, MUTUAL_MAX_TOUCH_NUM, 0);  // for MSG28xx/MSG58xxA/ILI21xx   
+    input_mt_init_slots(g_InputDevice, MUTUAL_MAX_TOUCH_NUM, 0);  // for MSG28xx/MSG58xxA/ILI21xx
 #endif //CONFIG_ENABLE_TYPE_B_PROTOCOL
 
     /* register the input device to input sub-system */
     nRetVal = input_register_device(g_InputDevice);
     if (nRetVal < 0)
     {
-        DBG(&g_I2cClient->dev, "*** Unable to register touch input device *** nRetVal=%d\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Unable to register touch input device *** nRetVal=%d\n", nRetVal);
         return nRetVal;
     }
 
@@ -7898,8 +7898,8 @@ s32 DrvInputDeviceInitialize(struct i2c_client *pClient)
     g_InputDevice->phys = "I2C";
     g_InputDevice->dev.parent = &pClient->dev;
     g_InputDevice->id.bustype = BUS_I2C;
-    
-    // set the supported event type for input device 
+
+    // set the supported event type for input device
     set_bit(EV_ABS, g_InputDevice->evbit);
     set_bit(EV_SYN, g_InputDevice->evbit);
     set_bit(EV_KEY, g_InputDevice->evbit);
@@ -7970,98 +7970,98 @@ s32 DrvInputDeviceInitialize(struct i2c_client *pClient)
 
 #endif
 
-    return nRetVal;    
+    return nRetVal;
 }
 
 s32 DrvTouchDeviceRequestGPIO(struct i2c_client *pClient)
 {
     s32 nRetVal = 0;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
-    
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
 #ifdef ALLWINNER_PLATFORM
 
-	//nRetVal = gpio_request(config_info.wakeup_number, "C_TP_RST");   
+    //nRetVal = gpio_request(config_info.wakeup_number, "C_TP_RST");
     //if (nRetVal < 0)
     //{
-        //DBG(&g_I2cClient->dev, "*** Failed to request GPIO , error %d ***\n", nRetVal); 
+        //DBG(&g_I2cClient->dev, "*** Failed to request GPIO , error %d ***\n", nRetVal);
     //}
-	//gpio_free(CTP_IRQ_NUMBER);
+    //gpio_free(CTP_IRQ_NUMBER);
     nRetVal = gpio_request(CTP_IRQ_NUMBER, "C_TP_INT");
-	 
+
     if (nRetVal < 0)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to request GPIO , error %d ***\n", nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Failed to request GPIO , error %d ***\n", nRetVal);
     }
 
-	gpio_direction_input(CTP_IRQ_NUMBER);
+    gpio_direction_input(CTP_IRQ_NUMBER);
 
 #else
 #ifdef CONFIG_ENABLE_TOUCH_PIN_CONTROL
     _DrvTouchPinCtrlInit(pClient);
 #endif //CONFIG_ENABLE_TOUCH_PIN_CONTROL
 
-    nRetVal = gpio_request(MS_TS_MSG_IC_GPIO_RST, "C_TP_RST");     
+    nRetVal = gpio_request(MS_TS_MSG_IC_GPIO_RST, "C_TP_RST");
     if (nRetVal < 0)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to request GPIO %d, error %d ***\n", MS_TS_MSG_IC_GPIO_RST, nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Failed to request GPIO %d, error %d ***\n", MS_TS_MSG_IC_GPIO_RST, nRetVal);
     }
 
-    nRetVal = gpio_request(MS_TS_MSG_IC_GPIO_INT, "C_TP_INT");    
+    nRetVal = gpio_request(MS_TS_MSG_IC_GPIO_INT, "C_TP_INT");
     if (nRetVal < 0)
     {
-        DBG(&g_I2cClient->dev, "*** Failed to request GPIO %d, error %d ***\n", MS_TS_MSG_IC_GPIO_INT, nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Failed to request GPIO %d, error %d ***\n", MS_TS_MSG_IC_GPIO_INT, nRetVal);
     }
 
-	gpio_direction_input(MS_TS_MSG_IC_GPIO_INT);
+    gpio_direction_input(MS_TS_MSG_IC_GPIO_INT);
 #endif //ALLWINNER_PLATFORM
 #endif //CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM || CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM
 
-    return nRetVal;    
+    return nRetVal;
 }
 
 s32 DrvTouchDeviceRegisterFingerTouchInterruptHandler(void)
 {
     s32 nRetVal = 0;
 
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
-    /* initialize the finger touch work queue */ 
+    /* initialize the finger touch work queue */
     INIT_WORK(&_gFingerTouchWork, _DrvFingerTouchDoWork);
 #ifdef ALLWINNER_PLATFORM
-	int ret = 0;
-	_gIrq = gpio_to_irq(CTP_IRQ_NUMBER);
+    int ret = 0;
+    _gIrq = gpio_to_irq(CTP_IRQ_NUMBER);
 
-	config_info.dev = &(g_InputDevice->dev);
-	
-	ret = input_request_int(&(config_info.input_type),_DrvFingerTouchInterruptHandler,CTP_IRQ_MODE,NULL);
+    config_info.dev = &(g_InputDevice->dev);
 
-	_gInterruptFlag = 1;
+    ret = input_request_int(&(config_info.input_type),_DrvFingerTouchInterruptHandler,CTP_IRQ_MODE,NULL);
 
-	if (ret) {		
-		printk( "Ilitek: request irq failed\n");	
-	}
-#else 
+    _gInterruptFlag = 1;
+
+    if (ret) {
+        printk( "Ilitek: request irq failed\n");
+    }
+#else
     _gIrq = gpio_to_irq(MS_TS_MSG_IC_GPIO_INT);
 
     /* request an irq and register the isr */
     nRetVal = request_threaded_irq(_gIrq/*MS_TS_MSG_IC_GPIO_INT*/, NULL, _DrvFingerTouchInterruptHandler,
                   /*IRQF_TRIGGER_RISING*/ IRQF_TRIGGER_FALLING | IRQF_ONESHOT/* | IRQF_NO_SUSPEND */,
-                  "msg2xxx", NULL); 
+                  "msg2xxx", NULL);
 
 //        nRetVal = request_irq(_gIrq/*MS_TS_MSG_IC_GPIO_INT*/, _DrvFingerTouchInterruptHandler,
 //                      IRQF_TRIGGER_RISING /* IRQF_TRIGGER_FALLING *//* | IRQF_NO_SUSPEND */,
-//                      "msg2xxx", NULL); 
+//                      "msg2xxx", NULL);
 
     _gInterruptFlag = 1;
-    
+
     if (nRetVal != 0)
     {
-        DBG(&g_I2cClient->dev, "*** Unable to claim irq %d; error %d ***\n", _gIrq, nRetVal); 
+        DBG(&g_I2cClient->dev, "*** Unable to claim irq %d; error %d ***\n", _gIrq, nRetVal);
     }
-#endif //ALLWINNER_PLATFORM 
+#endif //ALLWINNER_PLATFORM
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
 
 #ifdef CONFIG_USE_IRQ_INTERRUPT_FOR_MTK_PLATFORM
@@ -8083,14 +8083,14 @@ s32 DrvTouchDeviceRegisterFingerTouchInterruptHandler(void)
 
         tpd_gpio_as_int(MS_TS_MSG_IC_GPIO_INT);
 
-//            pDeviceNode = of_find_compatible_node(NULL, NULL, "mediatek, TOUCH_PANEL-eint"); 
+//            pDeviceNode = of_find_compatible_node(NULL, NULL, "mediatek, TOUCH_PANEL-eint");
         pDeviceNode = of_find_matching_node(pDeviceNode, touch_of_match);
-        
+
         if (pDeviceNode)
         {
             of_property_read_u32_array(pDeviceNode, "debounce", ints, ARRAY_SIZE(ints));
             gpio_set_debounce(ints[0], ints[1]);
-            
+
             _gIrq = irq_of_parse_and_map(pDeviceNode, 0);
             if (_gIrq == 0)
             {
@@ -8100,11 +8100,11 @@ s32 DrvTouchDeviceRegisterFingerTouchInterruptHandler(void)
             /* request an irq and register the isr */
             nRetVal = request_threaded_irq(_gIrq/*MS_TS_MSG_IC_GPIO_INT*/, NULL, _DrvFingerTouchInterruptHandler,
                   /*IRQF_TRIGGER_RISING*/  IRQF_TRIGGER_FALLING /*IRQF_TRIGGER_NONE */| IRQF_ONESHOT/* | IRQF_NO_SUSPEND */,
-                  "touch_panel-eint", NULL); 
+                  "touch_panel-eint", NULL);
 
 //                nRetVal = request_irq(_gIrq/*MS_TS_MSG_IC_GPIO_INT*/, _DrvFingerTouchInterruptHandler,
 //                      IRQF_TRIGGER_RISING /* IRQF_TRIGGER_FALLING *//*IRQF_TRIGGER_NONE *//* | IRQF_NO_SUSPEND */,
-//                      "touch_panel-eint", NULL); 
+//                      "touch_panel-eint", NULL);
 
             if (nRetVal != 0)
             {
@@ -8142,7 +8142,7 @@ s32 DrvTouchDeviceRegisterFingerTouchInterruptHandler(void)
 
 void DrvTouchDeviceRegisterEarlySuspend(void)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
     g_SystemSuspend = ENABLE_SUSPEND;
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
 #ifdef CONFIG_ENABLE_NOTIFIER_FB
@@ -8155,13 +8155,13 @@ void DrvTouchDeviceRegisterEarlySuspend(void)
     _gEarlySuspend.resume = MsDrvInterfaceTouchDeviceResume;
     register_early_suspend(&_gEarlySuspend);
 #endif
-#endif //CONFIG_ENABLE_NOTIFIER_FB 
+#endif //CONFIG_ENABLE_NOTIFIER_FB
 
 #ifdef ALLWINNER_PLATFORM
-	device_enable_async_suspend(&g_I2cClient->dev);
-	pm_runtime_set_active(&g_I2cClient->dev);
-	pm_runtime_get(&g_I2cClient->dev);
-	pm_runtime_enable(&g_I2cClient->dev);
+    device_enable_async_suspend(&g_I2cClient->dev);
+    pm_runtime_set_active(&g_I2cClient->dev);
+    pm_runtime_get(&g_I2cClient->dev);
+    pm_runtime_enable(&g_I2cClient->dev);
 #endif
 #endif //CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM || CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM
 }
@@ -8169,11 +8169,11 @@ void DrvTouchDeviceRegisterEarlySuspend(void)
 /* remove function is triggered when the input device is removed from input sub-system */
 s32 DrvTouchDeviceRemove(struct i2c_client *pClient)
 {
-    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__); 
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
 #if defined(CONFIG_TOUCH_DRIVER_RUN_ON_SPRD_PLATFORM) || defined(CONFIG_TOUCH_DRIVER_RUN_ON_QCOM_PLATFORM)
 #ifdef ALLWINNER_PLATFORM
-	gpio_free(CTP_IRQ_NUMBER);
+    gpio_free(CTP_IRQ_NUMBER);
 #else
     gpio_free(MS_TS_MSG_IC_GPIO_INT);
     gpio_free(MS_TS_MSG_IC_GPIO_RST);
@@ -8181,10 +8181,10 @@ s32 DrvTouchDeviceRemove(struct i2c_client *pClient)
 
     if (g_InputDevice)
     {
-#ifdef ALLWINNER_PLATFORM  
-		input_free_int(&(config_info.input_type), NULL);
+#ifdef ALLWINNER_PLATFORM
+        input_free_int(&(config_info.input_type), NULL);
 #else
-		//destroy_workqueue(irq_work_queue_allwiner);
+        //destroy_workqueue(irq_work_queue_allwiner);
         free_irq(_gIrq, g_InputDevice);
 #endif
         input_unregister_device(g_InputDevice);
@@ -8203,7 +8203,7 @@ s32 DrvTouchDeviceRemove(struct i2c_client *pClient)
 
 #ifdef CONFIG_ENABLE_PROXIMITY_DETECTION
     _DrvProximityInputDeviceUnInit();
-#endif //CONFIG_ENABLE_PROXIMITY_DETECTION   
+#endif //CONFIG_ENABLE_PROXIMITY_DETECTION
 
 #ifdef CONFIG_ENABLE_REGULATOR_POWER_ON
     DrvTouchDeviceRegulatorPowerOn(false);
@@ -8235,7 +8235,7 @@ s32 DrvTouchDeviceRemove(struct i2c_client *pClient)
 #endif //CONFIG_ENABLE_REGULATOR_POWER_ON
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 
-#endif    
+#endif
 
     if (g_TouchKSet)
     {
@@ -8256,7 +8256,7 @@ s32 DrvTouchDeviceRemove(struct i2c_client *pClient)
         kset_unregister(g_GestureKSet);
         g_GestureKSet = NULL;
     }
-    
+
     if (g_GestureKObj)
     {
         kobject_put(g_GestureKObj);
@@ -8298,13 +8298,13 @@ s32 DrvTouchDeviceRemove(struct i2c_client *pClient)
 
 //------------------------------------------------------------------------------//
 
-#ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL 
+#ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL
 // static u32 _DrvPointDistance(u16 nX, u16 nY, u16 nPrevX, u16 nPrevY)
-// { 
+// {
 //     u32 nRetVal = 0;
-	
+
 //     nRetVal = (((nX-nPrevX)*(nX-nPrevX))+((nY-nPrevY)*(nY-nPrevY)));
-    
+
 //     return nRetVal;
 // }
 #endif //CONFIG_ENABLE_TYPE_B_PROTOCOL
@@ -8315,6 +8315,11 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
     u8 nCheckSum = 0;
     u32 nX = 0, nY = 0;
 
+ifdef CONFIG_SWAP_X_Y
+    u32 nTempX;
+    u32 nTempY;
+#endif
+
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
 #ifdef CONFIG_ENABLE_COUNT_REPORT_RATE
@@ -8324,16 +8329,16 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
         {
             g_InterruptCount = 0; // Reset count if overflow
             DBG(&g_I2cClient->dev, "g_InterruptCount reset to 0\n");
-        }	
+        }
 
         if (g_InterruptCount == 0)
         {
             // Get start time
             do_gettimeofday(&g_StartTime);
-    
-            DBG(&g_I2cClient->dev, "Start time : %lu sec, %lu msec\n", g_StartTime.tv_sec,  g_StartTime.tv_usec); 
+
+            DBG(&g_I2cClient->dev, "Start time : %lu sec, %lu msec\n", g_StartTime.tv_sec,  g_StartTime.tv_usec);
         }
-        
+
         g_InterruptCount ++;
 
         DBG(&g_I2cClient->dev, "g_InterruptCount = %d\n", g_InterruptCount);
@@ -8348,15 +8353,15 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
     {
         if (pPacket[0] == 0x2C)
         {
-            // Notify android application to retrieve firmware specific debug value packet from device driver by sysfs.   
+            // Notify android application to retrieve firmware specific debug value packet from device driver by sysfs.
             if (g_TouchKObj != NULL)
             {
                 char szRspFwSpecificLogPacket[100] = {0};
                 char szValue[3] = {0};
                 char *pEnvp[3];
-                s32 nRetVal = 0;  
+                s32 nRetVal = 0;
 
-                strcat(szRspFwSpecificLogPacket, "VALUE=");  
+                strcat(szRspFwSpecificLogPacket, "VALUE=");
 
                 for (i = 0; i < nLength; i ++)
                 {
@@ -8364,13 +8369,13 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                     strcat(szRspFwSpecificLogPacket, szValue);
                 }
 
-                pEnvp[0] = "STATUS=GET_FW_LOG";  
-                pEnvp[1] = szRspFwSpecificLogPacket;  
+                pEnvp[0] = "STATUS=GET_FW_LOG";
+                pEnvp[1] = szRspFwSpecificLogPacket;
                 pEnvp[2] = NULL;
                 DBG(&g_I2cClient->dev, "pEnvp[1] = %s\n", pEnvp[1]); // TODO : add for debug
                 DBG(&g_I2cClient->dev, "g_DemoModePacket[] = %s\n", g_DemoModePacket); // TODO : add for debug
 
-                nRetVal = kobject_uevent_env(g_TouchKObj, KOBJ_CHANGE, pEnvp); 
+                nRetVal = kobject_uevent_env(g_TouchKObj, KOBJ_CHANGE, pEnvp);
                 DBG(&g_I2cClient->dev, "kobject_uevent_env() STATUS=GET_FW_LOG, nRetVal = %d\n", nRetVal);
             }
 
@@ -8397,7 +8402,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
         DBG(&g_I2cClient->dev, "pPacket[0]=%x \n pPacket[1]=%x pPacket[2]=%x pPacket[3]=%x pPacket[4]=%x pPacket[5]=%x \n", \
                 pPacket[0], pPacket[1], pPacket[2], pPacket[3], pPacket[4], pPacket[5]);
 
-        if (pPacket[0] == 0xA7 && pPacket[1] == 0x00 && pPacket[2] == 0x06 && pPacket[3] == PACKET_TYPE_GESTURE_WAKEUP) 
+        if (pPacket[0] == 0xA7 && pPacket[1] == 0x00 && pPacket[2] == 0x06 && pPacket[3] == PACKET_TYPE_GESTURE_WAKEUP)
         {
             nWakeupMode = pPacket[4];
             bIsCorrectFormat = 1;
@@ -8409,7 +8414,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
 
             nWakeupMode = pPacket[4];
             bIsCorrectFormat = 1;
-            
+
             for (a = 0; a < 0x80; a ++)
             {
                 g_LogGestureDebug[a] = pPacket[a];
@@ -8437,10 +8442,10 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                     input_sync(g_InputDevice);
                     input_report_key(g_InputDevice, KEY_POWER, 0);
                     input_sync(g_InputDevice);
-                    break;		
+                    break;
                 case 0x60:
                     _gGestureWakeupValue[0] = GESTURE_WAKEUP_MODE_CLICK_FLAG;
-                    
+
                     DBG(&g_I2cClient->dev, "Light up screen by CLICK gesture wakeup.\n");
 
 //                    input_report_key(g_InputDevice, KEY_UP, 1);
@@ -8449,7 +8454,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
 //                    input_report_key(g_InputDevice, KEY_UP, 0);
                     input_report_key(g_InputDevice, KEY_POWER, 0);
                     input_sync(g_InputDevice);
-                    break;		
+                    break;
 
 #ifdef CONFIG_ENABLE_GESTURE_DEBUG_MODE
                 case 0xFF://Gesture Fail
@@ -8470,7 +8475,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                     _gGestureWakeupValue[0] = 0;
                     _gGestureWakeupValue[1] = 0;
                     DBG(&g_I2cClient->dev, "Un-supported gesture wakeup mode. Please check your device driver code.\n");
-                    break;		
+                    break;
             }
 
             DBG(&g_I2cClient->dev, "_gGestureWakeupValue = 0x%x, 0x%x\n", _gGestureWakeupValue[0], _gGestureWakeupValue[1]);
@@ -8501,7 +8506,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
 
 
     if (IS_FIRMWARE_DATA_LOG_ENABLED)
-    {    	
+    {
         if (g_FirmwareMode == FIRMWARE_MODE_DEMO_MODE && pPacket[0] != 0x5A)
         {
             {
@@ -8509,7 +8514,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                 return -1;
             }
         }
-        else if (g_FirmwareMode == FIRMWARE_MODE_DEBUG_MODE && (pPacket[0] != 0xA7 && pPacket[3] != PACKET_TYPE_TOOTH_PATTERN && 
+        else if (g_FirmwareMode == FIRMWARE_MODE_DEBUG_MODE && (pPacket[0] != 0xA7 && pPacket[3] != PACKET_TYPE_TOOTH_PATTERN &&
         pPacket[3] != PACKET_TYPE_CSUB_PATTERN && pPacket[3] != PACKET_TYPE_FOUT_PATTERN  && pPacket[3] != PACKET_TYPE_FREQ_PATTERN))
         {
             DBG(&g_I2cClient->dev, "WRONG DEBUG MODE HEADER\n");
@@ -8519,10 +8524,10 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
     else
     {
         if (pPacket[0] != 0x5A)
-        {           
+        {
             {
                 DBG(&g_I2cClient->dev, "WRONG DEMO MODE HEADER\n");
-                return -1;        
+                return -1;
             }
         }
     } //IS_FIRMWARE_DATA_LOG_ENABLED
@@ -8538,21 +8543,28 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL
                     _gCurrentTouch[i] = 0;
 #endif //CONFIG_ENABLE_TYPE_B_PROTOCOL
-                    
+
                     continue;
                 }
-		
+
                 nX = (((pPacket[(4*i)+1] & 0xF0) << 4) | (pPacket[(4*i)+2]));
                 nY = (((pPacket[(4*i)+1] & 0x0F) << 8) | (pPacket[(4*i)+3]));
-                
+
+#ifdef CONFIG_SWAP_X_Y
+                nTempY = nX;
+                nTempX = nY;
+                nX = nTempX;
+                nY = nTempY;
+#endif
+
                 pInfo->tPoint[pInfo->nCount].nX = nX * TOUCH_SCREEN_X_MAX / TPD_WIDTH;
                 pInfo->tPoint[pInfo->nCount].nY = nY * TOUCH_SCREEN_Y_MAX / TPD_HEIGHT;
                 pInfo->tPoint[pInfo->nCount].nP = pPacket[4*(i+1)];
                 pInfo->tPoint[pInfo->nCount].nId = i;
-		
+
                 DBG(&g_I2cClient->dev, "[x,y]=[%d,%d]\n", nX, nY);
                 DBG(&g_I2cClient->dev, "point[%d] : (%d,%d) = %d\n", pInfo->tPoint[pInfo->nCount].nId, pInfo->tPoint[pInfo->nCount].nX, pInfo->tPoint[pInfo->nCount].nY, pInfo->tPoint[pInfo->nCount].nP);
-		
+
                 pInfo->nCount ++;
 
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL
@@ -8562,16 +8574,16 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
         }
 
         if (IS_FIRMWARE_DATA_LOG_ENABLED)
-        {    
-            // Notify android application to retrieve demo mode packet from device driver by sysfs.   
+        {
+            // Notify android application to retrieve demo mode packet from device driver by sysfs.
             if (g_TouchKObj != NULL)
             {
                 char szRspDemoModePacket[100] = {0};
                 char szValue[3] = {0};
                 char *pEnvp[3];
-                s32 nRetVal = 0;  
+                s32 nRetVal = 0;
 
-                strcat(szRspDemoModePacket, "VALUE=");  
+                strcat(szRspDemoModePacket, "VALUE=");
 
                 for (i = 0; i < nLength; i ++)
                 {
@@ -8579,12 +8591,12 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                     strcat(szRspDemoModePacket, szValue);
                 }
 
-                pEnvp[0] = "STATUS=GET_DEMO_MODE_PACKET";  
-                pEnvp[1] = szRspDemoModePacket;  
+                pEnvp[0] = "STATUS=GET_DEMO_MODE_PACKET";
+                pEnvp[1] = szRspDemoModePacket;
                 pEnvp[2] = NULL;
                 DBG(&g_I2cClient->dev, "pEnvp[1] = %s\n", pEnvp[1]); // TODO : add for debug
-        
-                nRetVal = kobject_uevent_env(g_TouchKObj, KOBJ_CHANGE, pEnvp); 
+
+                nRetVal = kobject_uevent_env(g_TouchKObj, KOBJ_CHANGE, pEnvp);
                 DBG(&g_I2cClient->dev, "kobject_uevent_env() STATUS=GET_DEMO_MODE_PACKET, nRetVal = %d\n", nRetVal);
             }
         }
@@ -8601,18 +8613,25 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
 
                 continue;
             }
-		
+
             nX = (((pPacket[(3*i)+5] & 0xF0) << 4) | (pPacket[(3*i)+6]));
             nY = (((pPacket[(3*i)+5] & 0x0F) << 8) | (pPacket[(3*i)+7]));
+
+#ifdef CONFIG_SWAP_X_Y
+            nTempY = nX;
+            nTempX = nY;
+            nX = nTempX;
+            nY = nTempY;
+#endif
 
             pInfo->tPoint[pInfo->nCount].nX = nX * TOUCH_SCREEN_X_MAX / TPD_WIDTH;
             pInfo->tPoint[pInfo->nCount].nY = nY * TOUCH_SCREEN_Y_MAX / TPD_HEIGHT;
             pInfo->tPoint[pInfo->nCount].nP = 1;
             pInfo->tPoint[pInfo->nCount].nId = i;
-		
+
             DBG(&g_I2cClient->dev, "[x,y]=[%d,%d]\n", nX, nY);
             DBG(&g_I2cClient->dev, "point[%d] : (%d,%d) = %d\n", pInfo->tPoint[pInfo->nCount].nId, pInfo->tPoint[pInfo->nCount].nX, pInfo->tPoint[pInfo->nCount].nY, pInfo->tPoint[pInfo->nCount].nP);
-		
+
             pInfo->nCount ++;
 
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL
@@ -8620,18 +8639,18 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
 #endif //CONFIG_ENABLE_TYPE_B_PROTOCOL
         }
 
-        // Notify android application to retrieve debug mode packet from device driver by sysfs.   
+        // Notify android application to retrieve debug mode packet from device driver by sysfs.
         if (g_TouchKObj != NULL)
         {
             char *pEnvp[2];
-            s32 nRetVal = 0;  
+            s32 nRetVal = 0;
 
-            memcpy(g_LogModePacket, g_DebugModePacket, nLength); // Copy g_DebugModePacket to g_LogModePacket for avoiding the debug mode data which is received by MTPTool APK may be modified. 
+            memcpy(g_LogModePacket, g_DebugModePacket, nLength); // Copy g_DebugModePacket to g_LogModePacket for avoiding the debug mode data which is received by MTPTool APK may be modified.
 
-            pEnvp[0] = "STATUS=GET_DEBUG_MODE_PACKET";  
-            pEnvp[1] = NULL;  
-            
-            nRetVal = kobject_uevent_env(g_TouchKObj, KOBJ_CHANGE, pEnvp); 
+            pEnvp[0] = "STATUS=GET_DEBUG_MODE_PACKET";
+            pEnvp[1] = NULL;
+
+            nRetVal = kobject_uevent_env(g_TouchKObj, KOBJ_CHANGE, pEnvp);
             DBG(&g_I2cClient->dev, "kobject_uevent_env() STATUS=GET_DEBUG_MODE_PACKET, nRetVal = %d\n", nRetVal);
         }
     }
@@ -8639,7 +8658,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
 #ifdef CONFIG_TP_HAVE_KEY
     if (pPacket[0] == 0x5A)
     {
-        u8 nButton = pPacket[nLength-2]; //Since the key value is stored in 0th~3th bit of variable "button", we can only retrieve 0th~3th bit of it. 
+        u8 nButton = pPacket[nLength-2]; //Since the key value is stored in 0th~3th bit of variable "button", we can only retrieve 0th~3th bit of it.
 
 //        if (nButton)
         if (nButton != 0xFF)
@@ -8668,7 +8687,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                 }
 
                 DBG(&g_I2cClient->dev, "g_FaceClosingTp = %d\n", g_FaceClosingTp);
-               
+
                 return -1;
             }
 #elif defined(CONFIG_TOUCH_DRIVER_RUN_ON_MTK_PLATFORM)
@@ -8685,7 +8704,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                 {
                     g_FaceClosingTp = 1;
                 }
-                
+
                 DBG(&g_I2cClient->dev, "g_FaceClosingTp = %d\n", g_FaceClosingTp);
 
                 // map and store data to hwm_sensor_data
@@ -8697,10 +8716,10 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                 {
                     DBG(&g_I2cClient->dev, "call hwmsen_get_interrupt_data() failed = %d\n", nErr);
                 }
-                
+
                 return -1;
             }
-#endif               
+#endif
 #endif //CONFIG_ENABLE_PROXIMITY_DETECTION
 
             for (i = 0; i < MAX_KEY_NUM; i ++)
@@ -8749,7 +8768,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                         pInfo->nCount ++;
 #endif //CONFIG_ENABLE_REPORT_KEY_WITH_COORDINATE
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
-#endif 
+#endif
                     }
                     else
                     {
@@ -8819,7 +8838,7 @@ static s32 _DrvMutualParsePacket(u8 *pPacket, u16 nLength, MutualTouchInfo_t *pI
                             pInfo->nCount ++;
 #endif //CONFIG_ENABLE_REPORT_KEY_WITH_COORDINATE
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
-#endif 
+#endif
                         }
                         else
                         {
@@ -8845,7 +8864,7 @@ void DrvSetIdleMode(void) {
     s32 rc;
 
     szTxData[0] = 0x6C;
-    szTxData[1] = 0x0;  
+    szTxData[1] = 0x0;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
     rc = IicWriteData(SLAVE_I2C_ID_DWI2C, &szTxData[0], 2);
     if (rc > 0)
@@ -8863,7 +8882,7 @@ void DrvOpenGestureWakeup(u32 *pMode)
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     DBG(&g_I2cClient->dev, "wakeup mode 0 = 0x%x\n", pMode[0]);
-    DBG(&g_I2cClient->dev, "wakeup mode 1 = 0x%x\n", pMode[1]); 
+    DBG(&g_I2cClient->dev, "wakeup mode 1 = 0x%x\n", pMode[1]);
     szTxData[0] = 0x58;
     szTxData[1] = ((pMode[0] & 0x0000FF00) >> 8);
     szTxData[2] = ((pMode[0] & 0x000000FF) >> 0);
@@ -8952,22 +8971,22 @@ void DrvCloseGestureDebugMode(void)
 static struct class *touchscreen_class;
 
 static ssize_t gesture_show(struct class *class,
-		struct class_attribute *attr, char *buf)
+        struct class_attribute *attr, char *buf)
 {
-	if (g_GestureState)
-		return sprintf(buf, "gesture: on\n");
-	else
-		return sprintf(buf, "gesture: off\n");
+    if (g_GestureState)
+        return sprintf(buf, "gesture: on\n");
+    else
+        return sprintf(buf, "gesture: off\n");
 }
 static ssize_t gesture_store(struct class *class,
-		struct class_attribute *attr, const char *buf, size_t count)
+        struct class_attribute *attr, const char *buf, size_t count)
 {
-	if(!strncmp(buf, "on", 2))
-		g_GestureState = true;
-	else if(!strncmp(buf, "off", 3))
-		g_GestureState = false;
-	pr_debug("buf = %s, g_GestureState = %d, count = %zu\n", buf, g_GestureState, count);
-	return count;
+    if(!strncmp(buf, "on", 2))
+        g_GestureState = true;
+    else if(!strncmp(buf, "off", 3))
+        g_GestureState = false;
+    pr_debug("buf = %s, g_GestureState = %d, count = %zu\n", buf, g_GestureState, count);
+    return count;
 }
 static CLASS_ATTR(gesture, S_IRUSR|S_IWUSR, gesture_show, gesture_store);
 
@@ -8997,8 +9016,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcMpTestCustomisedEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_MP_TEST_CUSTOMISED);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_MP_TEST_CUSTOMISED);
     }
@@ -9007,8 +9026,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcChipTypeEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_CHIP_TYPE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_CHIP_TYPE);
     }
@@ -9017,8 +9036,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcFirmwareDataEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FIRMWARE_DATA);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_DATA);
     }
@@ -9027,8 +9046,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcApkFirmwareUpdateEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FIRMWARE_UPDATE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_UPDATE);
     }
@@ -9037,8 +9056,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcCustomerFirmwareVersionEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_CUSTOMER_FIRMWARE_VERSION);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_CUSTOMER_FIRMWARE_VERSION);
     }
@@ -9047,8 +9066,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcPlatformFirmwareVersionEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_PLATFORM_FIRMWARE_VERSION);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_PLATFORM_FIRMWARE_VERSION);
     }
@@ -9057,8 +9076,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcDeviceDriverVersionEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_DEVICE_DRIVER_VERSION);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_DEVICE_DRIVER_VERSION);
     }
@@ -9067,8 +9086,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcSdCardFirmwareUpdateEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_SD_CARD_FIRMWARE_UPDATE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_SD_CARD_FIRMWARE_UPDATE);
     }
@@ -9077,8 +9096,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcFirmwareDebugEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FIRMWARE_DEBUG);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_DEBUG);
     }
@@ -9087,8 +9106,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcFirmwareSetDebugValueEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FIRMWARE_SET_DEBUG_VALUE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_SET_DEBUG_VALUE);
     }
@@ -9097,8 +9116,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcFirmwareSmBusDebugEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FIRMWARE_SMBUS_DEBUG);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_SMBUS_DEBUG);
     }
@@ -9117,8 +9136,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcFirmwareModeEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FIRMWARE_MODE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_MODE);
     }
@@ -9127,8 +9146,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcFirmwareSensorEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FIRMWARE_SENSOR);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_SENSOR);
     }
@@ -9137,8 +9156,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcFirmwarePacketHeaderEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FIRMWARE_PACKET_HEADER);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FIRMWARE_PACKET_HEADER);
     }
@@ -9174,7 +9193,7 @@ static s32 _DrvCreateProcfsDirEntry(void)
         kset_unregister(g_TouchKSet);
         g_TouchKSet = NULL;
     }
-    
+
     /* create the files associated with this kobject */
     nRetVal = sysfs_create_group(g_TouchKObj, &attr_group);
     if (nRetVal != 0)
@@ -9186,7 +9205,7 @@ static s32 _DrvCreateProcfsDirEntry(void)
         kset_unregister(g_TouchKSet);
         g_TouchKSet = NULL;
     }
-    
+
     pDevicePath = kobject_get_path(g_TouchKObj, GFP_KERNEL);
     DBG(&g_I2cClient->dev, "DEVPATH = %s\n", pDevicePath);
 
@@ -9195,18 +9214,18 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcQueryFeatureSupportStatusEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_QUERY_FEATURE_SUPPORT_STATUS);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_QUERY_FEATURE_SUPPORT_STATUS);
     }
-    
+
     _gProcChangeFeatureSupportStatusEntry = proc_create(PROC_NODE_CHANGE_FEATURE_SUPPORT_STATUS, PROCFS_AUTHORITY, _gProcDeviceEntry, &_gProcChangeFeatureSupportStatus);
     if (NULL == _gProcChangeFeatureSupportStatusEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_CHANGE_FEATURE_SUPPORT_STATUS);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_CHANGE_FEATURE_SUPPORT_STATUS);
     }
@@ -9216,32 +9235,32 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcGestureWakeupModeEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_GESTURE_WAKEUP_MODE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_GESTURE_WAKEUP_MODE);
     }
 
-	touchscreen_class = class_create(THIS_MODULE, "touchscreen");
-	if (IS_ERR_OR_NULL(touchscreen_class)) {
-		DBG(&g_I2cClient->dev, "%s: create class error!\n", __func__);
-		return -ENOMEM;
-	}
+    touchscreen_class = class_create(THIS_MODULE, "touchscreen");
+    if (IS_ERR_OR_NULL(touchscreen_class)) {
+        DBG(&g_I2cClient->dev, "%s: create class error!\n", __func__);
+        return -ENOMEM;
+    }
 
-	nRetVal = class_create_file(touchscreen_class, &class_attr_gesture);
-	if (nRetVal < 0) {
-		DBG(&g_I2cClient->dev, "%s create gesture file failed!\n", __func__);
-		class_destroy(touchscreen_class);
-		return -ENOMEM;
-	}
+    nRetVal = class_create_file(touchscreen_class, &class_attr_gesture);
+    if (nRetVal < 0) {
+        DBG(&g_I2cClient->dev, "%s create gesture file failed!\n", __func__);
+        class_destroy(touchscreen_class);
+        return -ENOMEM;
+    }
 
 #ifdef CONFIG_ENABLE_GESTURE_DEBUG_MODE
     _gProcGestureDebugModeEntry = proc_create(PROC_NODE_GESTURE_DEBUG_MODE, PROCFS_AUTHORITY, _gProcDeviceEntry, &_gProcGestureDebugMode);
     if (NULL == _gProcGestureDebugModeEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_GESTURE_DEBUG_MODE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_GESTURE_DEBUG_MODE);
     }
@@ -9299,8 +9318,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcReportRateEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_REPORT_RATE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_REPORT_RATE);
     }
@@ -9371,8 +9390,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcSeLinuxLimitFirmwareUpdateEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_SELINUX_LIMIT_FIRMWARE_UPDATE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_SELINUX_LIMIT_FIRMWARE_UPDATE);
     }
@@ -9381,8 +9400,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcForceFirmwareUpdateEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_FORCE_FIRMWARE_UPDATE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_FORCE_FIRMWARE_UPDATE);
     }
@@ -9391,8 +9410,8 @@ static s32 _DrvCreateProcfsDirEntry(void)
     if (NULL == _gProcTrimCodeEntry)
     {
         DBG(&g_I2cClient->dev, "Failed to create procfs file node(%s)!\n", PROC_NODE_TRIM_CODE);
-    }   
-    else 
+    }
+    else
     {
         DBG(&g_I2cClient->dev, "Create procfs file node(%s) OK!\n", PROC_NODE_TRIM_CODE);
     }
@@ -9409,11 +9428,11 @@ int MsDrvInterfaceTouchDeviceFbNotifierCallback(struct notifier_block *pSelf, un
     {
         pBlank = pEventData->data;
 
-		DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+        DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
         if ((*pBlank == FB_BLANK_UNBLANK || *pBlank == FB_BLANK_NORMAL) && nEvent == FB_EARLY_EVENT_BLANK)
         {
-            DrvDisableFingerTouchReport();    
+            DrvDisableFingerTouchReport();
             DBG(&g_I2cClient->dev, "*** %s() TP Resume ***\n", __func__);
             g_SystemSuspend = DISABLE_SUSPEND;
             //DrvTouchDeviceHwReset();
@@ -9430,7 +9449,7 @@ int MsDrvInterfaceTouchDeviceFbNotifierCallback(struct notifier_block *pSelf, un
                 return 0;
             }
 #endif //CONFIG_ENABLE_PROXIMITY_DETECTION
-            
+
 #ifdef CONFIG_ENABLE_GESTURE_WAKEUP
             {
 #ifdef CONFIG_ENABLE_GESTURE_DEBUG_MODE
@@ -9448,27 +9467,27 @@ int MsDrvInterfaceTouchDeviceFbNotifierCallback(struct notifier_block *pSelf, un
                 }
                 //else
                 {
-                    DrvEnableFingerTouchReport(); 
+                    DrvEnableFingerTouchReport();
                 }
             }
-#endif //CONFIG_ENABLE_GESTURE_WAKEUP    
+#endif //CONFIG_ENABLE_GESTURE_WAKEUP
             {
 #ifdef CONFIG_ENABLE_REGULATOR_POWER_ON
                 DrvTouchDeviceRegulatorPowerOn(true);
-#endif //CONFIG_ENABLE_REGULATOR_POWER_ON               
-                DrvTouchDevicePowerOn(); 
-            }   
-			_DrvMutualGetFirmwareInfo(&g_MutualFirmwareInfo);
-#ifdef CONFIG_ENABLE_CHARGER_DETECTION 
+#endif //CONFIG_ENABLE_REGULATOR_POWER_ON
+                DrvTouchDevicePowerOn();
+            }
+            _DrvMutualGetFirmwareInfo(&g_MutualFirmwareInfo);
+#ifdef CONFIG_ENABLE_CHARGER_DETECTION
             {
                 u8 szChargerStatus[20] = {0};
-     
+
                 DrvReadFile(POWER_SUPPLY_BATTERY_STATUS_PATCH, szChargerStatus, 20);
-            
+
                 DBG(&g_I2cClient->dev, "*** Battery Status : %s ***\n", szChargerStatus);
-            
+
                 g_ForceUpdate = 1; // Set flag to force update charger status
-                
+
                 if (strstr(szChargerStatus, "Charging") != NULL || strstr(szChargerStatus, "Full") != NULL || strstr(szChargerStatus, "Fully charged") != NULL) // Charging
                 {
                     DrvChargerDetection(1); // charger plug-in
@@ -9479,7 +9498,7 @@ int MsDrvInterfaceTouchDeviceFbNotifierCallback(struct notifier_block *pSelf, un
                 }
 
                 g_ForceUpdate = 0; // Clear flag after force update charger status
-            }           
+            }
 #endif //CONFIG_ENABLE_CHARGER_DETECTION
 
             if (g_IsEnableGloveMode == 1)
@@ -9492,13 +9511,13 @@ int MsDrvInterfaceTouchDeviceFbNotifierCallback(struct notifier_block *pSelf, un
                 _DrvOpenLeatherSheathMode();
             }
 
-            if (IS_FIRMWARE_DATA_LOG_ENABLED)    
+            if (IS_FIRMWARE_DATA_LOG_ENABLED)
             {
                 DrvRestoreFirmwareModeToLogDataMode(); // Mark this function call for avoiding device driver may spend longer time to resume from suspend state.
             } //IS_FIRMWARE_DATA_LOG_ENABLED
 
 #ifndef CONFIG_ENABLE_GESTURE_WAKEUP
-            DrvEnableFingerTouchReport(); 
+            DrvEnableFingerTouchReport();
 #endif //CONFIG_ENABLE_GESTURE_WAKEUP
 
 #ifdef CONFIG_ENABLE_CHARGER_DETECTION
@@ -9556,20 +9575,20 @@ int MsDrvInterfaceTouchDeviceFbNotifierCallback(struct notifier_block *pSelf, un
                     return 0;
                 }
                 #endif
-               
+
             }
 #endif //CONFIG_ENABLE_GESTURE_WAKEUP
 
             DrvFingerTouchReleased(0, 0, 0); // Send touch end for clearing point touch
             input_sync(g_InputDevice);
 
-            DrvDisableFingerTouchReport();    
+            DrvDisableFingerTouchReport();
             {
-                DrvTouchDevicePowerOff(); 
+                DrvTouchDevicePowerOff();
 #ifdef CONFIG_ENABLE_REGULATOR_POWER_ON
                 DrvTouchDeviceRegulatorPowerOn(false);
 #endif //CONFIG_ENABLE_REGULATOR_POWER_ON
-            }    
+            }
         }
     }
 
@@ -9631,18 +9650,18 @@ void MsDrvInterfaceTouchDeviceSuspend(struct early_suspend *pSuspend)
     DrvFingerTouchReleased(0, 0, 0); // Send touch end for clearing point touch
     input_sync(g_InputDevice);
 
-    DrvDisableFingerTouchReport();      
+    DrvDisableFingerTouchReport();
     {
-        DrvTouchDevicePowerOff(); 
+        DrvTouchDevicePowerOff();
 #ifdef CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 #ifdef CONFIG_ENABLE_REGULATOR_POWER_ON
         DrvTouchDeviceRegulatorPowerOn(false);
-#endif //CONFIG_ENABLE_REGULATOR_POWER_ON               
+#endif //CONFIG_ENABLE_REGULATOR_POWER_ON
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 #ifdef CONFIG_ENABLE_TYPE_B_PROTOCOL // TYPE B PROTOCOL
     input_report_key(g_InputDevice, BTN_TOUCH, 0);
 
-    for (i = 0; i < MAX_TOUCH_NUM; i ++) 
+    for (i = 0; i < MAX_TOUCH_NUM; i ++)
     {
         DrvFingerTouchReleased(0, 0, i);
     }
@@ -9652,7 +9671,7 @@ void MsDrvInterfaceTouchDeviceSuspend(struct early_suspend *pSuspend)
     DrvFingerTouchReleased(0, 0, 0);
 #endif //CONFIG_ENABLE_TYPE_B_PROTOCOL
     input_sync(g_InputDevice);
-    }    
+    }
 }
 
 #ifndef CONFIG_HAS_EARLYSUSPEND
@@ -9694,27 +9713,27 @@ void MsDrvInterfaceTouchDeviceResume(struct early_suspend *pSuspend)
         }
         else
         {
-            DrvEnableFingerTouchReport(); 
+            DrvEnableFingerTouchReport();
         }
     }
-#endif //CONFIG_ENABLE_GESTURE_WAKEUP   
+#endif //CONFIG_ENABLE_GESTURE_WAKEUP
     {
 #ifdef CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
 #ifdef CONFIG_ENABLE_REGULATOR_POWER_ON
         DrvTouchDeviceRegulatorPowerOn(true);
-#endif //CONFIG_ENABLE_REGULATOR_POWER_ON               
+#endif //CONFIG_ENABLE_REGULATOR_POWER_ON
 #endif //CONFIG_PLATFORM_USE_ANDROID_SDK_6_UPWARD
-        DrvTouchDevicePowerOn(); 
-    }   
-    
-#ifdef CONFIG_ENABLE_CHARGER_DETECTION 
+        DrvTouchDevicePowerOn();
+    }
+
+#ifdef CONFIG_ENABLE_CHARGER_DETECTION
     {
         u8 szChargerStatus[20] = {0};
- 
+
         DrvReadFile(POWER_SUPPLY_BATTERY_STATUS_PATCH, szChargerStatus, 20);
-        
+
         DBG(&g_I2cClient->dev, "*** Battery Status : %s ***\n", szChargerStatus);
-        
+
         g_ForceUpdate = 1; // Set flag to force update charger status
 
         if (strstr(szChargerStatus, "Charging") != NULL || strstr(szChargerStatus, "Full") != NULL || strstr(szChargerStatus, "Fully charged") != NULL) // Charging
@@ -9727,7 +9746,7 @@ void MsDrvInterfaceTouchDeviceResume(struct early_suspend *pSuspend)
         }
 
         g_ForceUpdate = 0; // Clear flag after force update charger status
-    }           
+    }
 #endif //CONFIG_ENABLE_CHARGER_DETECTION
 
     if (g_IsEnableGloveMode == 1)
@@ -9740,13 +9759,13 @@ void MsDrvInterfaceTouchDeviceResume(struct early_suspend *pSuspend)
         _DrvOpenLeatherSheathMode();
     }
 
-    if (IS_FIRMWARE_DATA_LOG_ENABLED)    
+    if (IS_FIRMWARE_DATA_LOG_ENABLED)
     {
         DrvRestoreFirmwareModeToLogDataMode(); // Mark this function call for avoiding device driver may spend longer time to resume from suspend state.
     } //IS_FIRMWARE_DATA_LOG_ENABLED
 
 #ifndef CONFIG_ENABLE_GESTURE_WAKEUP
-    DrvEnableFingerTouchReport(); 
+    DrvEnableFingerTouchReport();
 #endif //CONFIG_ENABLE_GESTURE_WAKEUP
 
 #ifdef CONFIG_ENABLE_CHARGER_DETECTION
@@ -9765,10 +9784,10 @@ void MsDrvInterfaceTouchDeviceResume(struct early_suspend *pSuspend)
 s32 /*__devinit*/ MsDrvInterfaceTouchDeviceProbe(struct i2c_client *pClient, const struct i2c_device_id *pDeviceId)
 {
     s32 nRetVal = 0;
-	u16 nMajor = 0, nMinor = 0;
+    u16 nMajor = 0, nMinor = 0;
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
-  
-    DrvMutexVariableInitialize(); 
+
+    DrvMutexVariableInitialize();
 
     DrvTouchDeviceRequestGPIO(pClient);
 
@@ -9785,7 +9804,7 @@ s32 /*__devinit*/ MsDrvInterfaceTouchDeviceProbe(struct i2c_client *pClient, con
         return nRetVal;
     }
 
-    DrvInputDeviceInitialize(pClient); 
+    DrvInputDeviceInitialize(pClient);
 
     DBG(&g_I2cClient->dev, "***  int_status = %d ***\n", gpio_get_value(MS_TS_MSG_IC_GPIO_INT));
     DrvTouchDeviceRegisterEarlySuspend();
@@ -9794,20 +9813,20 @@ s32 /*__devinit*/ MsDrvInterfaceTouchDeviceProbe(struct i2c_client *pClient, con
     {
         DrvCheckFWSupportDriver();
     }
-	DrvGetPlatformFirmwareVersion(&_gPlatformFwVersion);
-	DBG(&g_I2cClient->dev, "*** %s() _gPlatformFwVersion = %s ***\n", __func__, _gPlatformFwVersion);
-	DrvGetCustomerFirmwareVersion(&nMajor, &nMinor, &_gFwVersion);
-	if(g_FwVersionFlag)
-	{
-		printk("*** ILITEK %s() Major = %d, Minor = %d.%d, _gFwVersion = %s ***\n", __func__, nMajor, (nMinor & 0xFF), ((nMinor >> 8) & 0xFF), _gFwVersion);
-	}
-	else
-	{
-		printk("*** ILITEK %s() Major = %d, Minor = %d, _gFwVersion = %s ***\n", __func__, nMajor, nMinor, _gFwVersion);
-	}
+    DrvGetPlatformFirmwareVersion(&_gPlatformFwVersion);
+    DBG(&g_I2cClient->dev, "*** %s() _gPlatformFwVersion = %s ***\n", __func__, _gPlatformFwVersion);
+    DrvGetCustomerFirmwareVersion(&nMajor, &nMinor, &_gFwVersion);
+    if(g_FwVersionFlag)
+    {
+        printk("*** ILITEK %s() Major = %d, Minor = %d.%d, _gFwVersion = %s ***\n", __func__, nMajor, (nMinor & 0xFF), ((nMinor >> 8) & 0xFF), _gFwVersion);
+    }
+    else
+    {
+        printk("*** ILITEK %s() Major = %d, Minor = %d, _gFwVersion = %s ***\n", __func__, nMajor, nMinor, _gFwVersion);
+    }
     DrvTouchDeviceRegisterFingerTouchInterruptHandler();
 #ifdef CONFIG_UPDATE_FIRMWARE_BY_SW_ID
-	DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
+    DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
     DrvCheckFirmwareUpdateBySwId();
 #else
     DrvEnableFingerTouchReport();
@@ -9826,7 +9845,7 @@ s32 /*__devinit*/ MsDrvInterfaceTouchDeviceProbe(struct i2c_client *pClient, con
 #endif //CONFIG_ENABLE_ESD_PROTECTION
 
 #ifdef CONFIG_ENABLE_GESTURE_WAKEUP
-	device_init_wakeup(&g_I2cClient->dev, 1);
+    device_init_wakeup(&g_I2cClient->dev, 1);
 #endif //CONFIG_ENABLE_GESTURE_WAKEUP
     DBG(&g_I2cClient->dev, "*** ILITEK/MStar touch driver registered ***\n");
     return nRetVal;
@@ -9845,4 +9864,4 @@ void MsDrvInterfaceTouchDeviceSetIicDataRate(struct i2c_client *pClient, u32 nIi
     DBG(&g_I2cClient->dev, "*** %s() ***\n", __func__);
 
     DrvSetIicDataRate(pClient, nIicDataRate);
-}    
+}
